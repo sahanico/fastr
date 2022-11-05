@@ -1,0 +1,134 @@
+server {
+
+    root /var/www/html;
+
+    # Add index.php to the list if you are using PHP
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name taxdollar.ca www.taxdollar.ca sahanicorp.com www.sahanicorp.com;
+
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /api {
+        proxy_pass http://localhost:3010;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+    server_name postfixadmin.sahanicorp.com;
+
+    root /usr/share/postfixadmin/public/;
+    index index.php index.html;
+
+    access_log /var/log/nginx/postfixadmin_access.log;
+    error_log /var/log/nginx/postfixadmin_error.log;
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ ^/(.+\.php)$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+    }
+
+}
+
+server {
+    server_name mail.sahanicorp.com;
+
+    root /var/www/roundcube/;
+    index index.php index.html index.htm;
+
+    client_max_body_size 50M;
+    error_log /var/log/nginx/roundcube.error;
+    access_log /var/log/nginx/roundcube.access;
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /.well-known/acme-challenge {
+        allow all;
+    }
+
+    location ~ ^/(README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ {
+        deny all;
+    }
+
+    location ~ ^/(bin|SQL)/ {
+        deny all;
+    }
+
+    # A long browser cache lifetime can speed up repeat visits to your page
+    location ~* \.(jpg|jpeg|gif|png|webp|svg|woff|woff2|ttf|css|js|ico|xml)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           360d;
+    }
+}
+
+server {
+    server_name mail.sahani.ca;
+
+    root /var/www/roundcube/;
+    index index.php index.html index.htm;
+
+    client_max_body_size 50M;
+    error_log /var/log/nginx/mail.sahani.ca.error;
+    access_log /var/log/nginx/mail.sahani.ca.access;
+
+    location / {
+        try_files $uri $uri/ /index.php;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /.well-known/acme-challenge {
+        allow all;
+    }
+
+    location ~ ^/(README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ {
+        deny all;
+    }
+
+    location ~ ^/(bin|SQL)/ {
+        deny all;
+    }
+
+    # A long browser cache lifetime can speed up repeat visits to your page
+    location ~* \.(jpg|jpeg|gif|png|webp|svg|woff|woff2|ttf|css|js|ico|xml)$ {
+        access_log        off;
+        log_not_found     off;
+        expires           360d;
+    }
+}

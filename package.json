@@ -1,0 +1,23 @@
+{
+  "name": "@fastr/fastr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/sahanico/fastr.git",
+  "author": "Mradul Sahani <mradul@sahanico.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "docs",
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "dev": "turbo run dev"
+  },
+  "devDependencies": {
+    "turbo": "^1.6.3"
+  }
+}

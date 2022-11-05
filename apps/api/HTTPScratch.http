@@ -1,0 +1,4 @@
+GET http://localhost:5001/taxdollar-a390f/us-central1/appointmentsJson
+Accept: application/json
+
+###

@@ -1,0 +1,13 @@
+POST http://localhost:80/api/item
+Content-Type: application/json
+
+{}
+
+###
+POST http://192.168.0.247:3010/api/user/authenticate
+Content-Type: application/json
+
+{
+  "email": "mradul@test.com",
+  "password": "password"
+}

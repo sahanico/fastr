@@ -1,0 +1,45 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "development", "taxdollar-production" ]
+  pull_request:
+    branches: [ "development" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    -
+      uses: actions/checkout@v3
+    -
+      name: Use Node.js
+      uses: actions/setup-node@v3
+    -
+      run: yarn
+    -
+      run: yarn lint
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/taxdollar-production'
+    steps:
+      -
+        name: ssh and deploy to taxdollar2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.TAXDOLLAR_HOST }}
+          username: ${{ secrets.TAXDOLLAR_USERNAME }}
+          password: ${{ secrets.TAXDOLLAR_PASSWORD }}
+          port: ${{ secrets.TAXDOLLAR_PORT }}
+          script: |
+            git config --global --add safe.directory /home/${{ secrets.TAXDOLLAR_USERNAME }}/workspaces/taxdollar/taxdollar-client
+            cd /home/${{ secrets.TAXDOLLAR_USERNAME }}/workspaces/taxdollar/taxdollar-client
+            sudo git pull
+            sudo yarn
+            sudo pm2 restart 0

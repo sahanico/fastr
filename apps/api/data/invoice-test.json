@@ -1,0 +1,19 @@
+{
+  "_id": "ibaisdbas",
+  "user_id": "asdqweqw",
+  "send_to": "cat cat (cat@cat.com)",
+  "invoice_date": "2021-02-04",
+  "subtotal": 200.00,
+  "tax": 0.13,
+  "total": 226.00,
+  "address": "123 Fake Street",
+  "notes": "For Client and Family",
+  "line_item": [
+    {
+      "name": "T4 Return Filing Fee",
+      "year": 2020,
+      "quantity": 2,
+      "amount": 100.00
+    }
+  ]
+}

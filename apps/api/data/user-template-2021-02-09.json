@@ -1,0 +1,15 @@
+{
+  "_id" : "22reasfd1dsa2rfq231sdasd123a3asd", //added
+  "userId": "26VEkH0WXMbdwo8ohKTyPNwszLJ2", //formerly legacyId
+  "phoneNumber": "4168774329",
+  "email": "denisedmello@kw.com",
+  "name": "Denise D'mello",
+  "emailVerified": true,
+  "legacyPasswordHash": "3/LM1osYGnQCgHFzwCbHpvXHog2bpwr8HhL/TeQKZUUbhGS7r3eleaVZ642PYS6mJPSIGQvDuPQ1xAQBmRrVNg==",
+  "legacySalt": "nC+7+KfEiJD74w==",
+  "lastSignedInAt": "1599232644942", //ISO8601
+  "createdAt": "1589307447491", //ISO8601
+  "authType": "legacy",
+  "role": "User",
+  "approved": true
+}

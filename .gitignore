@@ -1,0 +1,7 @@
+.turbo
+build/**
+**/node_modules
+apps/api/documents
+apps/api/attachments
+apps/api/files
+**/.env

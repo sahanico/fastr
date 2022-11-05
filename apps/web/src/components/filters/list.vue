@@ -1,0 +1,111 @@
+<template>
+  <div class="grey lighten-4">
+    <v-container class="m-5 p-5">
+      <v-layout>
+        <v-flex>
+          <v-row>
+            <v-col>
+              <div class="headline text-xs-center red--text pb-5 pt-5">
+                Filters
+              </div>
+            </v-col>
+            <v-col align="right">
+              <v-btn color="red darken-2" style="align: right;" dark @click="create()">
+                Create New Filter
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-data-table
+            :headers="headers"
+            :items="filters" class="elevation-1">
+            <template v-slot:item.actions="{ item }">
+              <v-icon small @click="read(item)"> mdi-eye</v-icon>
+              <v-icon small @click="update(item)"> mdi-pencil</v-icon>
+              <v-icon small @click="showDeleteDialog(item)">mdi-delete</v-icon>
+            </template>
+          </v-data-table>
+        </v-flex>
+      </v-layout>
+    </v-container>
+    <v-dialog v-model="deleteDialog.show" width="400">
+      <v-card>
+        <v-card-title class="headline red white--text" dark primary-title>
+          Delete Filter
+        </v-card-title>
+        <v-card-text> Do you want to delete this filter?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button" @click="trash()">
+            Delete
+          </v-btn>
+          <v-btn color="black" text type="button" @click="deleteDialog.show = false">
+            Cancel
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
+</template>
+
+<script>
+import _ from 'underscore';
+
+export default {
+  name: 'list',
+  data() {
+    return {
+      designs: [],
+      filters: [],
+      deleteDialog: {
+        show: false,
+        filter: '',
+      },
+      headers: [
+        { text: 'Label', align: 'left', value: 'label' },
+        { text: 'Name', align: 'left', value: 'name' },
+        { text: 'Object', align: 'left', value: 'object' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
+    };
+  },
+  methods: {
+    create() {
+      this.$router.push({
+        name: 'FilterDesigner',
+        params: { designs: this.designs, context: 'create' },
+      });
+    },
+    read(filter) {
+      this.$router.push({
+        name: 'FilterRead',
+        params: { name: filter.name, obj: filter.object },
+      });
+    },
+    update(design) {
+      this.$router.push({
+        name: 'FilterDesigner',
+        params: { designs: this.designs, design, context: 'update' },
+      });
+    },
+    showDeleteDialog(filter) {
+      this.deleteDialog.filter = filter;
+      this.deleteDialog.show = !this.deleteDialog.show;
+    },
+    trash() {
+      this.filters = _.filter(
+        this.filters,
+        filter => filter.name === this.deleteDialog.filter,
+      );
+      this.$store.dispatch('deleteDesignByName', this.deleteDialog.filter);
+      this.deleteDialog = {
+        show: false,
+        filter: '',
+      };
+    },
+  },
+  async created() {
+    this.designs = await this.$store.dispatch('getAllDesigns');
+    this.filters = _.where(this.designs, { type: 'filter' });
+  },
+};
+</script>

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "taxdollar-a390f",
+  "private_key_id": "0663f6061f2fac65d870e6dfbea0f9445886282f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCytWU2apzU2l3T\nK9ktdZytyeOGtRtkJZtpHVhE+NdpdkZm7qf9B8lo3P0ln4eAGs6oM0Q/UN/ckNXE\n1JAYqFIepH+odCp/6olhnZummVTEwAMTvAJDKP69JBXJyZ5/ZUHkxsGYagG1GvaJ\nr2s5p7hzvHpu0il7zKuiH0+mJaxfFb4G8XAYSBRc5h4pw4Jz4VPkdE6DqnIl38/g\n+55iF9ZfB1JSTAfdPad1WY6CJua1xkJfcDCObswvSmFXeOkuNWWTwYx364lWknTB\nGhNoWFtrNCA50huwCAYi/iY17ldORWGRQZf/AeA2LoXCPXCiYPezkUJA/GlgaLs7\nzELM03/7AgMBAAECggEAHYLcDHDtpi7LWLCAhEPMVFynEJs+wzp8oA6jAXzQYc+Q\nz7WwkxXimkkIGtrtzudeYiNZLVWHKk7WplLt2syNBxdmJ2TLkeUiu7aBujDO8VC+\nEVe2Te3qp0RavsBnRqVrjMKPvMIgtw4VUWZhABvk12P0GfHlvNZvL24ZQpgtD2Rq\nc+A40weZBTnTi81WdWK90tXkFAybDs+O7ZPM1wm9Uk6+8GeYvmPuB5uO873L/4yW\ntbA95It7GPJ7uFkXo/tNhG3qPgcdWOG3g4WEUjk635c6ik05S0RoKipepRGj6vpl\ntNVlTR0eBrtffmU42r/squbuwm00HmFwbpKyVNYOGQKBgQDlhoBRMdxytY3OeVfI\nDPLo36rvCT4703ruEBMlMyHsdpWygJFb7uI93CJkk4FzBSHtUmCFibOqkJGTBbeH\n4gDQ+h+Jl/daGTJsJh6Fq0ZMjJfgzhUtNCBpulNYbXEX9jwhh6NZlhTfvKuOYIU1\ndlUOBPCdO71rD0aSj2YRQyKzuQKBgQDHUlvi2O1sDpOVNNpUflgvEJLBxozUQKmO\nm8BPY9CE9ixz8tUsQbMHxlWO7fRVcIxXLGF8nRGGlzKoYbPx0w+DlkyXTsQxUki8\niflwuIEH0B6dseEDnpPOEdG1QUYY8zCbU4wxOOjDr7TNBanR1u5q7xtrSIs09+5l\nRpluZmCTUwKBgQCfUPbsZQGxlZeyw8NMlsBdKDOL7AyIlkhzyjCf15gqfD14Q4mi\nGHRtn8k3qrNl1SAxjMZ2qphNQj/pn0Q/S35pj9QoO5Vzsp2vN95jxfjr1YLuhd1p\nHQ+Kk8yaSoz/pukiFPYrjuM6Ucl68EBGVbbAHmmtmfPmxhmkTWj5fnIt8QKBgG/2\nLlEdgzf4dCQS3TUrB0Pgrl8UtZSggd3uVTcDHWUiltPGqsHCYdtTKEoyFdZMczig\nYF5MKEUO91CoGRkUcpl6uqkfgIsn6l2lry0HJsuJtzjjaz7KO8I8Niz3bnWjXUFS\ny+P2UKFjOE8WCE8ryR7eEuvPgwqM3iebYaIm9carAoGADic7vzaxTywhJeXQD2SC\nsgo+/0BltNCRUkd5VfgpZ4ddgh8Ql2otDm9T+g5bQrzwKRIg4BDwrvj7qsRVqHcr\ngu4CPqUfyi38Q0GlMa+HwuCMa607kBQqf/gtCmEBmhasBQZeaRMJdeFAGsS1ByXS\n9iKN+7C236+4yD0M9iar254=\n-----END PRIVATE KEY-----\n",
+  "client_email": "taxdollar-2021@taxdollar-a390f.iam.gserviceaccount.com",
+  "client_id": "",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/taxdollar-2021%40taxdollar-a390f.iam.gserviceaccount.com"
+}

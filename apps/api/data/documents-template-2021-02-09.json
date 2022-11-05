@@ -1,0 +1,22 @@
+
+{
+  "description": "T1 Copy Pranita 2019 Client Copy",
+  "documentType": "T1 General",
+  "year": "2019",
+  "fromUserId": "kJuRQOh1Cxc97iPB8jcI1uD73ri2",
+  "path": "https://firebasestorage.googleapis.com/v0/b/taxdollar-a390f.appspot.com/o/YR4yNGP2W7hmDwcjJBipjP1RSls1_1591400160426_T1%20%20Deshpande%2C%20Pranita%202019%20Client%20Copy%20.pdf?alt=media&token=400a286e-4162-4195-8743-936a7a5072d6",
+  "toUserId": "YR4yNGP2W7hmDwcjJBipjP1RSls1",
+  "name": "T1  Deshpande, Pranita 2019 Client Copy .pdf",
+  "timestamp": "2020-06-05T23:36:00.921Z",
+  "legacyId": "ztDZOQCXN2mUbZcOGGKq",
+  "transaction": "outbound"
+},
+{
+"path": "https://firebasestorage.googleapis.com/v0/b/taxdollar-a390f.appspot.com/o/KC8usL6fnyVNe32Fj9Uf42vMKa73_1590266524259_UnitedWay.pdf?alt=media&token=57eba5ac-6a96-4534-ac94-832cf084eedc",
+"fromUserId": "KC8usL6fnyVNe32Fj9Uf42vMKa73",
+"documentName": "UnitedWay.pdf",
+"legacyId": "00uCXI6SLPcRArYv5pOv",
+"timestamp": "2020-05-23T20:42:04.277Z",
+"transaction": "inbound"
+}
+
