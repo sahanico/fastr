@@ -1,0 +1,14 @@
+POST https://www.sahanicorp.com/verification/email
+Content-Type: application/json
+
+{
+  "verificationToken": "abc"
+}
+
+###
+
+GET https://www.sahanicorp.com/verification/email/abca
+Content-Type: application/json
+
+
+###
