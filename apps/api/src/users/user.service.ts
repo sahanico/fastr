@@ -299,9 +299,7 @@ async function signup(params: {
     updatedBy: userId.toString(),
   });
   // save user
-  console.log('user: ', JSON.stringify(user, null, 2));
   await user.save();
-  console.log('done saving user')
 
   const accountRecordId = new mongoose.Types.ObjectId();
   const accountMemberRecordId = new mongoose.Types.ObjectId();
@@ -335,7 +333,6 @@ async function signup(params: {
   });
   await userRecord.save();
 
-  console.log('done saving userRecord')
   const accountRecord = db.Record({
     _id: accountRecordId,
     object: 'account',
@@ -353,7 +350,6 @@ async function signup(params: {
     },
   });
   await accountRecord.save();
-  console.log('done saving accountRecord')
   const accountMemberRecord = db.Record({
     _id: accountMemberRecordId,
     object: 'account_member',
@@ -373,7 +369,6 @@ async function signup(params: {
 
   await accountMemberRecord.save();
 
-  console.log('done saving accountMemberRecord')
   await sendEmail({
     to: params.email, // todo: change email address to const email
     subject: 'Taxdollar - Sign Up Successful',

@@ -13,9 +13,11 @@ export default function validateRequest(
   };
   const { error, value } = schema.validate(req.body, options);
   if (error) {
-    throw `${error.details
-      .map((x: { context: any }) => `${x.context.label} is required`)
-      .join(', ')}`
+    throw Error(
+      `${error.details
+        .map((x: { context: any }) => `${x.context.label} is required`)
+        .join(', ')}`
+    );
   } else {
     req.body = value;
     next();

@@ -11,7 +11,6 @@
   },
   "config": {
     "mongodbMemoryServer": {
-      "debug": "1",
       "version": "4.4.5"
     }
   },
@@ -35,8 +34,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-tsdoc": "^0.2.16",
     "eslint-plugin-typescript": "^0.14.0",
-    "mongodb": "^4.11.0",
-    "mongodb-memory-server": "^8.9.5",
     "nodemon": "^2.0.7",
     "prettier": "^2.7.1",
     "supertest": "^6.3.1",
@@ -49,6 +46,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mongodb-memory-server": "^8.9.5",
+    "@jest/globals": "^29.2.2",
     "@fastr/shared": "*",
     "axios": "^0.21.1",
     "babel-cli": "^6.26.0",

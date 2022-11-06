@@ -1,7 +1,9 @@
 import http from 'http';
+
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
 import app from './app';
-import mongoose from "mongoose";
 
 dotenv.config({ path: './.env' });
 const hostname = process.env.HOST_ENV || 'localhost';

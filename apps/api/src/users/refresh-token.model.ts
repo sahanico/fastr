@@ -23,6 +23,4 @@ schema.set('toJSON', {
 });
 
 // eslint-disable-next-line import/no-unused-modules
-export default mongoose.connection
-  .useDb('fastr')
-  .model('RefreshToken', schema);
+export default mongoose.connection.useDb('fastr').model('RefreshToken', schema);

@@ -1,17 +1,14 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
+
 import config from './utils/config';
 
 export = async function globalSetup() {
-  console.log('------------------------');
   if (config.Memory) {
-    console.log('ping')
     // Config to decided if an mongodb-memory-server instance should be used
     // it's needed in global space, because we don't want to create a new instance every test-suite
     const instance = await MongoMemoryServer.create();
-    console.log('instance: ', instance);
     const uri = instance.getUri();
-    console.log('uri: ', uri);
     (global as any).__MONGOINSTANCE = instance;
     process.env.MONGO_URI = uri.slice(0, uri.lastIndexOf('/'));
   } else {

@@ -1,4 +1,5 @@
 import type { Config } from 'jest';
+// @ts-ignore
 import path from 'path'
 
 const config: Config = {

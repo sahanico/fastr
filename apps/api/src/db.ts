@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 require('dotenv').config();
 
 function isValidId(id: string) {
+  // @ts-ignore
   return mongoose.Types.ObjectId.isValid(id);
 }
 
