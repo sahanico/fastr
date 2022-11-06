@@ -7,7 +7,7 @@
     "kill": "taskkill /F /IM node.exe",
     "start": "nodemon --watch \"src/**\" --ext \"ts,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
     "lint": "tsc --noEmit && ./node_modules/.bin/eslint ./src --ext .js,.ts",
-    "tests": "jest"
+    "test": "jest"
   },
   "config": {
     "mongodbMemoryServer": {

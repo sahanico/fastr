@@ -1,0 +1,43 @@
+name: Default
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  api:
+    name: API / Lint + Test
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: 'Checkout branch'
+        uses: actions/checkout@v3
+      -
+        name: 'Detect API changes'
+        uses: dorny/paths-filter@v2
+        id: api_changes
+        with:
+          filters: |
+            src:
+              - 'apps/api/**'
+      -
+        name: 'Superman - Npm Install with Cache'
+        uses: bahmutov/npm-install@v1
+        if: steps.api_changes.outputs.src == 'true'
+        with:
+          install-command: yarn install --frozen-lockfile
+          working-directory: ./apps/api
+      -
+        name: 'Lint'
+        run: yarn lint
+        working-directory: ./apps/api
+      -
+        name: 'Test'
+        run: yarn test
+        working-directory: ./apps/api
+
