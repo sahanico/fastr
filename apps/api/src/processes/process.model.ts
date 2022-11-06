@@ -16,4 +16,4 @@ processSchema.set('toJSON', {
 
 export type PlatformProcess = InferSchemaType<typeof processSchema>;
 
-connection.useDb('taxdollar').model('Permission', processSchema);
+connection.useDb('fastr').model('Permission', processSchema);

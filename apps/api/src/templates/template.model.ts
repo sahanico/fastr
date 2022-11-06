@@ -14,4 +14,4 @@ templateSchema.set('toJSON', {
 
 export type PlatformTemplate = InferSchemaType<typeof templateSchema>;
 
-export default connection.useDb('taxdollar').model('Template', templateSchema);
+export default connection.useDb('fastr').model('Template', templateSchema);

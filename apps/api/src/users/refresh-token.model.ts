@@ -24,5 +24,5 @@ schema.set('toJSON', {
 
 // eslint-disable-next-line import/no-unused-modules
 export default mongoose.connection
-  .useDb('taxdollar')
+  .useDb('fastr')
   .model('RefreshToken', schema);

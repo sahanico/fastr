@@ -5,10 +5,10 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   verificationToken: { type: String, required: true },
   passwordHash: { type: String, required: true },
-  salt: { type: String, required: true },
-  lastSignedInAt: { type: Date, required: true },
-  legacyPasswordHash: { type: String, required: true },
-  legacySalt: { type: String, required: true },
+  salt: { type: String },
+  lastSignedInAt: { type: Date },
+  legacyPasswordHash: { type: String },
+  legacySalt: { type: String },
   authType: { type: String, required: true },
   createdAt: { type: String, required: true },
   createdBy: { type: String, required: true },
@@ -22,4 +22,4 @@ userSchema.set('toJSON', {
 
 export type PlatformUser = InferSchemaType<typeof userSchema>;
 
-export default connection.useDb('taxdollar').model('User', userSchema);
+export default connection.useDb('fastr').model('User', userSchema);

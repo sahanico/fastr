@@ -196,7 +196,9 @@ class Users {
     next: NextFunction
   ) {
     try {
+      console.log('---------------------------------');
       const response = await userService.signup(req.body);
+      console.log('response: ', response);
       if (response === 'email-exists') {
         res.json({
           success: false,
@@ -216,8 +218,10 @@ class Users {
         });
       }
     } catch (e) {
+      console.log('e: ', e);
       next();
     }
+    console.log('----------------------------------------');
 
     return false;
   }
@@ -237,7 +241,11 @@ class Users {
       confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
       acceptedTerms: Joi.boolean().valid(true).required(),
     });
-    validateRequest(req, next, schema);
+    try {
+      validateRequest(req, next, schema);
+    } catch (error) {
+      res.status(500).send(error);
+    }
   }
 
   static async getApprovalRequests(
