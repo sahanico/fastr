@@ -36,9 +36,9 @@ jobs:
         name: 'Setup Env'
         run: |
           cp .env.example .env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           echo SMTP_GMAIL_ID=${{ secrets.SMTP_GMAIL_ID }} >> .env
           echo SMTP_GMAIL_PASSWORD=${{ secrets.SMTP_GMAIL_PASSWORD }} >> .env
+          echo JWT_SECRET=$(${{ secrets.JWT_SECRET }}) >> .env
           cat .env
         working-directory: ./apps/api
       -
