@@ -23,9 +23,9 @@ describe('Test example', () => {
     sendMailMock.mockClear();
     nodemailer.createTransport.mockClear();
   });
-  it('PUT /api/user/signup', (done) => {
+  it('User Signs up successfully', async () => {
     const email = 'mradul@sahanico.com';
-    request(app)
+    const signupResponse = await request(app)
       .put('/api/user/signup')
       .send({
         firstName: 'Tester',
@@ -37,28 +37,51 @@ describe('Test example', () => {
         confirmPassword: 'password',
         acceptedTerms: true,
       })
-      // .expect(200)
-      .end(async (err) => {
-        const user = await db.User.findOne({ email });
-        const userRecord = await db.Record.findOne({
-          object: 'user',
-          'data.email': email,
-        });
-        const accountMemberRecord = await db.Record.findOne({
-          object: 'account_member',
-          'data.email': email,
-        });
-        const accountRecord = await db.Record.findOne({
-          object: 'account',
-          'data.email': email,
-        });
-        expect(user.email).toEqual(email);
-        expect(userRecord.data.email).toEqual(email);
-        expect(accountMemberRecord.data.email).toEqual(email);
-        expect(accountRecord.data.email).toEqual(email);
-        expect(sendMailMock).toHaveBeenCalled();
-        if (err) return done(err);
-        return done();
+      expect(signupResponse.status).toEqual(200)
+      const user = await db.User.findOne({ email });
+      const userRecord = await db.Record.findOne({
+        object: 'user',
+        'data.email': email,
       });
+      const accountMemberRecord = await db.Record.findOne({
+        object: 'account_member',
+        'data.email': email,
+      });
+      const accountRecord = await db.Record.findOne({
+        object: 'account',
+        'data.email': email,
+      });
+      expect(user.email).toEqual(email);
+      expect(userRecord.data.email).toEqual(email);
+      expect(userRecord.data.emailVerified).toEqual(false);
+      expect(userRecord.data.approved).toEqual(false);
+      expect(userRecord.data.email).toEqual(email);
+      expect(accountMemberRecord.data.email).toEqual(email);
+      expect(accountRecord.data.email).toEqual(email);
+      expect(sendMailMock).toHaveBeenCalled();
   });
+  it('log in successfully', async() => {
+    const email = 'mradul@sahanico.com';
+    const userRecord = await db.Record.findOne({
+      object: 'user',
+      'data.email': email,
+    });
+    await db.Record.updateOne(
+      { _id: userRecord.data.userId },
+      {
+        'data.emailVerified': true,
+        'data.approved': true
+      }
+    )
+    expect(userRecord.data.email).toEqual(email);
+    const loginRequest = await request(app)
+      .post('/api/user/authenticate')
+      .send({
+        email,
+        password: 'password',
+      })
+      expect(loginRequest.status).toEqual(200)
+      expect(loginRequest.body.email).toEqual(email)
+      expect(loginRequest.body.role).toEqual('User')
+  })
 });

@@ -50,7 +50,8 @@ export default (app: Application) => {
     authorize(),
     User.getRefreshTokens as any
   );
-  app.post('/api/user/:id/update-user-info', User.updateUserProfile as any);
+  // todo: remove - no longer using
+  // app.post('/api/user/:id/update-user-info', User.updateUserProfile as any);
 
   app.post(
     '/api/admin/approve-user/:id',
