@@ -18,17 +18,8 @@ jobs:
         name: 'Checkout branch'
         uses: actions/checkout@v3
       -
-        name: 'Detect API changes'
-        uses: dorny/paths-filter@v2
-        id: api_changes
-        with:
-          filters: |
-            src:
-              - 'apps/api/**'
-      -
         name: 'Superman - Npm Install with Cache'
         uses: bahmutov/npm-install@v1
-        if: steps.api_changes.outputs.src == 'true'
         with:
           install-command: yarn install --frozen-lockfile
           working-directory: ./apps/api
