@@ -1,4 +1,4 @@
-import  { describe, expect, it, jest, beforeEach } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
 
 import app from '../app';
@@ -9,22 +9,22 @@ const sendMailMock = jest.fn(); // this will return undefined if .sendMail() is 
 // In order to return a specific value you can use this instead
 // const sendMailMock = jest.fn().mockReturnValue(/* Whatever you would expect as return value */);
 
-jest.mock("nodemailer");
+jest.mock('nodemailer');
 
-const nodemailer = require("nodemailer"); //doesn't work with import. idk why
+const nodemailer = require('nodemailer'); // doesn't work with import. idk why
+
 nodemailer.createTransport.mockReturnValue({
   sendMail: sendMailMock,
-  verify: jest.fn()
+  verify: jest.fn(),
 });
 
-
 describe('Test example', () => {
-  beforeEach( () => {
+  beforeEach(() => {
     sendMailMock.mockClear();
     nodemailer.createTransport.mockClear();
   });
   it('PUT /api/user/signup', (done) => {
-    const email = 'mradul@sahanico.com'
+    const email = 'mradul@sahanico.com';
     request(app)
       .put('/api/user/signup')
       .send({

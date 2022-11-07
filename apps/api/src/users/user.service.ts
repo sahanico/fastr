@@ -369,7 +369,7 @@ async function signup(params: {
 
   await accountMemberRecord.save();
   try {
-    const response = await sendEmail({
+    await sendEmail({
       to: params.email, // todo: change email address to const email
       subject: 'Taxdollar - Sign Up Successful',
       html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
@@ -386,8 +386,8 @@ async function signup(params: {
          </div>\n<div>Mississauga, ON</div>\n<div>L4Z 2Z1</div>\n<div>Phone : 905 502 9300</div>`,
       from: undefined,
     });
-    console.log('response: ', response);
   } catch (e) {
+    // eslint-disable-next-line
     console.log('e: ', e);
   }
 

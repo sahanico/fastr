@@ -14,5 +14,5 @@ export default async function sendEmail({
   const transporter = nodemailer.createTransport(config);
   // eslint-disable-next-line no-console
   await transporter.verify();
-  return await transporter.sendMail({ from, to, subject, html });
+  return transporter.sendMail({ from, to, subject, html });
 }
