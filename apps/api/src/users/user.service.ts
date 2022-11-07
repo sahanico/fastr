@@ -368,11 +368,11 @@ async function signup(params: {
   });
 
   await accountMemberRecord.save();
-
-  await sendEmail({
-    to: params.email, // todo: change email address to const email
-    subject: 'Taxdollar - Sign Up Successful',
-    html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
+  try {
+    const response = await sendEmail({
+      to: params.email, // todo: change email address to const email
+      subject: 'Taxdollar - Sign Up Successful',
+      html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
         in www.taxdollar.ca</p>\n
         </p>\n<p><b>What to expect Next:</b> </p>\n
         </p>\n<p>An admin will approve your newly created account
@@ -384,8 +384,13 @@ async function signup(params: {
         Tax Dollar Team.
          </p>\n<p>--</p>\n<div>TAXDOLLAR INC.</div>\n<div>25 Watline Av Suite GR #1
          </div>\n<div>Mississauga, ON</div>\n<div>L4Z 2Z1</div>\n<div>Phone : 905 502 9300</div>`,
-    from: undefined,
-  });
+      from: undefined,
+    });
+    console.log('response: ', response);
+  } catch (e) {
+    console.log('e: ', e);
+  }
+
   return 'created';
 }
 
