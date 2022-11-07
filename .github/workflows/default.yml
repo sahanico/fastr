@@ -33,13 +33,14 @@ jobs:
           install-command: yarn install --frozen-lockfile
           working-directory: ./apps/api
       -
-        name: 'Setup Env',
+        name: 'Setup Env'
         run: |
           cp .env.example .env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
           echo SMTP_GMAIL_ID=${{ secrets.SMTP_GMAIL_ID }} >> .env
           echo SMTP_GMAIL_PASSWORD=${{ secrets.SMTP_GMAIL_PASSWORD }} >> .env
           cat .env
+        working-directory: ./apps/api
       -
         name: 'Lint'
         run: yarn lint
