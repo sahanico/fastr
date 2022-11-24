@@ -1,0 +1,42 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\mradu\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js playwright test
+
+PATH: 
+  C:\Users\mradu\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\mradu\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\PuTTY;C:\Program Files\Git\cmd;C:\Windows;C:\Windows\System32;C:\Python27;C:\Program Files\Amazon\AWSCLIV2;C:\Program Files\Amazon\AWSSAMCLI\bin;C:\Program Files\nodejs;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files (x86)\AOMEI\AOMEI Backupper\6.9.2;C:\HashiCorp\Vagrant\bin;C:\Users\mradu\scoop\shims;C:\Users\mradu\AppData\Local\Microsoft\WindowsApps;C:\Window;C:\Windows\System32;C:\Python27";C:\Program Files (x86)\Nmap;C:\Users\mradu\AppData\Local\GitHubDesktop\bin;C:\Users\mradu\AppData\Roaming\npm;C:\Users\mradu\AppData\Local\Yarn\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.14.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\mradu\workspaces\sahanico\fastr\apps\e2es\package.json: Unexpected token } in JSON at position 108
+      at JSON.parse (<anonymous>)
+      at C:\Users\mradu\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\mradu\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\mradu\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "e2es",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+      ""
+    },
+    "devDependencies": {
+      "@playwright/test": "^1.27.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -16,4 +16,4 @@ designSchema.set('toJSON', {
 
 export type PlatformDesign = InferSchemaType<typeof designSchema>;
 
-export default connection.useDb('fastr').model('Design', designSchema);
+export default connection.useDb('taxdollar').model('Design', designSchema);

@@ -14,4 +14,4 @@ recordSchema.set('toJSON', {
 export type PlatformRecord = InferSchemaType<typeof recordSchema>;
 
 // eslint-disable-next-line import/no-unused-modules
-export default connection.useDb('fastr').model('Record', recordSchema);
+export default connection.useDb('taxdollar').model('Record', recordSchema);

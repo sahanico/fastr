@@ -9,7 +9,7 @@
             <v-container fill-height>
               <v-layout>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="email"
+                  <v-text-field v-model="email" data-test="email-field"
                                 :rules="[rules.required, rules.email]" label="E-mail"
                                 required></v-text-field>
                 </v-flex>
@@ -18,7 +18,7 @@
             <v-container fill-height>
               <v-layout>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="password"
+                  <v-text-field v-model="password" data-test="password-field"
                                 :append-icon="show1 ? 'visibility_off' : 'visibility'"
                                 :rules="[rules.required, rules.min]"
                                 :type="show1 ? 'text' : 'password'"
@@ -34,7 +34,7 @@
                   <v-dialog v-model="termsDialog" :persistent="!acceptedTerms">
                     <template v-slot:activator="{ on }">
                       <v-btn class="white--text" color="red" type="button"
-                             @click="onSubmit()">Sign in
+                             data-test="sign-in-btn" @click="onSubmit()">Sign in
                       </v-btn>
                     </template>
                     <div>
@@ -172,7 +172,7 @@
               </v-flex>
               <v-flex>
                 <v-card-actions type="button" class="justify-center">
-                  <v-btn @click="signUp()" color="red white--text"
+                  <v-btn @click="signUp()" color="red white--text" data-test="sign-up-btn"
                          text small> Sign Up
                   </v-btn>
                 </v-card-actions>

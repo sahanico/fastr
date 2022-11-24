@@ -1,0 +1,12 @@
+{
+  "name": "e2es",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "yarn playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.27.1"
+  }
+}

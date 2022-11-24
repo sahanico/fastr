@@ -1,79 +1,74 @@
 <template>
   <form ref="sendFileForm" lazy-validation @submit.prevent="onSubmit">
-    <div>
+    <v-dialog v-model="designExistsDialog" width="400">
+      <v-card>
+        <v-card-title class="headline red white--text" dark
+                      primary-title> Design create failed
+        </v-card-title>
+        <v-card-text> A design with this name already exists.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button"
+                 @click="designExistsDialog = false">Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="createDialog" width="400">
+      <v-card>
+        <v-card-title class="headline red white--text" dark
+                      primary-title> Design Saved
+        </v-card-title>
+        <v-card-text> List design has been saved!
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button"
+                 @click="routeToList">Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-container>
+      <v-row>
+        <v-col cols="12" sm="3">
+          <v-text-field v-model="eventDesign.eventLabel" label="Event Label"></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-text-field :disabled="context === 'update'"
+                        v-model="eventDesign.eventName"
+                        label="Event Name"/>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-select v-model="eventDesign.eventType" :items="eventTypeList" label="Type">
 
-      <v-dialog v-model="designExistsDialog" width="400">
-        <v-card>
-          <v-card-title class="headline red white--text" dark
-                        primary-title> Design create failed
-          </v-card-title>
-          <v-card-text> A design with this name already exists.
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="black" text type="button"
-                   @click="designExistsDialog = false">Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="createDialog" width="400">
-        <v-card>
-          <v-card-title class="headline red white--text" dark
-                        primary-title> Design Saved
-          </v-card-title>
-          <v-card-text> List design has been saved!
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="black" text type="button"
-                   @click="routeToList">Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <div>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="3">
-              <v-text-field v-model="eventDesign.eventLabel" label="Event Label"></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-text-field :disabled="context === 'update'"
-                            v-model="eventDesign.eventName"
-                            label="Event Name" />
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-select v-model="eventDesign.eventType" :items="eventTypeList" label="Type">
+          </v-select>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-autocomplete v-model="selectedObject" :items="autocompleteObjects" label="Object">
 
-              </v-select>
-            </v-col>
-            <v-col cols="12" sm="3">
-              <v-autocomplete v-model="selectedObject" :items="autocompleteObject" label="Object">
-
-              </v-autocomplete>
-            </v-col>
-          </v-row>
-        </v-container>
-        <div style="margin: 8px 0px 54px 12px">
-          <v-btn color="red darken-2" dark type="submit">Save</v-btn>
-        </div>
-        <div class="headline red--text pb-5 pt-5" style="text-align: left; margin-left: 8px">
-          Processes
-        </div>
-        <div style="margin: 8px">
-          <v-card elevation="1">
-            <v-autocomplete v-model="selectedProcess" :items="autocompleteProcess" chips dense
-                            label="Select Proccess" outlined return-object small-chips
-                            style="max-width: 150px"
-            >
-            </v-autocomplete>
-          </v-card>
-        </div>
-        <div style="margin: 8px 0px 54px 12px">
-          <v-btn color="red darken-2" dark type="submit">Save</v-btn>
-        </div>
-      </div>
+          </v-autocomplete>
+        </v-col>
+      </v-row>
+    </v-container>
+    <div style="margin: 8px 0px 54px 12px">
+      <v-btn color="red darken-2" dark type="submit">Save</v-btn>
+    </div>
+    <div class="headline red--text pb-5 pt-5" style="text-align: left; margin-left: 8px">
+      Processes
+    </div>
+    <div style="margin: 8px">
+      <v-card elevation="1">
+        <v-autocomplete v-model="selectedProcess" :items="autocompleteProcess" chips dense
+                        label="Select Proccess" outlined return-object small-chips
+                        style="max-width: 150px"
+        >
+        </v-autocomplete>
+      </v-card>
+    </div>
+    <div style="margin: 8px 0px 54px 12px">
+      <v-btn color="red darken-2" dark type="submit">Save</v-btn>
     </div>
   </form>
 </template>
@@ -81,42 +76,9 @@
 <script>
 import { _ } from 'vue-underscore';
 
-
 export default {
-  async created() {
-    this.allObjects = await this.$store.dispatch('getAllObjects');
-    if (this.allObjects) {
-      this.allObjects = _.map(this.allObjects, (object, index) => {
-        this.autocompleteObject.push({ text: `${object.name}`, value: index });
-        return {
-          name: object.name,
-          fields: object.fields,
-          label: object.label,
-          attachment: object.attachment,
-        };
-      });
-    }
 
-    this.processes = await this.$store.dispatch('getDesignsByType', {
-      type: 'process',
-    });
-    if (this.processes) {
-      this.processes = _.each(this.processes, (process, index) => {
-        this.autocompleteProcess.push({ text: `${process.name}`, value: index });
-      });
-    }
-
-    if (this.context === 'update') {
-      this.eventDesign.eventName = this.design.name;
-      this.eventDesign.eventLabel = this.design.label;
-      this.eventDesign.eventType = this.design.meta.type;
-      this.selectedProcess = _.findWhere(this.autocompleteProcess, {
-        text: this.design.meta.process,
-      });
-    }
-  },
-  components: {
-  },
+  components: {},
   props: ['context', 'design'],
   data() {
     return {
@@ -156,6 +118,10 @@ export default {
     };
   },
   computed: {
+    autocompleteObjects() {
+      if (!this.allObjects) return [];
+      return _.map(this.allObjects, object => ({ text: object.label, value: object.name}));
+    },
     fields() {
       if (this.selectedObject.value) {
         return this.allObjects[this.selectedObject.value].fields;
@@ -221,6 +187,37 @@ export default {
     routeToList() {
       this.$router.push('/events/list');
     },
+  },
+  async created() {
+    this.allObjects = await this.$store.dispatch('getAllObjects');
+    if (this.allObjects) {
+      this.allObjects = _.map(this.allObjects, (object, index) => {
+        return {
+          name: object.name,
+          fields: object.fields,
+          label: object.label,
+          attachment: object.attachment,
+        };
+      });
+    }
+
+    this.processes = await this.$store.dispatch('getDesignsByType', {
+      type: 'process',
+    });
+    if (this.processes) {
+      this.processes = _.each(this.processes, (process, index) => {
+        this.autocompleteProcess.push({ text: `${process.name}`, value: index });
+      });
+    }
+
+    if (this.context === 'update') {
+      this.eventDesign.eventName = this.design.name;
+      this.eventDesign.eventLabel = this.design.label;
+      this.eventDesign.eventType = this.design.meta.type;
+      this.selectedProcess = _.findWhere(this.autocompleteProcess, {
+        text: this.design.meta.process,
+      });
+    }
   },
 };
 </script>

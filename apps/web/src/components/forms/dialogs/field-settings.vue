@@ -22,6 +22,14 @@
         <v-row>
           <v-col>Default</v-col>
         </v-row>
+        <v-row v-if="field.value.type === 'date'">
+          <v-col>
+            <v-select
+              v-model="field.value.meta.default.date"
+              :items="['empty', 'today']"
+              label="Default Date" />
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <v-select v-model="field.value.meta.default.type"
@@ -146,6 +154,7 @@ export default {
       }));
     },
     autocompleteObjectFields() {
+      console.log('this.inputObject: ', this.inputObject);
       if (this.inputObject) {
         const object = _.findWhere(this.objects, { name: this.inputObject });
 
@@ -166,7 +175,7 @@ export default {
     'field.value.meta.default.input.name': {
       handler(name) {
         const input = _.findWhere(this.design.meta.inputs, { name });
-        if (input && input.feeder === 'selection') {
+        if (input && input.feeder === 'selection' || input && input.feeder === 'pool') {
           this.inputObject = input.object;
         } else if (input && input.feeder === 'system') {
           if (input.system === 'logged_in_user') {

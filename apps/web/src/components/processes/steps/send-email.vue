@@ -13,7 +13,7 @@
   </v-col>
     <v-col v-if="step.meta.email.to.type === 'variable'"  cols="12" sm="4">
       <v-autocomplete v-model="step.meta.email.to.value.variable.name"
-                      :items="autocompletePool" chips dense
+                      :items="variables" chips dense
                       label="Variable" outlined return-object small-chips>
       </v-autocomplete>
     </v-col>
@@ -29,19 +29,6 @@
   <v-row>
     <v-textarea v-model="step.meta.email.message"  auto-grow label='Message' style="margin: 12px" />
   </v-row>
-  <!-- Buttons -->
-  <v-row class="justify-end">
-    <v-col cols="12" sm="1">
-      <v-btn color="red darken-2" text type="button"
-             @click="cancelStep">Cancel
-      </v-btn>
-    </v-col>
-    <v-col cols="12" sm="1">
-      <v-btn color="red darken-2" text type="button"
-             @click="addStep">Add Step
-      </v-btn>
-    </v-col>
-  </v-row>
 </v-container>
 </template>
 
@@ -50,29 +37,18 @@ import _ from 'underscore';
 
 
 export default {
-  props: ['steps', 'step', 'objects', 'pool'],
+  props: ['steps', 'step', 'objects', 'pool', 'variables'],
   data() {
     return {
       toTypes: ['literal', 'variable'],
     };
   },
   computed: {
-    autocompletePool() {
-      return _.map(this.pool, item => ({
-        text: item.label,
-        value: item.object,
-      }));
-    },
     getObjectFields() {
-      if (!this.step.meta.email.to.value.variable) return [];
-      const object = _.findWhere(this.objects, {
-        name: this.step.meta.email.to.value.variable.name.value,
-      });
-      const fields = [];
-      _.each(object.fields, (field) => {
-        fields.push(field.name);
-      });
-      return fields;
+      if (!this.step.object) return [];
+      const object = _.findWhere(this.objects, { name: this.step.object });
+      if (!object) return [];
+      return _.map(object.fields, field => ({ text: field.label, value: field.name }) )
     },
   },
   methods: {

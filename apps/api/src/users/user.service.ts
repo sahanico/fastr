@@ -328,6 +328,7 @@ async function signup(params: {
       account: accountRecordId.toString(),
       accountMember: accountMemberRecordId.toString(),
       phoneNumber: params.phoneNumber,
+      id: userId.toString(),
     },
     createdAt: date,
   });
@@ -347,6 +348,7 @@ async function signup(params: {
       updatedAt: date,
       createdBy: userId.toString(),
       updatedBy: userId.toString(),
+      id: accountRecordId.toString(),
     },
   });
   await accountRecord.save();
@@ -364,6 +366,7 @@ async function signup(params: {
       createdBy: userId.toString(),
       updatedBy: userId.toString(),
       email: params.email,
+      id: accountMemberRecordId.toString(),
     },
   });
 

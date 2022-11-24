@@ -1,0 +1,1570 @@
+{
+  "userSignup": {
+    "firstName": "ester",
+    "lastName": "Signup",
+    "email": "mradul@sahanico.com",
+    "phoneNumber": "1231231234",
+    "address": "123 Fake Street",
+    "password": "password",
+    "confirmPassword": "password",
+    "acceptedTerms": true
+  },
+  "userLogin": {
+    "email": "mradul@sahanico.com",
+    "password": "password"
+  },
+  "paymentObject": {
+    "name": "payment",
+    "label": "Payment",
+    "description": "payment",
+    "primaryField": "first_name",
+    "templates": [],
+    "fields": [
+      {
+        "label": "Credit Card Expiry",
+        "name": "ssl_exp_date",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "default": true,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "Credit Card Number",
+        "name": "ssl_card_number",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "SSL PIN",
+        "name": "ssl_pin",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "F8BZQ056OVR2DU3GLWXC07FGH2UO3RPN3RHRRMU0Z6VNVLPI4TZI7WYWB6NUSUTR"
+        }
+      },
+      {
+        "label": "SSL Merchant ID",
+        "name": "ssl_merchant_id",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "0022821"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "ssl_amount",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false,
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "SSL USER ID",
+        "name": "ssl_user_id",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "apiuser"
+        }
+      },
+      {
+        "label": "SSL Transaction Type",
+        "name": "ssl_transaction_type",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "ccsale"
+        }
+      },
+      {
+        "label": "SSL CVV2CVC2",
+        "name": "ssl_cvv2cvc2",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "First Name",
+        "name": "first_name",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Last Name",
+        "name": "last_name",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Billing Address",
+        "name": "billing_address",
+        "type": "address",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created At",
+        "name": "createdAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created By",
+        "name": "createdBy",
+        "type": "user",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Updated At",
+        "name": "updatedAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Updated By",
+        "name": "updatedBy",
+        "type": "user",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Invoice No",
+        "name": "invoice_no",
+        "description": "",
+        "type": "number",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Account",
+        "name": "account",
+        "description": "",
+        "type": "object",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": {
+            "text": "account",
+            "value": 1
+          },
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Zip Code",
+        "name": "zip_code",
+        "description": "",
+        "type": "text",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Status",
+        "name": "status",
+        "description": "",
+        "type": "dropdown",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            "approved",
+            "declined",
+            "error"
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Status Message",
+        "name": "status_message",
+        "description": "",
+        "type": "text",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      }
+    ]
+  },
+  "paymentProcess": {
+    "name": "payment_post_create_process",
+    "label": "Payment Post Create",
+    "type": "process",
+    "meta": {
+      "pool": [
+        {
+          "label": "Payment",
+          "name": "payemnt",
+          "feeder": "input",
+          "type": "object",
+          "object": "payment"
+        }
+      ],
+      "steps": [
+        {
+          "label": "Invoice",
+          "name": "invoice",
+          "type": "find_record",
+          "object": "invoice",
+          "meta": {
+            "conditions": {
+              "statements": [
+                {
+                  "lhs": {
+                    "object": "",
+                    "type": "",
+                    "value": "",
+                    "variable": {
+                      "name": "payemnt",
+                      "object": "payment"
+                    },
+                    "field": "invoice_no"
+                  },
+                  "operator": "where",
+                  "rhs": {
+                    "type": "object",
+                    "value": "",
+                    "object": "invoice",
+                    "field": "invoice_no"
+                  }
+                }
+              ],
+              "combinator": ""
+            },
+            "steps": [],
+            "fieldMappings": []
+          }
+        },
+        {
+          "label": "",
+          "name": "",
+          "type": "if",
+          "object": "",
+          "meta": {
+            "conditions": {
+              "statements": [
+                {
+                  "lhs": {
+                    "object": "",
+                    "type": "",
+                    "value": "",
+                    "variable": {
+                      "name": "payemnt",
+                      "object": "payment"
+                    },
+                    "field": "status"
+                  },
+                  "operator": "==",
+                  "rhs": {
+                    "type": "literal",
+                    "value": "",
+                    "object": "",
+                    "field": "",
+                    "literal": "approved"
+                  }
+                }
+              ],
+              "combinator": ""
+            },
+            "steps": [
+              {
+                "label": "Update Invoice",
+                "name": "update_invoice",
+                "type": "update_record",
+                "object": "invoice",
+                "meta": {
+                  "conditions": {
+                    "statements": [],
+                    "combinator": ""
+                  },
+                  "steps": [],
+                  "fields": [
+                    {
+                      "text": "status",
+                      "value": "paid"
+                    }
+                  ],
+                  "variable": {
+                    "text": "Invoice",
+                    "value": {
+                      "name": "invoice",
+                      "object": "invoice"
+                    }
+                  }
+                }
+              },
+              {
+                "label": "Send Approved Email",
+                "name": "send_approved_email",
+                "type": "send_email",
+                "object": "invoice",
+                "meta": {
+                  "conditions": {
+                    "statements": [],
+                    "combinator": ""
+                  },
+                  "steps": [],
+                  "fields": [],
+                  "email": {
+                    "to": {
+                      "value": {
+                        "variable": {
+                          "name": {
+                            "text": "Invoice",
+                            "value": {
+                              "name": "invoice",
+                              "object": "invoice"
+                            }
+                          }
+                        },
+                        "field": {
+                          "text": "Bill to Email",
+                          "value": "bill_to_email"
+                        }
+                      },
+                      "type": "variable"
+                    },
+                    "subject": "Tax Dollar Inc - Credit Card Payment Approved",
+                    "message": "Your credit card payment for Tax Dollar Inc was accepted.\n\nSincerely,\n\nYour Tax Dollar Team"
+                  }
+                }
+              }
+            ],
+            "fieldMappings": []
+          }
+        },
+        {
+          "label": "",
+          "name": "",
+          "type": "if",
+          "object": "",
+          "meta": {
+            "conditions": {
+              "statements": [
+                {
+                  "lhs": {
+                    "object": "",
+                    "type": "",
+                    "value": "",
+                    "variable": {
+                      "name": "payemnt",
+                      "object": "payment"
+                    },
+                    "field": "status"
+                  },
+                  "operator": "==",
+                  "rhs": {
+                    "type": "literal",
+                    "value": "",
+                    "object": "",
+                    "field": "",
+                    "literal": "declined"
+                  }
+                }
+              ],
+              "combinator": ""
+            },
+            "steps": [
+              {
+                "label": "Send Declined Email",
+                "name": "send_declined_email",
+                "type": "send_email",
+                "object": "invoice",
+                "meta": {
+                  "conditions": {
+                    "statements": [],
+                    "combinator": ""
+                  },
+                  "steps": [],
+                  "fields": [],
+                  "email": {
+                    "to": {
+                      "value": {
+                        "variable": {
+                          "name": {
+                            "text": "Invoice",
+                            "value": {
+                              "name": "invoice",
+                              "object": "invoice"
+                            }
+                          }
+                        },
+                        "field": {
+                          "text": "Bill to Email",
+                          "value": "bill_to_email"
+                        }
+                      },
+                      "type": "variable"
+                    },
+                    "subject": "Tax Dollar Inc - Credit Card Payment Declined",
+                    "message": "Your credit card payment for Tax Dollar Inc was rejected. \n\nPlease try again with a different credit card.\n\nSincerely,\n\nYour Tax Dollar Team"
+                  }
+                }
+              }
+            ],
+            "fields": [],
+            "email": {
+              "to": {
+                "value": {
+                  "variable": ""
+                }
+              },
+              "subject": "",
+              "message": ""
+            }
+          }
+        }
+      ]
+    }
+  },
+  "createPaymentEvent": {
+    "name": "Payment Post Create",
+    "label": "Payment Post Create",
+    "type": "event",
+    "meta": {
+      "type": "Create Record",
+      "object": "payment",
+      "conditions": [
+        {
+          "lhs": "",
+          "operator": "",
+          "rhs": {
+            "type": "",
+            "object": "",
+            "value": ""
+          }
+        }
+      ],
+      "process": "payment_post_create_process"
+    }
+  },
+  "invoiceObject": {
+    "fields": [
+      {
+        "label": "Invoice No",
+        "name": "invoice_no",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "autoIncrement": true,
+          "defaultValue": "100"
+        }
+      },
+      {
+        "label": "Invoice Date",
+        "name": "invoice_date",
+        "type": "date",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Balance Due",
+        "name": "balance_due",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Notes",
+        "name": "notes",
+        "type": "textarea",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad",
+          "autoTimestampOnUpdate": "",
+          "textareaRows": 5
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_1_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_2_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_3_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_4_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_5_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_6_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_7_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_8_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_9_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_10_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_11_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Description",
+        "name": "line_item_12_description",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Bill To Address",
+        "name": "bill_to_address_1",
+        "type": "address",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Bill To Name",
+        "name": "bill_to_name",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Bill To Phone",
+        "name": "bill_to_phone",
+        "type": "phone",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_1",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_2",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_3",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_4",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_5",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_6",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_7",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_8",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_9",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_10",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_11",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Quantity",
+        "name": "quantity_12",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_1",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_2",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_3",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_4",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_5",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_6",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_7",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_8",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_9",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_10",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_11",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "amount_12",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Tax",
+        "name": "tax",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad",
+          "computed": "0.13 * (([amount_1] * [quantity_1]) + ([amount_2] * [quantity_2]))"
+        }
+      },
+      {
+        "label": "Subtotal",
+        "name": "subtotal",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad",
+          "computed": "([amount_1] * [quantity_1]) + ([amount_2] * [quantity_2])"
+        }
+      },
+      {
+        "label": "Total",
+        "name": "total",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad",
+          "computed": "1.13 * (([amount_1] * [quantity_1]) + ([amount_2] * [quantity_2]))"
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_1",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_2",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_3",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_4",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_5",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_6",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_7",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_8",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_9",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_10",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_11",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Year",
+        "name": "year_12",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Billing Start Date",
+        "name": "billing_start_date",
+        "type": "date",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Billing End Date",
+        "name": "billing_end_date",
+        "type": "date",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "tax_2",
+        "name": "tax_2",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "tax_3",
+        "name": "tax_3",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_1",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_2",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_3",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_4",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_5",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_6",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_7",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_8",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_9",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_10",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_11",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Price",
+        "name": "price_12",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "Bill to Email",
+        "name": "bill_to_email",
+        "type": "email",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created At",
+        "name": "createdAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created By",
+        "name": "createdBy",
+        "type": "user",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Updated At",
+        "name": "updatedAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Updated By",
+        "name": "updatedBy",
+        "type": "user",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Account",
+        "name": "account",
+        "type": "object",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "object": "account"
+        }
+      },
+      {
+        "label": "Status",
+        "name": "status",
+        "type": "dropdown",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "dropdownItems": [
+            "paid",
+            "unpaid",
+            "void"
+          ]
+        }
+      }
+    ],
+    "name": "invoice",
+    "label": "Invoice",
+    "description": "Account Invoice",
+    "__v": 0,
+    "primaryField": "name",
+    "templates": [
+      {
+        "name": "invoice-template-with-inputs.pdf",
+        "path": "1656227081358_invoice-template-with-inputs.pdf",
+        "fields": [
+          "invoice_no",
+          "invoice_date",
+          "balance_due",
+          "notes",
+          "line_item_1_description",
+          "line_item_2_description",
+          "line_item_3_description",
+          "line_item_4_description",
+          "line_item_8_description",
+          "line_item_7_description",
+          "line_item_6_description",
+          "line_item_5_description",
+          "line_item_12_description",
+          "line_item_11_description",
+          "line_item_10_description",
+          "line_item_9_description",
+          "bill_to_address_1",
+          "bill_to_name",
+          "bill_to_postal_code",
+          "bill_to_address_2",
+          "bill_to_phone",
+          "bill_to_email",
+          "quantity_1",
+          "quantity_2",
+          "quantity_3",
+          "quantity_4",
+          "quantity_5",
+          "quantity_6",
+          "quantity_7",
+          "quantity_8",
+          "quantity_9",
+          "quantity_10",
+          "quantity_11",
+          "quantity_12",
+          "amount_1",
+          "amount_2",
+          "amount_3",
+          "amount_4",
+          "amount_5",
+          "amount_6",
+          "amount_7",
+          "amount_8",
+          "amount_9",
+          "amount_10",
+          "amount_11",
+          "amount_12",
+          "tax",
+          "subtotal",
+          "total",
+          "year_1",
+          "year_2",
+          "year_3",
+          "year_4",
+          "year_8",
+          "year_7",
+          "year_6",
+          "year_5",
+          "year_12",
+          "year_11",
+          "year_10",
+          "year_9"
+        ],
+        "label": "Taxdollar Invoice PDF",
+        "description": ""
+      }
+    ]
+  },
+  "invoiceRecord": {
+    "object": "invoice",
+    "data": {
+      "invoice_date": "2022-11-19",
+      "bill_to_phone": "1 (415) 555-5555",
+      "account": "636fc656a684fbc50e1f0f06",
+      "bill_to_name": "Tester Tester",
+      "bill_to_address_1": "Fake Street",
+      "bill_to_email": "mradul-tester3@sahanico.com",
+      "status": "unpaid",
+      "line_item_1_description": "2",
+      "year_1": "2",
+      "quantity_1": "2",
+      "amount_1": "2",
+      "subtotal": "4",
+      "tax": "2",
+      "total": "1",
+      "invoice_no": 100,
+      "createdBy": "636fc651a684fbc50e1f0efc",
+      "createdAt": "2022-11-19T18:07:19.001Z",
+      "updatedBy": "636fc651a684fbc50e1f0efc",
+      "updatedAt": "2022-11-19T18:07:19.001Z"
+    }
+  },
+  "createRecord": {
+    "object": "payment",
+    "data": {
+      "account": "Tester Tester",
+      "invoice_no": 100,
+      "ssl_amount": "1",
+      "first_name": "2",
+      "last_name": "2",
+      "billing_address": "2",
+      "zip_code": "2",
+      "ssl_card_number": "removed",
+      "ssl_cvv2cvc2": "removed",
+      "ssl_exp_date": "removed",
+      "status": "declined",
+      "status_message": "The Credit Card Number supplied in the authorization request appears to be invalid.",
+      "createdBy": "636fc656a684fbc50e1f0f04",
+      "createdAt": "2022-11-20T20:36:51.204Z",
+      "updatedBy": "636fc656a684fbc50e1f0f04",
+      "updatedAt": "2022-11-20T20:36:51.204Z"
+    }
+  },
+  "createPaymentApprovedRecord": {
+    "object": "payment",
+    "data": {
+      "account": "Tester Tester",
+      "invoice_no": 100,
+      "ssl_amount": "1",
+      "first_name": "2",
+      "last_name": "2",
+      "billing_address": "2",
+      "zip_code": "2",
+      "ssl_card_number": "removed",
+      "ssl_cvv2cvc2": "removed",
+      "ssl_exp_date": "removed",
+      "status": "approved",
+      "status_message": "The Credit Card Number supplied in the authorization request appears to be invalid.",
+      "createdBy": "636fc656a684fbc50e1f0f04",
+      "createdAt": "2022-11-20T20:36:51.204Z",
+      "updatedBy": "636fc656a684fbc50e1f0f04",
+      "updatedAt": "2022-11-20T20:36:51.204Z"
+    }
+  }
+}

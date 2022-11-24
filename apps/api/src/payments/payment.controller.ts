@@ -6,7 +6,7 @@ import paymentService from './payment.service';
 
 class Payments {
   static async getSessionToken(req: PlatformRequest | Request, res: Response) {
-    const token = await paymentService.getSessionToken(req);
+    const token = await paymentService.getSessionToken(req.body);
     if (token) {
       await res.json(token);
     } else {

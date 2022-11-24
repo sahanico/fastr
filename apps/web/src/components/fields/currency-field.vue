@@ -18,8 +18,18 @@ export default {
       this.$emit('input', value);
     },
   },
+  watch: {
+    form: {
+      handler(form) {
+        if (form[this.name] !== this.value) {
+          this.value = form[this.name];
+        }
+      },
+      deep: true,
+    },
+  },
   created() {
-    if (this.context === 'update') {
+    if (this.context === 'update' || this.context === 'create') {
       if (this.form[this.name]) {
         this.value = this.form[this.name];
       }

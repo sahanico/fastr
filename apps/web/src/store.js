@@ -321,22 +321,22 @@ export default new Vuex.Store({
       });
     },
 
-    async updateUserProfile({ state, commit }, payload) {
-      const apicall = await axios({
-        method: 'post',
-        url: `${BASE_API_URL}/user/${state.user.userId}/update-user-info`,
-
-        headers: authHeader(),
-        data: payload,
-        withCredentials: true,
-      });
-      if (apicall.status === 200) {
-        localStorage.setItem('user', JSON.stringify(apicall.data));
-        return true;
-      } else {
-        return false;
-      }
-    },
+    // async updateUserProfile({ state, commit }, payload) {
+    //   const apicall = await axios({
+    //     method: 'post',
+    //     url: `${BASE_API_URL}/user/${state.user.userId}/update-user-info`,
+    //
+    //     headers: authHeader(),
+    //     data: payload,
+    //     withCredentials: true,
+    //   });
+    //   if (apicall.status === 200) {
+    //     localStorage.setItem('user', JSON.stringify(apicall.data));
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // },
 
     async getSentDocuments({ state }) {
       const requestOptions = {
@@ -1000,7 +1000,7 @@ export default new Vuex.Store({
     async createRecord({ state }, payload) {
       const res = await axios({
         method: 'post',
-        url: `${BASE_API_URL}/admin/${state.user.userId}/create-record`,
+        url: `${BASE_API_URL}/${state.user.userId}/create-record`,
         headers: authHeader(),
         data: payload,
         withCredentials: true,

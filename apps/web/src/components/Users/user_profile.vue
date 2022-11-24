@@ -147,7 +147,8 @@ export default {
         userImage: this.user.userImage,
 
       };
-      await this.$store.dispatch('updateUserProfile', formData);
+      // todo: change to update user record
+      // await this.$store.dispatch('updateUserProfile', formData);
       this.successDialog = true;
     },
     async encodeImage(file) {

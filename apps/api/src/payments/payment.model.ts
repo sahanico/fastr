@@ -12,4 +12,4 @@ paymentSchema.set('toJSON', {
 
 export type PlatformPayment = InferSchemaType<typeof paymentSchema>;
 
-export default connection.useDb('fastr').model('Permission', paymentSchema);
+export default connection.useDb('taxdollar').model('Permission', paymentSchema);

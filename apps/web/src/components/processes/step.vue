@@ -114,32 +114,6 @@ export default {
     return {
       emailData: [],
       stepItems: [],
-      types: [
-        {
-          value: 'find_record',
-          text: 'Find Record',
-        },
-        {
-          value: 'create_record',
-          text: 'Create Record',
-        },
-        {
-          value: 'update_record',
-          text: 'Update Record',
-        },
-        {
-          value: 'send_email',
-          text: 'Send Email',
-        },
-        {
-          value: 'api_call',
-          text: 'API Call',
-        },
-        {
-          value: 'create_pdf',
-          text: 'Create PDF',
-        },
-      ],
       combinator: [],
       autocompleteFields: [],
       fieldSelected: '',

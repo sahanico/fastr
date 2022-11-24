@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import axios from 'axios';
-import PDFLIB from 'pdf-lib';
+import { PDFDocument } from 'pdf-lib';
 import _ from 'underscore';
 
 import db from '../db';
@@ -16,35 +16,144 @@ async function getProcessByName(name: any) {
   return false;
 }
 
-async function runFindRecordStep(step: {
-  meta: {
-    findRecord: {
-      object: { text: any };
-      conditions: { lhs: any; equality: any; rhs: any }[];
-    };
-  };
-}) {
-  const objectName = step.meta.findRecord.object.text;
-  const { lhs, equality, rhs } = step.meta.findRecord.conditions[0];
-  let record = null;
-  if (lhs.type === 'field') {
-    if (equality.condition === '==') {
-      if (rhs.type === 'literal') {
-        const key = `data.${lhs.value}`;
-        record = await db.Record.findOne({
-          object: objectName,
-          [key]: rhs.value,
-        });
-      } else if (rhs.type === 'variable') {
-        // todo
+async function evaluateRHS(rhs: {
+  type: string,
+  value: string,
+  object: string,
+  field: string,
+  literal: string,
+}, pool: any[]) {
+  if (rhs.type === 'object') {
+    return db.Record.find({ object: rhs.object })
+  }
+  if (rhs.type === 'literal') {
+    return rhs.literal
+  }
+}
+
+async function evaluateLHS (lhs: {
+  object: string,
+  type: string,
+  value: string,
+  variable: {
+    name: string,
+    object: string,
+  }
+  field: string,
+}, pool: any) {
+
+  const variable = _.find(pool, v => lhs.variable.name === v.name);
+  console.log('variable: ', variable);
+  if (lhs.variable.object === variable.object) {
+    return variable.data[lhs.field]
+  }
+  return false;
+}
+
+async function updateRecord(
+    step: {
+      label: string,
+      name: string,
+      type: string,
+      object: string,
+      meta: {
+        conditions: any,
+        fields: {
+          text: string,
+          value: string,
+        }[],
+        variable: {
+          text: string
+          value: {
+            name: string,
+            object: string,
+          }
+        },
       }
+    },
+    pool: any,
+) {
+  console.log('step: ', step);
+  console.log('pool: ', pool);
+  const variable = pool[step.meta.variable.value.name];
+  // find and update
+  const record = await db.Record.findOne({ _id: variable._id });
+  if (record) {
+    _.each(step.meta.fields, field => {
+      record.data[field.text] = field.value;
+    })
+    console.log('record: ', record);
+    try {
+      const updatedRecord = await db.Record.updateOne({ _id: record._id }, record)
+
+      console.log('updatedRecord: ', updatedRecord);
+      return updatedRecord;
+    } catch (e) {
+      console.log(e);
     }
+  }
+  return false;
+}
+
+async function runFindRecordStep(
+    step: {
+      object: string,
+      meta: {
+        conditions: {
+          statements: {
+            lhs: any; operator: any; rhs: any
+          }[];
+        };
+      };
+    },
+    pool: any,
+) {
+  const { lhs, operator, rhs } = step.meta.conditions.statements[0];
+  let record: any;
+  // lhs = find variable from pool
+  let lhsValue = await evaluateLHS(lhs, pool);
+  let rhsValue = await evaluateRHS(rhs, pool);
+
+  if (operator === 'where') {
+    // expect rhs to be an array of records
+    record = _.find(rhsValue, (record) => {
+      return record.data[rhs.field] === lhsValue;
+    })
   }
 
   if (record) {
     return record;
   }
   return false;
+}
+async function runIfStep(
+    step: {
+      object: string,
+      meta: {
+        steps: any[],
+        conditions: {
+          statements: { lhs: any; operator: any; rhs: any }[]
+        };
+      };
+    },
+    pool: any,
+) {
+  let evaluatedConditions: any;
+  const { lhs, operator, rhs } = step.meta.conditions.statements[0];
+  const lhsValue = await evaluateLHS(lhs, pool);
+  const rhsValue = await evaluateRHS(rhs, pool);
+
+  if (operator === '==') {
+    evaluatedConditions = lhsValue === rhsValue;
+  }
+  let evaluatedIfStep: any[] = [];
+  if (evaluatedConditions === true) {
+    evaluatedIfStep = await runProcess({ meta: { steps: step.meta.steps }  }, pool);
+  }
+  if (evaluatedIfStep.length > 0) {
+    return evaluatedIfStep;
+  }
+  return pool;
 }
 
 async function runCreatePdf(
@@ -66,7 +175,7 @@ async function runCreatePdf(
   const templatePath = path.join('.', 'files', fileName);
 
   const existingPdfBytes = fs.readFileSync(templatePath);
-  const pdfDoc = await PDFLIB.PDFDocument.load(existingPdfBytes);
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
   const form = pdfDoc.getForm();
 
@@ -109,7 +218,7 @@ async function runEmailStep(
       email: { to: { type?: any; value?: any }; subject: any; message: string };
     };
   },
-  pool: { [p: string]: void | { data: { [p: string]: any } } }
+  pool: any
 ) {
   let subject;
   let to;
@@ -117,7 +226,7 @@ async function runEmailStep(
   const { value } = step.meta.email.to;
   if (step.meta.email.to.type === 'variable') {
     // @ts-ignore
-    to = pool[value.variable.name].data[value.variable.field];
+    to = pool[value.variable.name.value.name].data[value.field];
   } else {
     // if it is a literal
     to = value.literal;
@@ -131,12 +240,17 @@ async function runEmailStep(
     message = step.meta.email.message;
   }
   const html = `<p> ${message},</p>`;
-  await sendEmail({
-    to,
-    subject,
-    html,
-    from: undefined,
-  });
+  try{
+    await sendEmail({
+      to,
+      subject,
+      html,
+      from: undefined,
+    });
+    return true;
+  } catch(e) {
+    return false;
+  }
 }
 
 async function runApiStep(
@@ -146,8 +260,7 @@ async function runApiStep(
       headers: string | any[];
     };
   },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _pool: { [p: string]: void | { data: { [p: string]: any } } }
+  pool: any[]
 ) {
   const { url } = step.meta.api;
   const apiType = step.meta.api.type;
@@ -195,28 +308,43 @@ async function runApiStep(
 
 async function runProcess(
   process: { meta: { steps: string | any[] } },
-  pool: { [x: string]: void | { data: { [x: string]: any } } },
-  inputs: any
+  pool: any,
 ) {
+  // convert pool to map
+  let poolMap = pool
+  if (_.isArray(pool)) {
+    poolMap =_.object(_.map(pool, (x) => ([x.name, x])));
+  }
   let result;
   for (let i = 0; i < process.meta.steps.length; i++) {
     const step = process.meta.steps[i];
     if (step.type === 'find_record') {
-      const record = await runFindRecordStep(step);
+      console.log('------------------Find Record------------------');
+      const record = await runFindRecordStep(step, poolMap);
       // eslint-disable-next-line no-param-reassign
-      pool[step.name] = record;
+      poolMap[step.name] = record;
     } else if (step.type === 'send_email') {
-      const email = await runEmailStep(step, pool);
+      console.log('------------------Send Email------------------');
+      const email = await runEmailStep(step, poolMap);
       // eslint-disable-next-line no-param-reassign
-      pool[step.name] = email;
+      poolMap[step.name] = email;
     } else if (step.type === 'api_call') {
-      result = await runApiStep(step, pool);
-    } else if (step.type.value === 'create_pdf') {
+      console.log('------------------Api Call------------------');
+      result = await runApiStep(step, poolMap);
+    } else if (step.type === 'if') {
+      console.log('------------------If Step------------------');
+      result = await runIfStep(step, poolMap);
+    } else if (step.type === 'create_pdf') {
+      console.log('------------------Create Pdf------------------');
       // @ts-ignore
-      result = await runCreatePdf(step, pool, inputs);
+      result = await runCreatePdf(step, poolMap);
+    } else if (step.type === 'update_record') {
+      console.log('------------------Update Record------------------');
+      // @ts-ignore
+      poolMap[step.name] = await updateRecord(step, poolMap);
     }
   }
-  return result;
+  return result || true;
 }
 
 export default {

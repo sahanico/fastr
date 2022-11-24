@@ -1,51 +1,28 @@
 <template>
-  <div id="process">
-    <div>
-    </div>
+  <v-container id="process" :color="'#aaa'">
     <div>
       <div class="headline red--text pb-5 pt-5" style="text-align: center">
-        {{ context === 'create' ? 'Create ' : 'Update '}}Process
+        {{ context === 'create' ? 'Create ' : 'Update ' }}Process
       </div>
       <form @submit.prevent="onSubmit">
-        <div style="margin: 12px">
-          <v-card elevation="1">
-            <v-row style="margin: 20px">
-              <v-col>
-                <v-text-field v-model="design.label" label="Label" required />
-              </v-col>
-              <v-col>
-                <v-text-field :disabled="context === 'update'" v-model="design.name" label="Name"
-                              required />
-              </v-col>
-            </v-row>
-          </v-card>
-          <inputs :design="design" :autocomplete-objects="autocompleteObjects"></inputs>
-          <div class="headline text-xs-center red--text pb-5 pt-5">Steps</div>
-        </div>
-        <div>
+        <v-container>
           <v-row>
-            <v-btn style="margin-left: 28px" color="red darken-2" dark class="mb-2"
-                   @click="addStep()">Add Step
-            </v-btn>
+            <v-col>
+              <v-text-field v-model="design.label" label="Label" required/>
+            </v-col>
+            <v-col>
+              <v-text-field :disabled="context === 'update'" v-model="design.name" label="Name"
+                            required/>
+            </v-col>
           </v-row>
-        </div>
-        <div style="margin:12px">
-          <v-data-table
-            :headers="stepHeader"
-            :items="this.design.meta.steps"
-            class="elevation-1">
-            <template v-slot:item.actions="{ item, index }">
-              <v-icon small @click="editStep(index)"> mdi-pencil</v-icon>
-              <v-icon small @click="deleteStep(index)">mdi-delete</v-icon>
-            </template>
-            <template v-slot:item.number="{ item, index }">
-              {{ index + 1 }}
-            </template>
-            <template v-slot:item.type="{ item, index }">
-              {{ item.type.text }}
-            </template>
-          </v-data-table>
-        </div>
+          <v-row>
+            <pool :pool="design.meta.pool" :objects="objects" :autocomplete-objects="autocompleteObjects"/>
+          </v-row>
+          <v-row>
+            <steps :variables="variables" :steps="design.meta.steps" :pool="design.meta.pool" :objects="objects"
+                   :autocomplete-objects="autocompleteObjects" />
+          </v-row>
+        </v-container>
         <div>
           <v-btn style="margin-left: 12px" color="red darken-2" dark type="submit">Save</v-btn>
         </div>
@@ -57,7 +34,7 @@
           <v-card-title class="headline red white--text" dark
                         primary-title> Design Saved
           </v-card-title>
-          <v-card-text> Form design has been saved!
+          <v-card-text> Process design has been saved!
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -67,30 +44,20 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="stepDialog">
-        <v-card>
-          <div style="width: 100%">
-            <step :steps="design.meta.steps"
-                  :step="selectedStepIndex >= 0 ? design.meta.steps[selectedStepIndex] : undefined"
-                  :context="context" :pool="pool" :objects="objects"
-                  @createStep="createStep" @updateStep="updateStep" @dialog="dialog">
-            </step>
-          </div>
-        </v-card>
-      </v-dialog>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
 import _ from 'underscore';
 import Step from './step';
-import Inputs from '../inputs/inputs';
+import Steps from './steps.vue';
+import Pool from '../pool/pool';
 
 export default {
   components: {
-    Step,
-    Inputs,
+    Steps,
+    Pool,
   },
   props: {
     context: String,
@@ -101,7 +68,7 @@ export default {
         name: '',
         type: 'process',
         meta: {
-          inputs: [],
+          pool: [],
           steps: [],
         },
       }),
@@ -120,17 +87,57 @@ export default {
         { text: 'Actions', value: 'actions', sortable: false, width: '100px' },
       ],
       selectedStepIndex: -1,
+      stepTypes: [
+        {
+          value: 'find_record',
+          text: 'Find Record',
+        },
+        {
+          value: 'create_record',
+          text: 'Create Record',
+        },
+        {
+          value: 'update_record',
+          text: 'Update Record',
+        },
+        {
+          value: 'send_email',
+          text: 'Send Email',
+        },
+        {
+          value: 'api_call',
+          text: 'API Call',
+        },
+        {
+          value: 'create_pdf',
+          text: 'Create PDF',
+        },
+      ],
     };
   },
   computed: {
+    variables() {
+      const poolVariables = _.map(this.design.meta.pool, item => ({
+        text: item.label, value: {
+          name: item.name,
+          object: item.object,
+        }
+      }));
+      console.log('poolVariables: ', poolVariables);
+      const stepVariables = _.map(this.design.meta.steps, step => {
+        if(step.type === 'if') {
+          _.each(step.meta.steps, item =>  ({ text: item.label, value: item.name }));
+        } else {
+          return { text: step.label, value: { name: step.name, object: step.object } }
+        }
+      });
+      return [...poolVariables, ...stepVariables];
+    },
     formTitle() {
       if (this.context === 'update') {
         return 'Update Process';
       }
       return 'New Process';
-    },
-    pool() {
-      return [...this.design.meta.inputs, ...this.design.meta.steps];
     },
     autocompleteObjects() {
       return _.map(this.objects, object => ({

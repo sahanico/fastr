@@ -14,13 +14,14 @@ async function createRecord(record: PlatformRecord) {
       uniqueFields.push(field.name);
     }
   });
-
+  console.log('record: ', record)
   const data = {
     _id: new mongoose.Types.ObjectId(),
     object: record.object,
     data: record.data,
     createdAt: new Date().toISOString(),
   };
+
   // todo: uncomment when done
   const create = await db.Record.create(data);
   if (create) {
@@ -32,8 +33,8 @@ async function createRecord(record: PlatformRecord) {
 async function updateRecord(payload: any, user: { id: any }) {
   const now = new Date().toISOString();
   const pay = { ...payload };
-  pay.data.updated_by = user.id;
-  pay.data.updated_at = now;
+  pay.data.updatedBy = user.id;
+  pay.data.updatedAt = now;
   return db.Record.findOneAndUpdate({ _id: pay.id }, { data: pay.data });
 }
 
@@ -42,6 +43,7 @@ async function getAllRecords() {
 }
 
 async function autoIncrementField(objectName: any, fieldName: string | number) {
+  console.log('`````````````````````````````````````````````````````````````````````')
   const record = await db.Record.find({ object: objectName }).sort({
     [fieldName]: -1,
   });
@@ -53,7 +55,9 @@ async function autoIncrementField(objectName: any, fieldName: string | number) {
       selectedRecord = record[i];
     }
   }
-  return selectedRecord;
+  console.log('selectedVal: ', selectedVal);
+  console.log('selectedRecord: ', selectedRecord);
+  return selectedVal;
 }
 
 async function getRecordsByObject(payload: any) {
@@ -122,6 +126,7 @@ function evaluateRhs(
       return system.account_member.id;
     }
   } else if (operand.type === 'input') {
+    console.log('operand: ', operand);
     return input[operand.field];
   }
   return false;

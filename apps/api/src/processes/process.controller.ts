@@ -4,16 +4,18 @@ import { PlatformRequest } from '../types';
 
 import processService from './process.service';
 
-class Permission {
+class Process {
   static async runProcess(req: PlatformRequest | Request, res: Response) {
+    console.log('----------------------------------------')
     const process = await processService.getProcessByName(req.body.process);
+    console.log('process: ', process);
     if (!process) {
-      return false;
+      res.sendStatus(500)
     }
+    // todo: feed inputs into pool variable of type input
     const result = await processService.runProcess(
       process,
-      req.body.pool,
-      req.body.inputs
+      req.body.pool
     );
 
     if (result) {
@@ -21,8 +23,9 @@ class Permission {
     } else {
       await res.sendStatus(404);
     }
-    return true;
+    console.log('----------------------------------------')
+    res.sendStatus(200);
   }
 }
 
-export default Permission;
+export default Process;

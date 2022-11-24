@@ -1,7 +1,11 @@
 <template>
-  <VuePhoneNumberInput v-model="phoneNumber"  color="red"
-                       no-validator-state :disabled="context === 'read'" :no-country-selector="true"
-                       @input="updateValue(phoneNumber)" :no-example="true"/>
+  <VuePhoneNumberInput v-model="phoneNumber"
+                       color="red"
+                       no-validator-state
+                       :disabled="context === 'read'"
+                       :no-country-selector="true"
+                       @input="updateValue(phoneNumber)"
+                       :no-example="true"/>
 </template>
 
 <script>

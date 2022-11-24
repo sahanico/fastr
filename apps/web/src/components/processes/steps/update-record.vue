@@ -4,38 +4,42 @@
       <v-col>Update Record Step</v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="3">
-        <v-autocomplete v-model="step.meta.object" :items="autocompletePool" chips dense
-                        label="Select Variable" outlined return-object small-chips
+      <v-col>
+        <v-autocomplete v-model="step.meta.variable" :items="variables"
+                        label="Variable" outlined return-object small-chips
         />
       </v-col>
     </v-row>
     <v-row>
       <v-container>
         Field Mappings
-        <v-row v-for="(field, index) in objectFields" :key="index">
+        <v-row v-for="(field, index) in step.meta.fields" :key="index">
           <v-col>
-            <v-text-field :value="field.text" :disabled="true" />
+            <v-autocomplete v-model="field.text" :items="autocompleteFields"/>
           </v-col>
           <v-col>
-            <v-text-field v-model="step.meta.fields[field.value]"
+            <v-text-field v-model="field.value"
                          label="Value" />
           </v-col>
         </v-row>
+        <v-row style="padding-bottom: 50px">
+          <v-col cols="12">
+            <v-btn style="position: absolute; right: 16px" icon
+                   @click="step.meta.fields.push(
+                     {
+                        text: '',
+                        value: '',
+                      }
+                  )">
+              <v-icon class="red--text"> mdi-plus</v-icon>
+            </v-btn>
+            <v-btn style="position: absolute; right: 54px" icon
+                   @click="step.meta.fields.pop()">
+              <v-icon class="red--text"> mdi-minus</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-row>
-    <!-- Buttons -->
-    <v-row class="justify-end">
-      <v-col cols="12" sm="1">
-        <v-btn color="red darken-2" text type="button"
-               @click="cancelStep">Cancel
-        </v-btn>
-      </v-col>
-      <v-col cols="12" sm="1">
-        <v-btn color="red darken-2" text type="button"
-               @click="addStep">Add Step
-        </v-btn>
-      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -44,31 +48,15 @@
 import _ from 'underscore';
 
 export default {
-  props: ['steps', 'step', 'pool', 'objects'],
+  props: ['steps', 'step', 'pool', 'objects', 'variables'],
   computed: {
-    autocompletePool() {
-      return _.map(this.pool, item => ({
+    autocompleteFields() {
+      const object = _.findWhere(this.objects, {name: this.step.object });
+      if (!object) return [];
+      return _.map(object.fields, item => ({
         text: item.label,
-        value: item.object,
+        value: item.name,
       }));
-    },
-    objectFields() {
-      if (!this.step.meta.object) return [];
-      const object = _.findWhere(this.objects, { name: this.step.meta.object.value });
-      if (!object && !object.fields) return [];
-      return _.map(object.fields, field => ({
-        text: field.label,
-        value: field.name,
-      }));
-    },
-  },
-  methods: {
-    addStep() {
-      this.$emit('addStep', this.step);
-      this.cancelStep();
-    },
-    cancelStep() {
-      this.$emit('cancelStep');
     },
   },
 };

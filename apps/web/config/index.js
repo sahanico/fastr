@@ -43,7 +43,7 @@ module.exports = {
 
     cssSourceMap: true,
     compress: true,
-    public: 'www.sahanicorp.com'
+    public: 'localhost'
   },
 
   build: {

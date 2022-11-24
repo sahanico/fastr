@@ -142,7 +142,7 @@ export default {
         { text: 'Approved', align: 'left', value: 'approved' },
         { text: 'Accepted Terms', align: 'left', value: 'acceptedTerms' },
         { text: 'Last Signed In', align: 'left', value: 'lastSignedInAt' },
-        { text: 'Created At', align: 'left', value: 'created_at' },
+        { text: 'Created At', align: 'left', value: 'createdAt' },
       ],
       permissionHeaders: [
         { text: 'Name', value: 'name' },

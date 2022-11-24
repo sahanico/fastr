@@ -109,18 +109,24 @@ export default {
     RequestRead,
     CalendarRead,
   },
-  props: ['design', 'input', 'inputId'],
+  props: ['input', 'inputId', 'name', 'getPageLabel', 'designTest'],
   data() {
     return {
       layout: [],
       column: 0,
       height: 0,
+      design: {},
     };
   },
   computed: {
     getDesignName(item) {
       return item.value.name;
     },
+  },
+  async created() {
+    this.design = await this.$store.dispatch('getDesignByName', {
+      name: this.name,
+    });
   },
 };
 </script>

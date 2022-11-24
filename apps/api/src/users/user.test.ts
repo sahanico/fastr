@@ -18,7 +18,7 @@ nodemailer.createTransport.mockReturnValue({
   verify: jest.fn(),
 });
 
-describe('Test example', () => {
+describe('User tests', () => {
   beforeEach(() => {
     sendMailMock.mockClear();
     nodemailer.createTransport.mockClear();
@@ -74,14 +74,14 @@ describe('Test example', () => {
       }
     )
     expect(userRecord.data.email).toEqual(email);
-    const loginRequest = await request(app)
+    const loginResponse = await request(app)
       .post('/api/user/authenticate')
       .send({
         email,
         password: 'password',
       })
-      expect(loginRequest.status).toEqual(200)
-      expect(loginRequest.body.email).toEqual(email)
-      expect(loginRequest.body.role).toEqual('User')
+      expect(loginResponse.status).toEqual(200)
+      expect(loginResponse.body.email).toEqual(email)
+      expect(loginResponse.body.role).toEqual('User')
   })
 });

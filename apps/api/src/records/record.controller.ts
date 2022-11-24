@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 import _ from 'underscore';
 
 import designService from '../designs/design.service';
 import eventService from '../events/event.service';
 import objectService from '../objectDictionary/objectDictionary.service';
-import { PlatformRequest } from '../types';
+import {PlatformRequest} from '../types';
 
 import recordService from './record.service';
 
@@ -18,12 +18,14 @@ class Record {
    */
   static async createRecord(req: PlatformRequest | Request, res: Response) {
     // create base record without objectArray fields
+    console.log('-----------------------------------------');
     const { data } = req.body;
+    console.log('data: ', data);
     const object = await objectService.getObjectByName({
       name: req.body.object,
     });
     const autoIncrementFields = {};
-    if (object.fields) {
+    if (object && object.fields) {
       _.each(object.fields, (field) => {
         // if (field.type === 'object_array') {
         //   objectArrayFields[field.name] = data[field.name];
@@ -35,43 +37,42 @@ class Record {
         }
       });
     }
+    console.log('autoIncrementFields: ', autoIncrementFields)
     const now = new Date().toISOString();
     // @ts-ignore
-    data.created_by = req.user.id;
-    data.created_at = now;
+    data.createdBy = req.user.id;
+    data.createdAt = now;
     // @ts-ignore
-    data.updated_by = req.user.id;
-    data.updated_at = now;
+    data.updatedBy = req.user.id;
+    data.updatedAt = now;
 
-    _.each(_.keys(autoIncrementFields), async (key) => {
-      const largestValuedRecord = await recordService.autoIncrementField(
+    for (const key of _.keys(autoIncrementFields)) {
+      const val = await recordService.autoIncrementField(
         req.body.object,
         key
       );
-      if (
-        largestValuedRecord &&
+      if (val) {
         // @ts-ignore
-        largestValuedRecord.data &&
-        // @ts-ignore
-        largestValuedRecord.data[key]
-      ) {
-        // @ts-ignore
-        data[key] = parseInt(largestValuedRecord.data[key], 10) + 1;
+        data[key] = parseInt(val, 10) + 1;
       } else {
         data[key] = 100;
       }
-    });
+      console.log('key: ', key);
+      console.log('data[key]: ', data[key]);
+    }
+    console.log('data: ', data);
     const record = await recordService.createRecord({
       object: req.body.object,
       data,
     });
     if (!record) await res.sendStatus(400);
-    await eventService.createRecord(record);
-    await res.json(record);
+    await eventService.postCreateRecord(record);
+    return res.json(record);
+
   }
 
   static async updateRecord(req: PlatformRequest | Request, res: Response) {
-    const payload = { ...req.body };
+    const payload = {...req.body};
     // @ts-ignore
     const record = await recordService.updateRecord(payload, req.user);
     if (record) {

@@ -3,7 +3,7 @@
     <v-autocomplete v-model="selected" :items="autocomplete" chips dense :value="value"
                     :disabled="context === 'read' || disabled" color="red"
                     @input="updateValue(selected)"
-                    :label="label" outlined small-chips return-object>
+                    :label="`${object.label}: ${selected.text || labelValue}`" outlined small-chips return-object>
     </v-autocomplete>
   </div>
 </template>
@@ -16,13 +16,14 @@ export default {
   components: {
     CreateInlistForm,
   },
-  props: ['object', 'context', 'rootFormFieldIndex', 'label', 'disabled', 'form', 'name'],
+  props: ['object', 'context', 'rootFormFieldIndex', 'label', 'disabled', 'form', 'name', 'pool'],
   data() {
     return {
       allRecords: [],
       autocomplete: [],
       selected: {},
       value: '',
+      labelValue: ''
     };
   },
   computed: {
@@ -56,51 +57,52 @@ export default {
       this.$emit('input', this.selectedValue);
     },
   },
-  // watch: {
-  //   form: {
-  //     handler(form) {
-  //       // if (form[this.name] !== this.value) {
-  //       //   this.value = form[this.name];
-  //       // }
-  //       // const height = this.$refs.minH.clientHeight;
-  //       // if (height !== 0) this.$emit('updateHeight', height, this.rootFormFieldIndex);
-  //       // return height;
-  //       if (form[this.name] !== this.selected) {
-  //         _.each(this.allRecords, (record, idx) => {
-  //           if (record.data.name === this.form[this.name]) {
-  //             this.selected = {
-  //               text: record.data.name,
-  //               value: idx,
-  //             };
-  //           }
-  //         });
-  //         // this.value = form[this.name];
-  //       }
-  //     },
-  //     deep: true,
-  //   },
-  // },
+  watch: {
+    form: {
+      handler(form) {
+        // if (form[this.name] !== this.value) {
+        //   this.value = form[this.name];
+        // }
+        // const height = this.$refs.minH.clientHeight;
+        // if (height !== 0) this.$emit('updateHeight', height, this.rootFormFieldIndex);
+        // return height;
+        if (form[this.name] !== this.selected) {
+          console.log('this.pool:', this.pool);
+          if (this.pool && this.pool[this.name] && this.pool[this.name].data) {
+            this.selected = {
+              text: this.pool[this.name].data.name,
+              value: this.pool[this.name].data.id,
+            };
+          }
+
+          // this.value = form[this.name];
+        }
+      },
+      deep: true,
+    },
+  },
   async created() {
+    console.log('this.form[this.name]', this.form[this.name]);
     if (this.context === 'create' || this.context === 'update') {
       if (typeof this.object.meta.object === 'string') {
         this.allRecords = await this.$store.dispatch('getRecordsByObject', {
           object: this.object.meta.object,
           // object: this.object.meta.object,
         });
-        this.label = `Select ${this.object.meta.object}`;
+        this.labelValue = `Select ${this.object.meta.object}`;
       } else {
         this.allRecords = await this.$store.dispatch('getRecordsByObject', {
           object: this.object.meta.object.text,
           // object: this.object.meta.object,
         });
-        this.label = `Select ${this.object.meta.object.text}`;
+        this.labelValue = `Select ${this.object.meta.object.text}`;
         // this.label = `Select ${this.object.meta.object}`;
       }
     } else {
       this.allRecords = await this.$store.dispatch('getRecordsByObject', {
         object: this.object.text,
       });
-      this.label = `Select ${this.object.text}`;
+      this.labelValue = `Select ${this.object.text}`;
     }
     if (this.allRecords) {
       _.each(this.allRecords, (record, index) => {
@@ -129,7 +131,30 @@ export default {
       // eslint-disable-next-line no-underscore-dangle
       this.$emit('input', record._id);
     }
-    // }
+    if (def && def.type === 'input') {
+      if (def.input.name === 'logged_in_account') {
+        const id = this.$store.state.system.account.id
+        const record = _.findWhere(this.allRecords, { id });
+        this.selected = {
+          text: record.data.name,
+          // eslint-disable-next-line no-underscore-dangle
+          value: record._id,
+        };
+        // eslint-disable-next-line no-underscore-dangle
+        this.$emit('input', record._id);
+      }
+      if (def.input.name === 'logged_in_account_member') {
+        const id = this.$store.state.system.account_member.id
+        const record = _.findWhere(this.allRecords, { id });
+        this.selected = {
+          text: record.data.full_name,
+          // eslint-disable-next-line no-underscore-dangle
+          value: record._id,
+        };
+        // eslint-disable-next-line no-underscore-dangle
+        this.$emit('input', record._id);
+      }
+    }
   },
 };
 </script>

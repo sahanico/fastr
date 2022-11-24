@@ -1,13 +1,13 @@
 <template>
-  <div style="margin: 20px" v-if="list">
+  <div v-if="list">
     <div v-if="list.meta">
       <div class="headline red--text pt-2 mt-2 pb-2 mb-2">
-        {{ list ? list.label : '' }}
+        {{ list.meta.showLabel ? list.label : '' }}
       </div>
       <v-container>
         <v-row>
-          <v-col cols="1" offset="10">
-            <div align="right" v-if="list.meta.import">
+          <v-col cols="1" offset="10" v-if="list.meta.import">
+            <div align="right" >
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="red darken-2" dark v-bind="attrs" v-on="on">
@@ -149,9 +149,9 @@
                   {{ attachment.name }}
                 </a>
               </template>
-              <template v-slot:[`item.created_by`]="{ item, index }">
+              <template v-slot:[`item.createdBy`]="{ item, index }">
                 <div>
-                  {{ item.created_by }}
+                  {{ item.createdBy }}
                 </div>
               </template>
 
@@ -262,7 +262,7 @@ export default {
       });
       await this.$router.push({
         name: 'DashboardRead',
-        params: { design, name: this.list.meta.create },
+        params: { design, name: this.list.meta.create, input: this.input },
       });
       this.$forceUpdate();
     },

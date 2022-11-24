@@ -10,29 +10,30 @@
             <form ref="signUpForm" @submit.prevent="onSubmit">
               <div>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="firstName" :rules="[rules.required]"
+                  <v-text-field v-model="firstName" :rules="[rules.required]" data-text="first-name-field"
                                 class="mb-3" label="First Name" required>
                   </v-text-field>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="lastName" :rules="[rules.required]"
+                  <v-text-field v-model="lastName" :rules="[rules.required]" data-text="last-name-field"
                                 class="mb-3" label="Last Name" required>
                   </v-text-field>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <VuePhoneNumberInput v-model="phoneNumber" label="Phone Number"
+                  <VuePhoneNumberInput v-model="phoneNumber" label="Phone Number" data-text="phone-field"
                                        color="red" no-validator-state required
                                        :no-country-selector="true" :no-example="true"/>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <address-field v-model="address" class="mb-3" label="Address" :required="true" />
+                  <address-field v-model="address" class="mb-3" label="Address" :required="true"
+                                 data-text="address-field"/>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="email" :rules="[rules.required, rules.email]"
+                  <v-text-field v-model="email" :rules="[rules.required, rules.email]" data-text="email-field"
                                 class="mb-3" label="E-mail" required></v-text-field>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="password"
+                  <v-text-field v-model="password" data-text="password-field"
                                 :append-icon="show1 ? 'visibility_off' : 'visibility'"
                                 :rules="[rules.required, rules.min]"
                                 :type="show1 ? 'text' : 'password'"
@@ -42,7 +43,7 @@
                   ></v-text-field>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
-                  <v-text-field v-model="confirmPassword"
+                  <v-text-field v-model="confirmPassword" data-text="confirm-password-field"
                                 :append-icon="show2 ? 'visibility_off' : 'visibility'"
                                 :rules="[rules.required, rules.min]"
                                 :type="show2 ? 'text' : 'password'"
@@ -54,7 +55,7 @@
                     <v-dialog v-model="acceptedTerms">
                       <template v-slot:activator="{ on, attrs }">
                         <v-row>
-                          <v-checkbox v-model="checkbox"
+                          <v-checkbox v-model="checkbox" data-text="accept-terms-checkbox"
                                       :rules="[rules.required]"
                                       color="red" required></v-checkbox>
                           <a style="padding-top: 20px;" href="javascript:void(0)" v-bind="attrs"

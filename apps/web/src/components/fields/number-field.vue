@@ -33,7 +33,7 @@ export default {
     // if (this.form.default === true) {
     //   this.value = this.form.meta.default;
     // }
-    if (this.context === 'update') {
+    if (this.context === 'update' || this.context === 'create') {
       if (this.form[this.name]) {
         this.value = this.form[this.name];
       }

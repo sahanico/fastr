@@ -1,0 +1,379 @@
+{
+  "userSignup": {
+    "firstName": "ester",
+    "lastName": "Signup",
+    "email": "mradul@sahanico.com",
+    "phoneNumber": "1231231234",
+    "address": "123 Fake Street",
+    "password": "password",
+    "confirmPassword": "password",
+    "acceptedTerms": true
+  },
+  "userLogin": {
+    "email": "mradul@sahanico.com",
+    "password": "password"
+  },
+  "paymentObject": {
+    "name": "payment",
+    "label": "Payment",
+    "description": "payment",
+    "primaryField": "first_name",
+    "templates": [],
+    "fields": [
+      {
+        "label": "Credit Card Expiry",
+        "name": "ssl_exp_date",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "default": true,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "Credit Card Number",
+        "name": "ssl_card_number",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "SSL PIN",
+        "name": "ssl_pin",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "F8BZQ056OVR2DU3GLWXC07FGH2UO3RPN3RHRRMU0Z6VNVLPI4TZI7WYWB6NUSUTR"
+        }
+      },
+      {
+        "label": "SSL Merchant ID",
+        "name": "ssl_merchant_id",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "0022821"
+        }
+      },
+      {
+        "label": "Amount",
+        "name": "ssl_amount",
+        "type": "currency",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false,
+          "currency": "cad"
+        }
+      },
+      {
+        "label": "SSL USER ID",
+        "name": "ssl_user_id",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "apiuser"
+        }
+      },
+      {
+        "label": "SSL Transaction Type",
+        "name": "ssl_transaction_type",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "ccsale"
+        }
+      },
+      {
+        "label": "SSL CVV2CVC2",
+        "name": "ssl_cvv2cvc2",
+        "type": "number",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": "",
+          "autoIncrement": false
+        }
+      },
+      {
+        "label": "First Name",
+        "name": "first_name",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Last Name",
+        "name": "last_name",
+        "type": "text",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Billing Address",
+        "name": "billing_address",
+        "type": "address",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created At",
+        "name": "createdAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Created By",
+        "name": "createdBy",
+        "type": "user",
+        "description": "",
+        "unique": false,
+        "meta": {
+          "defaultValue": ""
+        }
+      },
+      {
+        "label": "Updated At",
+        "name": "updatedAt",
+        "type": "date_time",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Updated By",
+        "name": "updatedBy",
+        "type": "user",
+        "description": "",
+        "unique": false
+      },
+      {
+        "label": "Invoice No",
+        "name": "invoice_no",
+        "description": "",
+        "type": "number",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Account",
+        "name": "account",
+        "description": "",
+        "type": "object",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": {
+            "text": "account",
+            "value": 1
+          },
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Zip Code",
+        "name": "zip_code",
+        "description": "",
+        "type": "text",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Status",
+        "name": "status",
+        "description": "",
+        "type": "dropdown",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            "approved",
+            "declined",
+            "error"
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      },
+      {
+        "label": "Status Message",
+        "name": "status_message",
+        "description": "",
+        "type": "text",
+        "unique": false,
+        "default": false,
+        "meta": {
+          "default": "",
+          "image": "",
+          "textareaRows": 5,
+          "displayText": "",
+          "radioItems": [
+            ""
+          ],
+          "dropdownItems": [
+            ""
+          ],
+          "dropdownArrayItems": [
+            ""
+          ],
+          "object": "",
+          "objectArray": [],
+          "user": "",
+          "autoIncrement": false,
+          "date": "",
+          "currency": "",
+          "computed": "",
+          "checkbox": true,
+          "signature": "",
+          "time": "",
+          "dateTime": "",
+          "email": "",
+          "phone": "",
+          "percent": "",
+          "address": "",
+          "attachment": [],
+          "design": [],
+          "parametric": ""
+        }
+      }
+    ]
+  }
+}

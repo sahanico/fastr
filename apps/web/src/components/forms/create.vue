@@ -14,7 +14,7 @@
     <v-dialog v-model="inputsDialog" width="400">
       <v-card>
         <v-card-title class="headline red white--text" dark
-                      primary-title> Select inputs
+                      primary-title> Select a value
         </v-card-title>
         <v-container v-if="design.meta && design.meta.inputs && design.meta.inputs.length > 0">
           <v-row v-for="(item, index) in design.meta.inputs" :key="index">
@@ -51,7 +51,7 @@
                            :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
                   <fields :name="`form-field-${item.value.name}`" v-model="form[item.value.name]"
                           :form="form" :design="design" :root-form-field-index="index"
-                          :item="item" @updateHeight="updateHeight"
+                          :item="item" @updateHeight="updateHeight" :pool="pool"
                           context="create"></fields>
                 </grid-item>
               </grid-layout>
@@ -61,7 +61,11 @@
         <br />
         <br />
         <v-btn :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
-               color="red darken-2" dark type="submit">Create
+               color="red darken-2" dark type="submit" :disabled="processPaymentProgress">
+          <v-progress-circular indeterminate color="red" v-if="processPaymentProgress" />
+          <div v-if="!processPaymentProgress">
+            Create
+          </div>
         </v-btn>
       </form>
     </v-card>
@@ -80,7 +84,7 @@ export default {
     VueSignaturePad,
     Fields,
   },
-  props: ['formName'],
+  props: ['formName', 'input', ' pool'],
   data() {
     return {
       pool: {},
@@ -97,17 +101,66 @@ export default {
       createdDialog: false,
       inputsDialog: false,
       object: null,
+      processPaymentProgress: false,
       callback: {
-        onError(error) {
+        onError: async (error) => {
+          this.processPaymentProgress = false
           // eslint-disable-next-line no-console
-          console.log('error', error);
+          const record = {
+            object: this.design.object,
+            data: {
+              ...this.form,
+              ssl_card_number: 'removed',
+              ssl_exp_date: 'removed',
+              ssl_cvv2cvc2: 'removed',
+              status: 'error',
+              status_message: JSON.stringify(error),
+            },
+          };
+          // todo : get response from backend, if unique field data already exists, show dialog
+
+          await this.$store.dispatch('createRecord', record);
+          alert(error)
         },
-        onDeclined(response) {
+        onDeclined: async (response) => {
           // eslint-disable-next-line no-console
-          console.log('declined', JSON.stringify(response));
+          this.processPaymentProgress = false
+          const record = {
+            object: this.design.object,
+            data: {
+              ...this.form,
+              ssl_card_number: 'removed',
+              ssl_exp_date: 'removed',
+              ssl_cvv2cvc2: 'removed',
+              status: 'declined',
+              status_message: response.errorMessage,
+            },
+          };
+          // todo : get response from backend, if unique field data already exists, show dialog
+
+          await this.$store.dispatch('createRecord', record);
+
+          alert(response.errorMessage)
         },
-        onApproval(response) {
+        onApproval: async (response) => {
+          this.processPaymentProgress = false
           // eslint-disable-next-line no-console
+          const record = {
+            object: this.design.object,
+            data: {
+              ...this.form,
+              ssl_card_number: 'removed',
+              ssl_exp_date: 'removed',
+              ssl_cvv2cvc2: 'removed',
+              status: 'approved',
+              status_message: 'credit card payment approved'
+            },
+          };
+          // todo : get response from backend, if unique field data already exists, show dialog
+
+          const createRecord = await this.$store.dispatch('createRecord', record);
+          this.$emit('submitForm', createRecord.id);
+          this.form = {};
           console.log('approval', JSON.stringify(response));
         },
       },
@@ -137,25 +190,39 @@ export default {
         //   [`data.${object.primaryField}`]: this.pool[key],
         let record;
         _.each(objectRecords, (rec) => {
-          if (rec.data[object.primaryField] === this.pool[key]) record = rec;
+          if (rec.data.id === this.pool[key].data.id) {
+            record = rec;
+          }
         });
         // });
         _.each(this.design.meta.layout, (item) => {
-          if (item.value.meta && item.value.meta.default && item.value.meta.default.type === 'input') {
-            if (item.value.meta.default.input && item.value.meta.default.input.name === key) {
-              if (record.data[item.value.meta.default.input.field]) {
-                this.form[item.value.name] = record.data[item.value.meta.default.input.field];
+          console.log('ping');
+          const def = item.value.meta.default;
+          if (def && def.type === 'input') {
+            console.log('def: ', def)
+            if (def.input.field && def.input.name && this.pool[def.input.name]) {
+              const record = this.pool[def.input.name]
+              this.form[item.value.name] = record.data.id;
+              // eslint-disable-next-line no-underscore-dangle
+            }
+            if (def.input && def.input.name === key) {
+              if (record.data[def.input.field]) {
+                this.form[item.value.name] = record.data[def.input.field];
               }
             }
           }
         });
       });
+      console.log('this.form: ', this.form)
       this.inputsDialog = false;
     },
     getObjectRecords(name) {
       const object = _.findWhere(this.objects, { name });
       const records = _.where(this.records, { object: name });
-      return _.map(records, record => record.data[object.primaryField]);
+      return _.map(records, record => ({
+        text: record.data[object.primaryField],
+        value: record
+      }));
     },
     async onSubmit() {
       const defaultValues = {};
@@ -178,62 +245,68 @@ export default {
           }
         }
       });
-      const record = {
-        object: this.design.object,
-        data: this.form,
-      };
-      // todo : get response from backend, if unique field data already exists, show dialog
-
-      const createRecord = await this.$store.dispatch('createRecord', record);
-
-      if (record.data.attachments) {
-        if (createRecord) {
-          const fd = new FormData();
-          const paths = [];
-          Array.prototype.forEach.call(record.data.attachments, (file) => {
-            fd.append(file.name, file);
-            paths.push(`/${file.name}`);
-          });
-          const fileData = {
-            recordId: createRecord.id,
-            path: paths,
-          };
-          fd.append('record', fileData.recordId);
-          fd.append('path', fileData.path);
-          await this.$store.dispatch('uploadAttachment', fd);
-        }
-      }
-      this.createdDialog = true;
       if (this.design.object === 'payment') {
-        const paymentData = {
-          ssl_transaction_type: 'ccsale',
-          ssl_merchant_id: '2150532',
-          ssl_user_id: 'taxdollarapi',
-          ssl_pin: 'YT9OUUYZ6GWWVRSR5K3BQNX6U1FW4HUWR4H2QHZ8TYNKGV0NG9B3MMETVOKZBSWY',
-          ssl_amount: 1.01,
-        };
-        const sessionToken = await this.$store.dispatch('postSessionToken', paymentData);
-
-        const paymentData2 = {
-          ssl_txn_auth_token: sessionToken,
-          ssl_card_number: '4538263839347025',
-          ssl_exp_date: '0424',
-          ssl_cvv2cvc2: '717',
-          ssl_get_token: 'Y',
-          ssl_add_token: 'Y',
-          ssl_first_name: 'Mradul',
-          ssl_last_name: 'Sahani',
-          ssl_merchant_txn_id: '2150532',
-          ssl_avs_address: '129 Upper Humber Drive',
-          ssl_avs_zip: 'M9W 7B7',
+        this.processPayment();
+      } else {
+        console.log('this.form', this.form);
+        const record = {
+          object: this.design.object,
+          data: this.form,
         };
 
-        // const transaction = await this.$store.dispatch('postHostedPaymentPage', paymentData);
-        // eslint-disable-next-line no-undef
-        ConvergeEmbeddedPayment.pay(paymentData2, this.callback);
+        if (record && record.data.attachments) {
+          if (createRecord) {
+            const fd = new FormData();
+            const paths = [];
+            Array.prototype.forEach.call(record.data.attachments, (file) => {
+              fd.append(file.name, file);
+              paths.push(`/${file.name}`);
+            });
+            const fileData = {
+              recordId: createRecord.id,
+              path: paths,
+            };
+            fd.append('record', fileData.recordId);
+            fd.append('path', fileData.path);
+            await this.$store.dispatch('uploadAttachment', fd);
+          }
+        }
+        this.createdDialog = true;
+        // todo : get response from backend, if unique field data already exists, show dialog
+
+        const createRecord = await this.$store.dispatch('createRecord', record);
+        this.$emit('submitForm', createRecord.id);
+        this.form = {};
       }
-      this.$emit('submitForm', createRecord.id);
-      this.form = {};
+    },
+    async processPayment() {
+      this.processPaymentProgress = true;
+      const paymentData = {
+        ssl_transaction_type: 'ccsale',
+        ssl_merchant_id: '2150532',
+        ssl_user_id: 'taxdollarapi',
+        ssl_pin: 'YT9OUUYZ6GWWVRSR5K3BQNX6U1FW4HUWR4H2QHZ8TYNKGV0NG9B3MMETVOKZBSWY',
+        ssl_amount: this.form.ssl_amount,
+      };
+      const sessionToken = await this.$store.dispatch('postSessionToken', paymentData);
+
+      const paymentData2 = {
+        ssl_txn_auth_token: sessionToken,
+        ssl_card_number: this.form.ssl_card_number,
+        ssl_exp_date: this.form.ssl_exp_date,
+        ssl_cvv2cvc2: this.form.ssl_cvv2cvc2,
+        ssl_get_token: 'Y',
+        ssl_add_token: 'Y',
+        ssl_first_name: this.form.first_name,
+        ssl_last_name: this.form.last_name,
+        ssl_merchant_txn_id: '2150532',
+        ssl_avs_address: this.form.billing_address,
+        ssl_avs_zip: this.form.zip_code,
+      };
+
+      // const transaction = await this.$store.dispatch('postHostedPaymentPage', paymentData);
+      // eslint-disable-next-line no-undef
+      ConvergeEmbeddedPayment.pay(paymentData2, this.callback);
     },
     getData(data) {
       this.form = data;
@@ -266,9 +339,32 @@ export default {
     this.column = this.design.meta.column;
     this.height = this.design.meta.height;
     if (this.design.meta && this.design.meta.inputs.length > 0) {
-      if (_.any(this.design.meta.inputs, input => input.type === 'object')) {
+      if (_.any(this.design.meta.inputs, input => {
+        return input.type === 'object' && input.feeder === 'selection';
+      })) {
         this.inputsDialog = true;
       }
+      _.each(this.design.meta.inputs, input => {
+        if (input.type === 'object' && input.feeder === 'pool') {
+          _.each(this.layout, item => {
+            console.log(input.name);
+            if (
+              item.value.meta &&
+              item.value.meta.default &&
+              item.value.meta.default.input.name === input.name
+            ) {
+              console.log('ping: ', item.value.name);
+              console.log('ping: ', this.input[item.value.meta.default.input.field]);
+              if(item.value.type === 'number') {
+                this.form[item.value.name] = parseInt(this.input[item.value.meta.default.input.field], 10)
+              } else {
+                this.form[item.value.name] = this.input[item.value.meta.default.input.field]
+              }
+
+            }
+          })
+        }
+      })
     }
     this.loading = false;
   },

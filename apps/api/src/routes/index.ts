@@ -170,7 +170,7 @@ export default (app: Application) => {
     Design.deleteDesignByName
   );
 
-  app.post('/api/admin/:id/create-record', authorize(), Record.createRecord);
+  app.post('/api/:id/create-record', authorize(), Record.createRecord);
   app.post('/api/admin/:id/update-record', authorize(), Record.updateRecord);
   app.get('/api/admin/:id/get-all-records', authorize(), Record.getAllRecords);
   app.post(
@@ -270,6 +270,10 @@ export default (app: Application) => {
     '/api/admin/:id/download-template',
     authorize(),
     Template.downloadTemplate
+  );
+  app.post(
+    '/api/update-account-member',
+    User.updateAccountMember
   );
 
   app.post('/api/payments/getSessionToken', Payments.getSessionToken);

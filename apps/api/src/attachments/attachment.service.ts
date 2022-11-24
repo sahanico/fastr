@@ -51,7 +51,7 @@ async function downloadAttachment(
 ) {
   // @ts-ignore
   // eslint-disable-next-line no-undef
-  const filePath = path.join(appRoot, 'files', req.body.path);
+  const filePath = path.join('.', 'files', req.body.path);
   res.contentType('application/octet-stream');
   return res.download(filePath);
 }

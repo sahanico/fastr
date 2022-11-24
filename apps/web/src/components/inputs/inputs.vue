@@ -6,6 +6,9 @@
       </div>
     </v-row>
     <v-row v-for="(item, index) in design.meta.inputs" :key="index">
+      <v-col cols="auto">
+        <div class="v-subheader">{{`${index + 1}.`}}</div>
+      </v-col>
       <v-col>
         <v-text-field v-model="item.label" label="label"/>
       </v-col>
@@ -13,30 +16,27 @@
         <v-text-field v-model="item.name" label="Name"/>
       </v-col>
       <v-col>
-        <v-select v-model="item.feeder" :items="['selection', 'system']"
-                  label="Source"/>
+        <v-select v-model="item.feeder" :items="['selection', 'system', 'pool']"
+                  label="Source" />
       </v-col>
       <v-col v-if="item.feeder === 'system'">
-        <v-select v-model="item.system" :items="['logged_in_user',
+        <v-autocomplete v-model="item.system" :items="['logged_in_user',
                       'logged_in_account', 'logged_in_account_member']"
-                  label="Source Input"/>
+                  label="Source Input" />
       </v-col>
-      <div v-if="item.feeder === 'selection'">
-        <v-col>
-          <v-select v-model="item.type" :items="['object', 'literal']" label="Type"/>
-        </v-col>
-        <v-col>
-          <div v-if="item.type === 'object'">
-            <v-select v-model="item.object" :items="autocompleteObjects"
-                      label="Object"/>
-          </div>
-        </v-col>
-        <v-col>
-          <div v-if="item.type === 'literal'">
-            <v-text-field v-model="item.value" label="Value"/>
-          </div>
-        </v-col>
-      </div>
+      <v-col>
+        <v-autocomplete v-model="item.type" :items="['object', 'literal']" label="Type"
+                  v-if="item.feeder === 'selection' || item.feeder === 'pool'" />
+      </v-col>
+      <v-col>
+        <div v-if="item.type === 'object'">
+          <v-autocomplete v-model="item.object" :items="autocompleteObjects"
+                    label="Object Field"/>
+        </div>
+      </v-col>
+      <v-col v-if="item.type === 'literal'">
+        <v-text-field v-model="item.value" label="Value"/>
+      </v-col>
     </v-row>
     <v-row>
       <v-col cols="12">

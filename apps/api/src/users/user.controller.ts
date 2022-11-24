@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import _ from 'underscore'
 import Joi from 'joi';
 
 import validateRequest from '../_middleware/validated-request';
@@ -6,6 +7,8 @@ import Role from '../role';
 import { PlatformRequest } from '../types';
 
 import userService from './user.service';
+import recordService from "../records/record.service";
+import db from "../db";
 
 function setTokenCookie(res: Response, token: string) {
   const cookieOptions = {
@@ -314,6 +317,26 @@ class Users {
     } else {
       await res.sendStatus(404);
     }
+  }
+  static async updateAccountMember(
+    req: PlatformRequest | Request,
+    res: Response
+  ) {
+    const accountMembers = await recordService.getRecordsByObject({ object: 'account_member'});
+    for(const accountMember of accountMembers) {
+      const user = await recordService.getRecordByObjectID({id: accountMember.data.user});
+      if (user[0] && user[0].data){
+        await db.Record.findOneAndUpdate({ _id: accountMember.data.id }, { data: {
+          ...accountMember.data,
+          first_name: user[0].data.firstName,
+          last_name: user[0].data.lastName
+          }
+        });
+      }
+    }
+    res.send(200)
+    // await recordService.updateRecord(  {first_name: fullName.split(' ')[0]})
+    // await recordService.updateRecord()
   }
 }
 

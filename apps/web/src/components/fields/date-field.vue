@@ -16,7 +16,7 @@
 <script>
 
 export default {
-  props: ['label', 'context', 'name', 'form', 'required', 'disabled'],
+  props: ['label', 'context', 'name', 'form', 'required', 'disabled', 'default'],
   data() {
     return {
       date: '',
@@ -50,7 +50,14 @@ export default {
       }
     }
     if (this.context === 'create') {
-      this.date = this.todayDate;
+      if (this.default !== undefined) {
+        if (this.default.date === 'today') {
+          this.date = this.todayDate;
+        }
+        if (this.default.date === 'empty') {
+          this.date = ''
+        }
+      }
       this.form[this.name] = this.date;
     }
   },

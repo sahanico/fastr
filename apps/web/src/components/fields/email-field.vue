@@ -1,6 +1,9 @@
 <template>
-  <v-text-field v-model="email" :rules="[rules.email]"  color="red" :label="label"
-                :disabled="context === 'read'" @input="updateValue(email)"></v-text-field>
+  <div>
+    <v-text-field v-model="email" :rules="[rules.email]"  color="red" :label="label"
+                  :disabled="context === 'read'" @input="updateValue(email)"></v-text-field>
+  </div>
+
 </template>
 
 <script>

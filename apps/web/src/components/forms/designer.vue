@@ -9,8 +9,7 @@
           <v-spacer></v-spacer>
           <v-autocomplete v-model="baseObject" :items="autocompleteObjects" chips dense
                           label="Select Object" outlined return-object small-chips
-                          style="max-width: 150px"
-          >
+                          style="max-width: 150px" >
           </v-autocomplete>
           <v-spacer></v-spacer>
           <v-btn color="black" text type="button" @click="selectBaseObject()">
@@ -132,7 +131,7 @@
               <div>
                 <div class="headline text-xs-center red--text pb- pt-5">
                   <input type="checkbox" id="checkbox" v-model="design.meta.showLabel">
-                  <label for="checkbox">{{ `Show Label : ${design.meta.showLabel}` }}</label>
+                  <label for="checkbox">Show Label</label>
                 </div>
               </div>
               <div>

@@ -1,9 +1,9 @@
 <template>
   <v-container
     class="px-0"
-    fluid
-  >
-    <v-radio-group row  v-model="radio" @change="updateValue(radio)">
+    fluid>
+    <div class="text">{{ label }}</div>
+    <v-radio-group row  v-model="radio" @change="updateValue(radio)" >
       <v-radio
         v-for="(item, idx) in items" :key="idx"
         :label="item"
@@ -20,7 +20,7 @@ export default {
   props: ['items', 'item', 'label', 'context', 'name', 'form', 'required', 'disabled'],
   data() {
     return {
-      // radio: 0,
+      radio: null,
     };
   },
   methods: {

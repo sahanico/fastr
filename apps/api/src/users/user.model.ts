@@ -22,4 +22,4 @@ userSchema.set('toJSON', {
 
 export type PlatformUser = InferSchemaType<typeof userSchema>;
 
-export default connection.useDb('fastr').model('User', userSchema);
+export default connection.useDb('taxdollar').model('User', userSchema);

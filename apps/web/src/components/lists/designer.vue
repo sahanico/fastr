@@ -158,6 +158,9 @@
                   <v-col>
                     <v-checkbox v-model="design.meta.import" label="Show Import Button" />
                   </v-col>
+                  <v-col>
+                    <v-checkbox label="Show Label" v-model="design.meta.showLabel" />
+                  </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
@@ -328,6 +331,7 @@ export default {
           create: '',
           searchable: false,
           import: false,
+          showLabel: false,
           sort: {
             mode: '',
             field: '',

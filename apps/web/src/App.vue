@@ -6,10 +6,18 @@
       <v-app-bar-title>
         <router-link style="cursor: pointer" tag="span" to="/"/>
       </v-app-bar-title>
-      <v-spacer></v-spacer>
+      <v-app-bar-title>
+      <v-container>
+        <v-row>
+          <v-col cols="1">
+            <v-btn color="red darken-2" text type="button" @click="() => {this.$router.back()}">Back</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+      </v-app-bar-title>
       <v-toolbar-items v-if="!auth" class="hidden-md-and-down">
-        <v-btn to="/sign_in"
-               class="white red--text elevation-0" text router>
+        <v-btn to="/sign_in" data-test="sign-in-btn-app-bar"
+               class="white red--text elevation-0 btn-sign-in" text router>
           Sign In
         </v-btn>
       </v-toolbar-items>
@@ -19,7 +27,6 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
-
     <v-footer
         color="red darken-4" class="justify-center pl-0" app fixed>
       <v-spacer></v-spacer>
@@ -38,10 +45,12 @@
                                  clipped app mobile-break-point="960" style="margin-bottom: 32px;
                          margin-top: 4px;">
               <v-list v-if="!auth" class="sideNavItems">
-                <v-list-item v-for="item in $store.state.sideNavItems"
+                <v-list-item v-for="(index, item) in $store.state.sideNavItems"
                              :key="item.title" :to="item.link"
                              active-color="red--text" router color="red">
-                  <v-list-item-content>{{ item.title }}</v-list-item-content>
+                  <v-list-item-content
+                    :data-test=`side-nav-${index}`
+                  >{{ item.title }}</v-list-item-content>
                 </v-list-item>
               </v-list>
               <v-list v-if="auth && !designer" class="authenticatedSideNavItems">
@@ -143,9 +152,9 @@ export default {
         name: item.name,
       });
       if (item.type === 'dashboard') {
-        await this.$router.replace({
+        await this.$router.push({
           name: 'DashboardRead',
-          params: { design },
+          params: { name: item.name },
         });
       } else if (item.type === 'screen') {
         await this.$router.replace({
@@ -173,7 +182,8 @@ export default {
             { title: 'Points', link: '/points/list' },
             { title: 'Tabs', link: '/tabs/list' },
           ];
-        } else if (this.$store.state.user.role === 'Admin') {
+        }
+        else if (this.$store.state.user.role === 'Admin') {
           const permissions = await this.$store.dispatch('getAllDashboardPermission');
           _.each(permissions, (permission) => {
             if (permission.admins !== undefined) {
@@ -193,8 +203,11 @@ export default {
               }
             }
           });
-          await this.$router.push('/admins/admin_panel');
-        } else if (this.$store.state.user.role === 'User') {
+          if (this.$router.currentRoute.path === '/sign_in') {
+            await this.$router.push('/admins/admin_panel');
+          }
+        }
+        else if (this.$store.state.user.role === 'User') {
           const permissions = await this.$store.dispatch('getAllDashboardPermission');
           const userGroups = await this.$store.dispatch('getUserGroups');
           _.each(permissions, (permission) => {
@@ -238,7 +251,9 @@ export default {
               }
             }
           });
-          await this.$router.push('/signed_in');
+          if (this.$router.currentRoute.path === '/sign_in') {
+            await this.$router.push('/signed_in');
+          }
         }
       }
     },
