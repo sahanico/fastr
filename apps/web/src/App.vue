@@ -1,6 +1,96 @@
 <template>
   <v-app style="background-color: #f5f5f5">
-    <v-app-bar class="white red--text" max-height="64px" clipped-left
+    <!-- Mobile -->
+    <!-- Account Card for mobile-->
+    <v-container>
+      <account-card class="hidden-md-and-up" v-if="showAccountCard"/>
+    </v-container>
+    <!-- Overflow Card for mobile-->
+    <v-card v-if="showMobileOverflowCard"
+            style="position: fixed; bottom: 56px; right: 0; z-index: 2"
+            flat>
+    <v-list class="white red--text">
+      <v-list-item v-for="(item, index) in $store.state.sideNavItems"
+                   :to="`${$route.path === '/'
+                      ? 'dashboards/read/' + $store.state.sideNavItems[index].name
+                       : $store.state.sideNavItems[index].name}`"
+                   v-if="index > 1"
+                   @click="showMobileOverflowCard = !showMobileOverflowCard"
+                   :key="index" router>
+        <v-list-item-content align="right">
+          <v-list-item-title v-text="item.label"></v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-icon>
+          <v-icon>mdi-{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+      </v-list-item>
+    </v-list>
+    </v-card>
+    <!-- Main router for mobile -->
+    <main style="paddingTop: 44px"  class="hidden-md-and-up">
+      <router-view :key="$route.fullPath"></router-view>
+    </main>
+    <!-- Top app bar for mobile -->
+    <v-app-bar class="red white--text hidden-md-and-up" style="position: fixed; top: 0"
+               clipped-left dark>
+      <v-toolbar-items>
+        <v-btn color="white" dark text type="button" style="position: absolute; left: 0"
+               @click="() => {this.$router.back()}"><v-icon>mdi-arrow-left</v-icon></v-btn>
+      </v-toolbar-items>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>Tax Dollar</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items v-if="auth">
+        <v-btn color="white" text dark type="button" style="position: absolute; right: 0"
+               @click="showAccountCard = !showAccountCard"><v-icon>mdi-account</v-icon></v-btn>
+      </v-toolbar-items>
+    </v-app-bar>
+    <!-- Bottom nav for mobile -->
+    <v-bottom-navigation
+      class="hidden-md-and-up"
+      style="position: fixed; bottom: 0"
+      v-model="selectedBottomNav"
+      background-color="white"
+      color="red"
+      grow>
+      <v-btn router to="/">
+        <span>Home</span>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+      <v-btn v-if="!auth" router to="/sign_in">
+        <span>Sign In</span>
+        <v-icon>mdi-lock</v-icon>
+      </v-btn>
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
+             :to="`${$route.path === '/'
+              ? 'dashboards/read/' + $store.state.sideNavItems[0].name
+               : $store.state.sideNavItems[0].name}`"
+              @click="showMobileOverflowCard = false">
+        <span>{{ $store.state.sideNavItems[0].label }}</span>
+        <v-icon>mdi-{{ $store.state.sideNavItems[0].icon }}</v-icon>
+      </v-btn>
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
+             :to="`${$route.path === '/'
+              ? 'dashboards/read/' + $store.state.sideNavItems[1].name
+               : $store.state.sideNavItems[1].name}`"
+             @click="showMobileOverflowCard = false">
+        <span>{{ $store.state.sideNavItems[1].label }}</span>
+        <v-icon>mdi-{{ $store.state.sideNavItems[1].icon }}</v-icon>
+      </v-btn>
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4" @click="showMobileOverflowCard = !showMobileOverflowCard">
+        <v-icon>mdi-dots-horizontal</v-icon>
+      </v-btn>
+      <v-btn v-if="auth && $store.state.sideNavItems.length < 4"
+             v-for="(item, index) in $store.state.sideNavItems"
+             :to="`${$route.path === '/' ? 'dashboards/read/' + item.name : item.name}`"
+             :key="index" router>
+        <span>{{ item.label }}</span>
+        <v-icon>mdi-{{ item.icon }}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+    <!-- Desktop -->
+    <!-- Top app bar for desktop -->
+    <v-app-bar class="white red--text hidden-md-and-down" max-height="64px" clipped-left
                app>
       <v-app-bar-nav-icon @click.native.stop="showSideNav = !showSideNav"/>
       <v-app-bar-title>
@@ -27,15 +117,16 @@
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
+    <!-- Footer for desktop-->
     <v-footer
-        color="red darken-4" class="justify-center pl-0" app fixed>
+        color="red darken-4" class="justify-center pl-0 hidden-md-and-down" app fixed>
       <v-spacer></v-spacer>
       <div class="footer">
         &copy; Copyright {{ new Date().getFullYear() }} Sahani Corp. All rights reserved.
       </div>
     </v-footer>
-    <!-- navigation & main -->
-    <div>
+    <!-- Nav drawer for desktop-->
+    <div class="hidden-md-and-down">
       <v-layout>
         <v-row>
           <v-col cols="12" sm="1" md="2"
@@ -98,7 +189,7 @@
     </div>
 
     <!--    <div v-if="auth">-->
-    <div v-if="showAccountCard"
+    <div v-if="showAccountCard" class="hidden-md-and-down"
          :style="{ position: 'absolute', top: 0, right:0, marginTop: '76px',
            marginRight: '24px'}">
       <account-card></account-card>
@@ -118,8 +209,10 @@ export default {
   },
   data() {
     return {
+      selectedBottomNav: '',
       sideNav: false,
       showAccountCard: false,
+      showMobileOverflowCard: false,
       showSideNav: true,
       authenticatedSideNavItems: [],
       designerSideNavItems: [],
@@ -185,45 +278,53 @@ export default {
         }
         else if (this.$store.state.user.role === 'Admin') {
           const permissions = await this.$store.dispatch('getAllDashboardPermission');
+          const designs = await this.$store.dispatch('getAllDesigns');
           _.each(permissions, (permission) => {
+            const design = _.findWhere(designs, { name: permission.name});
             if (permission.admins !== undefined) {
               const adminUserIds = Object.values(permission.admins);
               if (permission.admins === 'all-admins') {
                 this.$store.state.sideNavItems.push({
-                  name: permission.name,
-                  type: permission.type,
-                  label: permission.label,
+                  name: design.name,
+                  type: design.type,
+                  label: design.label,
+                  icon: design.icon || '',
                 });
               } else if (adminUserIds.includes(this.user.userId)) {
                 this.$store.state.sideNavItems.push({
-                  name: permission.name,
-                  type: permission.type,
-                  label: permission.label,
+                  name: design.name,
+                  type: design.type,
+                  label: design.label,
+                  icon: design.icon || '',
                 });
               }
             }
           });
           if (this.$router.currentRoute.path === '/sign_in') {
-            await this.$router.push('/admins/admin_panel');
+            await this.$router.push('/');
           }
         }
         else if (this.$store.state.user.role === 'User') {
           const permissions = await this.$store.dispatch('getAllDashboardPermission');
+          const designs = await this.$store.dispatch('getAllDesigns');
           const userGroups = await this.$store.dispatch('getUserGroups');
           _.each(permissions, (permission) => {
+            const design = _.findWhere(designs, { name: permission.name});
             if (permission.users !== undefined) {
               const userUserIds = Object.values(permission.users);
               if (permission.users === 'all-users') {
                 this.$store.state.sideNavItems.push({
-                  name: permission.name,
-                  type: permission.type,
-                  label: permission.label,
+                  name: design.name,
+                  type: design.type,
+                  label: design.label,
+                  icon: design.icon,
                 });
               } else if (userUserIds.includes(this.state.user.userId)) {
                 this.$store.state.sideNavItems.push({
-                  name: permission.name,
-                  type: permission.type,
-                  label: permission.label,
+                  name: design.name,
+                  type: design.type,
+                  label: design.label,
+                  icon: design.icon,
                 });
               }
             } else if (permission.userGroups !== undefined) {
@@ -244,15 +345,16 @@ export default {
               });
               if (tempIds.includes(this.state.user.userId)) {
                 this.$store.state.sideNavItems.push({
-                  name: permission.name,
-                  type: permission.type,
-                  label: permission.label,
+                  name: design.name,
+                  type: design.type,
+                  label: design.label,
+                  icon: design.icon,
                 });
               }
             }
           });
           if (this.$router.currentRoute.path === '/sign_in') {
-            await this.$router.push('/signed_in');
+            await this.$router.push('/');
           }
         }
       }
@@ -307,7 +409,9 @@ export default {
 </script>
 
 <style scoped>
-
+.my-toolbar >>> .v-toolbar__content {
+  padding: 0;
+}
 .setColor {
   color: red;
 }

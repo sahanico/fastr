@@ -28,19 +28,6 @@
         </v-row>
       </v-container>
     </v-row>
-    <!-- Buttons -->
-    <v-row class="justify-end">
-      <v-col cols="12" sm="1">
-        <v-btn color="red darken-2" text type="button"
-               @click="cancelStep">Cancel
-        </v-btn>
-      </v-col>
-      <v-col cols="12" sm="1">
-        <v-btn color="red darken-2" text type="button"
-               @click="addStep">Add Step
-        </v-btn>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -68,6 +55,7 @@ export default {
     autocompleteTemplates() {
       if (!this.step.meta.object) return [];
       const object = _.findWhere(this.objects, { name: this.step.meta.object.value });
+      if (!object) return [];
       return _.map(object.templates, template => ({
         text: template.label,
         value: template.name,

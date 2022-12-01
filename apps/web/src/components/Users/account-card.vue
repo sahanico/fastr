@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card width="400" min-height="440" rounded>
+    <v-card width="375" min-height="440" rounded>
       <div>
         <v-flex offset-xs4 xs8 style="margin-top: 12px;padding-top: 12px;">
           <v-list-item color="red">
@@ -19,15 +19,11 @@
         </v-flex>
       </div>
       <div class="text-center">
-        <strong style="font-size: 20px">{{ user ? user.name : '' }}</strong> <br>
-        {{ user ? user.email : '' }} <br>{{ user ? user.phoneNumber : ''  }} <br>{{
-         user ? user.addressLine1 : ''
-        }} <br>
+        <strong style="font-size: 20px">{{ user ? user.name : '' }}</strong>
+        <br>{{ user ? user.email : '' }}
+        <br>{{ user ? user.address : ''  }}
+        <br>{{ user ? user.phoneNumber : ''  }}
         <br>
-        <v-divider></v-divider>
-        <br>
-        <v-btn elevation="0" color="white red--text" @click="myProfile">Manage your account</v-btn>
-        <br> <br>
         <v-divider></v-divider>
         <br>
         <v-btn elevation="0" color="white red--text" @click="logOut">LOG
@@ -96,9 +92,6 @@ export default {
     },
   },
   methods: {
-    myProfile() {
-      this.$router.push('/users/user_profile');
-    },
     logOut() {
       this.$router.push('/log_out');
     },

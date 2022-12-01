@@ -1051,6 +1051,19 @@ export default new Vuex.Store({
       }
       return false;
     },
+    async getRecordsForList({ state }, payload) {
+      const records = await axios({
+        method: 'post',
+        url: `${BASE_API_URL}/admin/${state.user.userId}/get-records-for-list`,
+        headers: authHeader(),
+        data: payload,
+        withCredentials: true,
+      });
+      if (records.status === 200) {
+        return records.data;
+      }
+      return false;
+    },
     async getRecordByObjectAndField({ state }, payload) {
       const records = await axios({
         method: 'post',

@@ -1,24 +1,22 @@
 <template>
-  <div style="margin: 20px; background-color: #f5f5f5" v-if="tab && tab.meta">
-    <template>
-      <v-tabs color="red" v-model="tabContent" background-color="#f5f5f5">
-        <v-tab v-for="(item, index) in tabs" :key="index" style="background-color: #f5f5f5">{{
-            item.label
-          }}
-        </v-tab>
-      </v-tabs>
-      <v-tabs-items v-model="tabContent">
-        <v-tab-item v-for="(item, index) in tabs" :key="index">
-          <div>
-            <dashboard-read-tab :name="`read-tab-${item.name}`" style="background-color: #f5f5f5"
-                            :inputId="inputId"
-                            :design="item.design"
-                            :input="input">
-            </dashboard-read-tab>
-          </div>
-        </v-tab-item>
-      </v-tabs-items>
-    </template>
+  <div>
+    <v-tabs v-if="tab && tab.meta" color="red" v-model="tabContent" background-color="#f5f5f5">
+      <v-tab v-for="(item, index) in tabs" :key="index"
+             style="background-color: #f5f5f5;">
+        {{ item.label }}
+      </v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tabContent">
+      <v-tab-item v-for="(item, index) in tabs" :key="index">
+        <div>
+          <dashboard-read-tab :name="`read-tab-${item.name}`" style="background-color: #f5f5f5"
+                          :inputId="inputId"
+                          :design="item.design"
+                          :input="input">
+          </dashboard-read-tab>
+        </div>
+      </v-tab-item>
+    </v-tabs-items>
   </div>
 </template>
 <script>

@@ -44,3 +44,16 @@ async function postCreateRecord(record: { object: any, data: any }) {
 export default {
   postCreateRecord,
 };
+
+/**
+ * todo : redo filters in the frontend with conditions2
+ * add filter controller and service in backend
+ * redo list read and handle filters + action conditions in backend + sort
+ * fix and test new list read
+ * recreate old filters
+ * tare down old filters
+ *mmat
+ * recreate old processes
+ * tare down old processes
+ * tare down old conditions
+ */

@@ -4,6 +4,7 @@ const recordSchema = new Schema({
   _id: Schema.Types.ObjectId,
   object: String,
   data: Object,
+  actions: Array,
 });
 
 recordSchema.set('toJSON', {

@@ -58,4 +58,16 @@ describe('Record Tests', () => {
     const payment = await db.Record.findOne({ object: 'payment' });
     expect(payment.data.invoice_no).toEqual(358);
   });
+  // it('Get records for list', async () => {
+  //   const createRecord2Response = await request(app)
+  //     .post(`/api/${auth.userId}/create-record`)
+  //     .set('Authorization', `Bearer ${auth.jwtToken}`)
+  //     .send(data.createRecord2);
+  //   console.log('createRecord2Response: ', createRecord2Response.error);
+  //   expect(createRecord2Response.status).toEqual(200)
+  //   const getRecordsForListResponse = await request(app)
+  //     .post(`/api/${auth.userId}/get-records-for-list`)
+  //     .set('Authorization', `Bearer ${auth.jwtToken}`)
+  //     .send({ list: })
+  // });
 });

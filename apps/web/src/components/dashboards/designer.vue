@@ -262,6 +262,9 @@
                     <v-text-field :disabled="context === 'update'" v-model="design.name"
                                   label="Name" required/>
                   </v-col>
+                  <v-col>
+                    <v-text-field v-model="design.icon" label="Icon" required/>
+                  </v-col>
                 </v-row>
               </v-card>
               <div class="headline text-xs-center red--text pb- pt-5">
@@ -352,6 +355,7 @@ export default {
       default: () => ({
         label: '',
         name: '',
+        icon: '',
         type: 'dashboard',
         object: null,
         meta: {

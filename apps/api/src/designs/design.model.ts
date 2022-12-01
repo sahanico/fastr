@@ -6,6 +6,7 @@ const designSchema = new Schema({
   label: String,
   object: String,
   type: String,
+  icon: String,
   meta: Object,
 });
 

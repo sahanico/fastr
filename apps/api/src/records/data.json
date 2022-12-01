@@ -379,7 +379,28 @@
   "createRecord": {
     "object": "payment",
     "data": {
-      "account": "Tester Tester",
+      "account": "636fc656a684fbc50e1f0f06",
+      "invoice_no": 358,
+      "ssl_amount": "1",
+      "first_name": "2",
+      "last_name": "2",
+      "billing_address": "2",
+      "zip_code": "2",
+      "ssl_card_number": "removed",
+      "ssl_cvv2cvc2": "removed",
+      "ssl_exp_date": "removed",
+      "status": "declined",
+      "status_message": "The Credit Card Number supplied in the authorization request appears to be invalid.",
+      "createdBy": "636fc656a684fbc50e1f0f04",
+      "createdAt": "2022-11-20T20:36:51.204Z",
+      "updatedBy": "636fc656a684fbc50e1f0f04",
+      "updatedAt": "2022-11-20T20:36:51.204Z"
+    }
+  },
+  "createRecord2": {
+    "object": "payment",
+    "data": {
+      "account": "abcd",
       "invoice_no": 358,
       "ssl_amount": "1",
       "first_name": "2",

@@ -127,36 +127,24 @@
         <v-card class="pa-5 ma-5 pb-9">
           <v-row>
             <v-col cols="12" md="12">
-              <div>
-                <v-card elevation="1">
+              <v-row>
+                <v-col>
                   <conditions
-                    v-bind:objects="objects"
-                    v-bind:primaryObject="primaryObject"
-                    :conditions.sync="design.meta.conditions">
-                  </conditions>
-                </v-card>
-              </div>
+                    :variables="[
+                          {
+                            text: design.label,
+                            value: {
+                              name: design.name,
+                              object: design.object
+                            }
+                          }
+                        ]"
+                    :conditions="design.meta.conditions"
+                    :objects="objects"
+                    :autocomplete-objects="autocompleteObjects" />
+                </v-col>
+              </v-row>
             </v-col>
-            <v-btn style="position: absolute; right: 16px" icon
-                   @click="design.meta.conditions.push({
-                      lhs: {
-                        field: '',
-                      },
-                      operator: '',
-                      rhs: {
-                        type: '',
-                        object: '',
-                        value: '',
-                        systemField: '',
-                        field: '',
-                      },
-                    })">
-              <v-icon class="red--text"> mdi-plus</v-icon>
-            </v-btn>
-            <v-btn style="position: absolute; right: 54px" icon
-                   @click="design.meta.conditions.pop()">
-              <v-icon class="red--text"> mdi-minus</v-icon>
-            </v-btn>
           </v-row>
         </v-card>
         <v-btn style="margin-left: 12px" color="red darken-2" dark type="submit">Save</v-btn>
@@ -167,7 +155,7 @@
 
 <script>
 import _ from 'underscore';
-import conditions from '../conditions/conditions';
+import conditions from '../conditions2/conditions';
 import inputs from '../inputs/inputs';
 
 export default {
@@ -190,19 +178,10 @@ export default {
             name: '',
             object: '',
           }],
-          conditions: [{
-            lhs: {
-              field: '',
-            },
-            operator: '',
-            rhs: {
-              type: '',
-              object: '',
-              value: '',
-              systemField: '',
-              field: '',
-            },
-          }],
+          conditions: {
+            statements: [],
+            combinator: '',
+          }
         },
       }),
     },

@@ -177,10 +177,13 @@
                   <div class="headline text-xs-center red--text pb- pt-5">
                     Actions
                   </div>
-                    <div>
+                    <v-container>
                       <v-row v-for="(item, index) in design.meta.actions" :key="index">
                         <v-col>
                           <v-text-field v-model="item.label" label="Label"/>
+                        </v-col>
+                        <v-col>
+                          <v-text-field v-model="item.name" label="Name"/>
                         </v-col>
                         <v-col>
                           <v-select v-model="item.icon" label="Icon" :items="icons"/>
@@ -196,11 +199,34 @@
                           <design-field v-model="item.createFormDialog"
                                     type-filter="form" label="Forms" />
                         </v-col>
+                        <v-col cols="12">
+                          <conditions2
+                            :variables="[
+                              {
+                                text: design.label,
+                                value: {
+                                  name: design.name,
+                                  object: design.object
+                                }
+                              }
+                            ]"
+                            :conditions="item.conditions"
+                            :objects="objects"
+                            :autocomplete-objects="autocompleteObjects" />
+                        </v-col>
+                        <v-col cols="12">
+                          <v-divider></v-divider>
+                        </v-col>
                       </v-row>
                       <v-row>
                         <v-col cols="12">
                           <v-btn style="position: absolute; right: 16px" icon
-                                 @click="design.meta.actions.push({})">
+                                 @click="design.meta.actions.push({
+                                   conditions: {
+                                      statements: [],
+                                      combinator: '',
+                                    },
+                                 })">
                             <v-icon class="red--text"> mdi-plus</v-icon>
                           </v-btn>
                           <v-btn style="position: absolute; right: 54px" icon
@@ -209,7 +235,7 @@
                           </v-btn>
                         </v-col>
                       </v-row>
-                    </div>
+                    </v-container>
 
                   </v-col>
                 </v-row>
@@ -298,6 +324,7 @@
 import _ from 'underscore';
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import conditions from '../conditions/conditions';
+import conditions2 from '../conditions2/conditions';
 import DesignField from '../fields/design-field';
 
 
@@ -309,6 +336,7 @@ export default {
     GridLayout,
     GridItem,
     conditions,
+    conditions2,
     DesignField,
   },
   props: {

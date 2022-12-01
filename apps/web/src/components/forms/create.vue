@@ -1,75 +1,78 @@
 <template>
-  <div :style="{ height: `${formHeight}px`, padding: '16px' }">
-    <v-dialog v-model="createdDialog" width="400">
-      <v-card>
-        <v-card-title class="headline red white--text" dark
-                      primary-title> Design record has been saved!
-        </v-card-title>
-        <v-spacer></v-spacer>
-        <v-btn color="black" text type="button"
-               @click="createdDialog = false">Ok
-        </v-btn>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="inputsDialog" width="400">
-      <v-card>
-        <v-card-title class="headline red white--text" dark
-                      primary-title> Select a value
-        </v-card-title>
-        <v-container v-if="design.meta && design.meta.inputs && design.meta.inputs.length > 0">
-          <v-row v-for="(item, index) in design.meta.inputs" :key="index">
-            <v-col vols="12" md="12">
-              <div v-if="item.type === 'object'">
-                <v-autocomplete v-model="pool[item.name]" :items="getObjectRecords(item.object)" />
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
-        <v-spacer></v-spacer>
-        <v-btn color="black" text type="button"
-               @click="processInputs">Ok
-        </v-btn>
-      </v-card>
-    </v-dialog>
-    <div class="headline red--text pt-2 mt-2 pb-2 mb-2">
-      {{ design && design.meta && design.meta.showLabel ? design.label : '' }}
-    </div>
-    <v-progress-linear  v-show="loading" color="red" indeterminate />
-    <v-card :style="{ height: `${formHeight + 48}px` }">
-      <form ref="configExecution" lazy-validation @submit.prevent="onSubmit" style="padding: 16px">
-        <div>
+  <v-container>
+    <div :style="{ height: `100%` }">
+      <v-dialog v-model="createdDialog" width="400">
+        <v-card>
+          <v-card-title class="headline red white--text" dark
+                        primary-title> Design record has been saved!
+          </v-card-title>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button"
+                 @click="createdDialog = false">Ok
+          </v-btn>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="inputsDialog" width="400">
+        <v-card>
+          <v-card-title class="headline red white--text" dark
+                        primary-title> Select a value
+          </v-card-title>
+          <v-container v-if="design.meta && design.meta.inputs && design.meta.inputs.length > 0">
+            <v-row v-for="(item, index) in design.meta.inputs" :key="index">
+              <v-col vols="12" md="12">
+                <div v-if="item.type === 'object'">
+                  <v-autocomplete v-model="pool[item.name]" :items="getObjectRecords(item.object)" />
+                </div>
+              </v-col>
+            </v-row>
+          </v-container>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button"
+                 @click="processInputs">Ok
+          </v-btn>
+        </v-card>
+      </v-dialog>
+      <div class="headline red--text pt-2 mt-2 pb-2 mb-2">
+        {{ design && design.meta && design.meta.showLabel ? design.label : '' }}
+      </div>
+      <v-progress-linear  v-show="loading" color="red" indeterminate />
+      <v-card :style="{ height: `${formHeight + 48}px` }">
+        <form ref="configExecution" lazy-validation @submit.prevent="onSubmit" style="padding: 16px">
           <div>
-            <div id="content">
-              <grid-layout
-                :layout.sync="layout" :col-num=parseInt(column)
-                :row-height=parseInt(height)
-                :is-draggable="false" :is-resizable="false" :responsive="false"
-                :vertical-compact="true" :prevent-collision="true" :use-css-transforms="true"
-                ref="gridlayout">
-                <grid-item v-for="(item,index) in layout" :key="index"
-                           :static="item.static"
-                           :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-                  <fields :name="`form-field-${item.value.name}`" v-model="form[item.value.name]"
-                          :form="form" :design="design" :root-form-field-index="index"
-                          :item="item" @updateHeight="updateHeight" :pool="pool"
-                          context="create"></fields>
-                </grid-item>
-              </grid-layout>
+            <div>
+              <div id="content">
+                <grid-layout
+                  :layout.sync="layout" :col-num=parseInt(column)
+                  :row-height=parseInt(height)
+                  :is-draggable="false" :is-resizable="false" :responsive="false"
+                  :vertical-compact="true" :prevent-collision="true" :use-css-transforms="true"
+                  ref="gridlayout">
+                  <grid-item v-for="(item,index) in layout" :key="index"
+                             :static="item.static"
+                             :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
+                    <fields :name="`form-field-${item.value.name}`" v-model="form[item.value.name]"
+                            :form="form" :design="design" :root-form-field-index="index"
+                            :item="item" @updateHeight="updateHeight" :pool="pool"
+                            context="create"></fields>
+                  </grid-item>
+                </grid-layout>
+              </div>
             </div>
           </div>
-        </div>
-        <br />
-        <br />
-        <v-btn :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
-               color="red darken-2" dark type="submit" :disabled="processPaymentProgress">
-          <v-progress-circular indeterminate color="red" v-if="processPaymentProgress" />
-          <div v-if="!processPaymentProgress">
-            Create
-          </div>
-        </v-btn>
-      </form>
-    </v-card>
-  </div>
+          <br />
+          <br />
+          <v-btn :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
+                 color="red darken-2" dark type="submit" :disabled="processPaymentProgress">
+            <v-progress-circular indeterminate color="red" v-if="processPaymentProgress" />
+            <div v-if="!processPaymentProgress">
+              Create
+            </div>
+          </v-btn>
+        </form>
+      </v-card>
+    </div>
+  </v-container>
+
 </template>
 <script>
 import { GridLayout, GridItem } from 'vue-grid-layout';

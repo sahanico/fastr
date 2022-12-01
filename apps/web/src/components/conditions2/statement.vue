@@ -17,12 +17,12 @@
       <v-col cols="auto"/>
       <v-col>
         <v-select v-model="statement.rhs.type" label="Type"
-                  :items="['literal', 'object', 'system']" />
+                  :items="['literal', 'object', 'system', 'input']" />
       </v-col>
       <v-col v-if="statement.rhs.type === 'literal'">
         <v-text-field v-model="statement.rhs.literal" label="Value" />
       </v-col>
-      <v-col v-if="statement.rhs.type === 'object'">
+      <v-col v-if="statement.rhs.type === 'object' || statement.rhs.type === 'input'">
         <v-autocomplete v-model="statement.rhs.object" :items="autocompleteRHSObjects"
                   label="Object" />
       </v-col>
@@ -33,11 +33,6 @@
       <v-col v-if="statement.rhs.type === 'system'">
         <v-autocomplete v-model="statement.rhs.systemField" :items="getSystemFields"
                   label="System Field" />
-      </v-col>
-      <v-col v-if="(statement.rhs.object) && (statement.rhs.type === 'input')">
-        <v-autocomplete v-model="statement.rhs.field"
-                  :items="autocompleteFields"
-                  label="Field" />
       </v-col>
     </v-row>
   </v-container>
@@ -74,6 +69,7 @@ export default {
     },
     getSystemFields() {
       return [
+        { text: 'Logged In User', value: 'logged_in_user' },
         { text: 'Logged In User', value: 'logged_in_user' },
         { text: 'Logged In Account', value: 'logged_in_account' },
       ];

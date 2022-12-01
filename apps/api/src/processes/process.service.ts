@@ -7,6 +7,7 @@ import _ from 'underscore';
 
 import db from '../db';
 import sendEmail from '../send-email';
+import conditionService from "../conditions/condition.service";
 
 async function getProcessByName(name: any) {
   const process = await db.Design.findOne({ name });
@@ -15,41 +16,6 @@ async function getProcessByName(name: any) {
   }
   return false;
 }
-
-async function evaluateRHS(rhs: {
-  type: string,
-  value: string,
-  object: string,
-  field: string,
-  literal: string,
-}, pool: any[]) {
-  if (rhs.type === 'object') {
-    return db.Record.find({ object: rhs.object })
-  }
-  if (rhs.type === 'literal') {
-    return rhs.literal
-  }
-}
-
-async function evaluateLHS (lhs: {
-  object: string,
-  type: string,
-  value: string,
-  variable: {
-    name: string,
-    object: string,
-  }
-  field: string,
-}, pool: any) {
-
-  const variable = _.find(pool, v => lhs.variable.name === v.name);
-  console.log('variable: ', variable);
-  if (lhs.variable.object === variable.object) {
-    return variable.data[lhs.field]
-  }
-  return false;
-}
-
 async function updateRecord(
     step: {
       label: string,
@@ -73,8 +39,6 @@ async function updateRecord(
     },
     pool: any,
 ) {
-  console.log('step: ', step);
-  console.log('pool: ', pool);
   const variable = pool[step.meta.variable.value.name];
   // find and update
   const record = await db.Record.findOne({ _id: variable._id });
@@ -82,12 +46,8 @@ async function updateRecord(
     _.each(step.meta.fields, field => {
       record.data[field.text] = field.value;
     })
-    console.log('record: ', record);
     try {
-      const updatedRecord = await db.Record.updateOne({ _id: record._id }, record)
-
-      console.log('updatedRecord: ', updatedRecord);
-      return updatedRecord;
+      return db.Record.updateOne({ _id: record._id }, record);
     } catch (e) {
       console.log(e);
     }
@@ -108,18 +68,7 @@ async function runFindRecordStep(
     },
     pool: any,
 ) {
-  const { lhs, operator, rhs } = step.meta.conditions.statements[0];
-  let record: any;
-  // lhs = find variable from pool
-  let lhsValue = await evaluateLHS(lhs, pool);
-  let rhsValue = await evaluateRHS(rhs, pool);
-
-  if (operator === 'where') {
-    // expect rhs to be an array of records
-    record = _.find(rhsValue, (record) => {
-      return record.data[rhs.field] === lhsValue;
-    })
-  }
+  const record = conditionService.runCondition(step.meta.conditions, pool)
 
   if (record) {
     return record;
@@ -138,16 +87,9 @@ async function runIfStep(
     },
     pool: any,
 ) {
-  let evaluatedConditions: any;
-  const { lhs, operator, rhs } = step.meta.conditions.statements[0];
-  const lhsValue = await evaluateLHS(lhs, pool);
-  const rhsValue = await evaluateRHS(rhs, pool);
-
-  if (operator === '==') {
-    evaluatedConditions = lhsValue === rhsValue;
-  }
+  const evaluation = await conditionService.runCondition(step.meta.conditions, pool)
   let evaluatedIfStep: any[] = [];
-  if (evaluatedConditions === true) {
+  if (evaluation) {
     evaluatedIfStep = await runProcess({ meta: { steps: step.meta.steps }  }, pool);
   }
   if (evaluatedIfStep.length > 0) {
@@ -320,14 +262,10 @@ async function runProcess(
     const step = process.meta.steps[i];
     if (step.type === 'find_record') {
       console.log('------------------Find Record------------------');
-      const record = await runFindRecordStep(step, poolMap);
-      // eslint-disable-next-line no-param-reassign
-      poolMap[step.name] = record;
+      poolMap[step.name] = await runFindRecordStep(step, poolMap);
     } else if (step.type === 'send_email') {
       console.log('------------------Send Email------------------');
-      const email = await runEmailStep(step, poolMap);
-      // eslint-disable-next-line no-param-reassign
-      poolMap[step.name] = email;
+      poolMap[step.name] = await runEmailStep(step, poolMap);
     } else if (step.type === 'api_call') {
       console.log('------------------Api Call------------------');
       result = await runApiStep(step, poolMap);
@@ -336,11 +274,9 @@ async function runProcess(
       result = await runIfStep(step, poolMap);
     } else if (step.type === 'create_pdf') {
       console.log('------------------Create Pdf------------------');
-      // @ts-ignore
       result = await runCreatePdf(step, poolMap);
     } else if (step.type === 'update_record') {
       console.log('------------------Update Record------------------');
-      // @ts-ignore
       poolMap[step.name] = await updateRecord(step, poolMap);
     }
   }

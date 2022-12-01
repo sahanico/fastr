@@ -19,12 +19,12 @@ class Process {
     );
 
     if (result) {
-      await res.json(result);
+      return res.json(result);
     } else {
       await res.sendStatus(404);
     }
     console.log('----------------------------------------')
-    res.sendStatus(200);
+    // return res.sendStatus(200);
   }
 }
 

@@ -7,6 +7,7 @@ import ObjectDictionary from '../objectDictionary/objectDictionary.controller';
 import Payments from '../payments/payment.controller';
 import Permission from '../permissions/permission.controller';
 import Process from '../processes/process.controller';
+import Condition from '../conditions/condition.controller';
 import Record from '../records/record.controller';
 import Role from '../role';
 import Template from '../templates/template.controller';
@@ -179,6 +180,11 @@ export default (app: Application) => {
     Record.getRecordsByObject
   );
   app.post(
+    '/api/admin/:id/get-records-for-list',
+    authorize(),
+    Record.getRecordsForList
+  );
+  app.post(
     '/api/admin/:id/get-record-by-object-and-field',
     authorize(),
     Record.getRecordByObjectAndField
@@ -238,6 +244,7 @@ export default (app: Application) => {
   app.get('/api/all-role-user', authorize(), User.getAllRoleUser);
   app.get('/api/all-role-admin', authorize(), User.getAllRoleAdmin);
   app.post('/api/process/run', authorize(), Process.runProcess);
+  app.post('/api/condition/run', authorize(), Condition.runCondition);
 
   app.post(
     '/api/admin/:id/upload-attachment',

@@ -7,6 +7,8 @@ import objectService from '../objectDictionary/objectDictionary.service';
 import {PlatformRequest} from '../types';
 
 import recordService from './record.service';
+import filterService from "../filters/filter.service";
+import conditionService from "../conditions/condition.service";
 
 class Record {
   /**
@@ -64,6 +66,7 @@ class Record {
     const record = await recordService.createRecord({
       object: req.body.object,
       data,
+      actions: []
     });
     if (!record) await res.sendStatus(400);
     await eventService.postCreateRecord(record);
@@ -96,6 +99,87 @@ class Record {
     res: Response
   ) {
     const records = await recordService.getRecordsByObject(req.body);
+    if (records) {
+      await res.json(records);
+    } else {
+      await res.sendStatus(404);
+    }
+  }
+  static async getRecordsForList(
+    req: PlatformRequest | Request,
+    res: Response
+  ) {
+    const { list: listName, system, input } = req.body;
+    // get the list
+    const list = await designService.getDesignByName({ name: listName});
+    let records = await recordService.getRecordsByObject({ object: list.object });
+
+
+    // filter records
+    let filter: any;
+    if (system.user.role === 'Admin' && list.meta.adminFilter) {
+      filter = await designService.getDesignByName({ name: list.meta.adminFilter });
+    }
+    if (system.user.role === 'User' && list.meta.filter) {
+      filter = await designService.getDesignByName({ name: list.meta.filter });
+    }
+    if (filter) {
+      // compose state for filter:
+      let state: any = {
+        pool: {
+          [filter.name]: {
+            name: filter.name,
+            object: filter.object,
+            text: filter.label,
+            value: {
+              name: filter.name,
+              object: filter.object
+            },
+            data: records,
+          },
+        },
+        system,
+      };
+      if (input) {
+        state.pool = {
+          ...state.pool,
+          [input.object]: {
+            object: input.object,
+            type: 'input',
+            data: input.data
+          }
+        }
+      }
+      records = await filterService.runFilter(filter.meta.conditions, state);
+    }
+    // select actions to display
+    for(const action of list.meta.actions) {
+      for(const record of records) {
+        if (action.conditions.statements.length > 0) {
+          // run condition
+          const evaluation = await conditionService.runCondition(
+            action.conditions,
+            {
+              [list.name]: {
+                name: list.name,
+                object: list.object,
+                text: list.label,
+                value: {
+                  name: list.name,
+                  object: list.object
+                },
+                data: record.data
+              },
+            }
+          )
+          if (evaluation) {
+            record.actions ? record.actions.push(action) : record.actions = [action];
+          }
+        } else {
+          record.actions ? record.actions.push(action) : record.actions = [action];
+        }
+      }
+    }
     if (records) {
       await res.json(records);
     } else {

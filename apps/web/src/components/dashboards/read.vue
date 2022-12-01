@@ -1,7 +1,6 @@
 <template>
-  <form ref="configExecution" lazy-validation @submit.prevent="onSubmit"
-        style="padding-bottom: 36px">
-    <div style="position: relative; padding: 10px">
+  <form ref="configExecution" lazy-validation @submit.prevent="onSubmit">
+    <div>
       <div>
         <div id="content" v-if="design && design.meta">
           <grid-layout
@@ -84,7 +83,7 @@ import { GridLayout, GridItem } from 'vue-grid-layout';
 import VueSignaturePad from 'vue-signature-pad';
 import createForm from '../forms/create';
 import FormUpdate from '../forms/update';
-import ListRead from '../lists/read';
+import ListRead from '../lists/read2';
 import ChartRead from '../charts/read';
 import PointRead from '../points/read';
 import TabRead from '../tabs/read';
