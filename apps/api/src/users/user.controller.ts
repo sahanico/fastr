@@ -325,11 +325,11 @@ class Users {
     const accountMembers = await recordService.getRecordsByObject({ object: 'account_member'});
     for(const accountMember of accountMembers) {
       const user = await recordService.getRecordByObjectID({id: accountMember.data.user});
-      if (user[0] && user[0].data){
+      if (user && user.data){
         await db.Record.findOneAndUpdate({ _id: accountMember.data.id }, { data: {
           ...accountMember.data,
-          first_name: user[0].data.firstName,
-          last_name: user[0].data.lastName
+          first_name: user.data.firstName,
+          last_name: user.data.lastName
           }
         });
       }

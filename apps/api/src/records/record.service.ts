@@ -5,6 +5,7 @@ import db from '../db';
 import objectService from '../objectDictionary/objectDictionary.service';
 
 import { PlatformRecord } from './record.model';
+import ObjectDictionaryService from "../objectDictionary/objectDictionary.service";
 
 async function createRecord(record: PlatformRecord) {
   const objectInfo = await db.ObjectDictionary.findOne({ name: record.object });
@@ -61,20 +62,7 @@ async function autoIncrementField(objectName: any, fieldName: string | number) {
 }
 
 async function getRecordsByObject(payload: any) {
-  let records = [];
-  if (payload.conditions && payload.conditions[0].lhs !== '') {
-    const key = `data.${payload.conditions[0].lhs}`;
-    if (payload.conditions[0].rhs.type === 'literal') {
-      const val = payload.conditions[0].rhs.value;
-      records = await db.Record.find({
-        object: payload.object,
-        [key]: `${val}`,
-      });
-    }
-  } else {
-    records = await db.Record.find({ object: payload.object });
-  }
-  return records;
+  return db.Record.find({ object: payload.object });
 }
 
 async function getRecordByObjectAndField(payload: {
@@ -101,7 +89,7 @@ async function getRecordByObjectAndField(payload: {
 
 async function getRecordByObjectID(payload: { id: any }) {
   const { id } = payload;
-  return db.Record.find({ _id: id });
+  return db.Record.findOne({ _id: id });
 }
 
 function evaluateRhs(
@@ -304,6 +292,38 @@ async function getGroupByDate(records: any, name: string) {
   return arr;
 }
 
+async function transformRecordObjects(records: any, objectName: string) {
+  const object = await ObjectDictionaryService.getObjectByName({ name: objectName });
+  let objectFields: any[] = [];
+  _.each(object.fields, field => {
+    if (field.type === 'object' || field.type === 'object_array') {
+      objectFields.push(field);
+    }
+  });
+  for (const field of objectFields) {
+    const fieldObject = await ObjectDictionaryService.getObjectByName({ name: field.meta.object });
+    if (fieldObject && fieldObject._doc.primaryField) {
+      for(const record of records) {
+        if (record.data[field.name]) {
+          const objectRecord = await getRecordByObjectID({ id: record.data[field.name]})
+          if (objectRecord
+            && objectRecord.data
+            && objectRecord.data[fieldObject._doc.primaryField]
+            && record.data[field.name]
+          ) {
+            record.data[field.name] = {
+              value: record.data[field.name],
+              text: objectRecord.data[fieldObject._doc.primaryField]
+            }
+          }
+        }
+      }
+    }
+  }
+  console.log('records.length', records.length);
+  return records;
+}
+
 export default {
   createRecord,
   getAllRecords,
@@ -322,4 +342,5 @@ export default {
   filterRecords,
   getRecordByObjectAndField,
   autoIncrementField,
+  transformRecordObjects,
 };

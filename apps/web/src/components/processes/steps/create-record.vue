@@ -1,34 +1,16 @@
 <template>
   <v-container>
     <v-row>
-      <v-col>Update Record Step</v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-autocomplete v-model="step.meta.variable" :items="variables"
-                        label="Variable" outlined return-object small-chips
-        />
-      </v-col>
+      <v-col>Create Record Step</v-col>
     </v-row>
     <v-row>
       <v-container>
         Field Mappings
         <v-row v-for="(field, index) in step.meta.fields" :key="index">
-          <v-col>
-            <v-autocomplete v-model="field.text" :items="autocompleteFields"/>
-          </v-col>
-          <v-col>
-            <v-autocomplete v-model="field.type" :items="['literal', 'field']"/>
-          </v-col>
-          <v-col v-if="field.type === 'field'">
-            <v-autocomplete v-model="field.variable" :items="variables"
-                            label="Variable" outlined return-object small-chips
-            />
-          </v-col>
-          <v-col>
-            <v-text-field v-model="field.value"
-                          label="Value" />
-          </v-col>
+          <field-mapping :field="field"
+                         :autocomplete-fields="autocompleteFields"
+                         :objects="objects"
+                         :variables="variables" />
         </v-row>
         <v-row style="padding-bottom: 50px">
           <v-col cols="12">
@@ -37,8 +19,8 @@
                      {
                         text: '',
                         value: '',
-                      }
-                  )">
+                        }
+                    )">
               <v-icon class="red--text"> mdi-plus</v-icon>
             </v-btn>
             <v-btn style="position: absolute; right: 54px" icon
@@ -54,8 +36,12 @@
 
 <script>
 import _ from 'underscore';
+import FieldMapping from '../field-mapping';
 
 export default {
+  components: {
+    FieldMapping
+  },
   props: ['steps', 'step', 'pool', 'objects', 'variables'],
   computed: {
     autocompleteFields() {

@@ -181,7 +181,8 @@ class Record {
       }
     }
     if (records) {
-      await res.json(records);
+      const updatedRecords = await recordService.transformRecordObjects(records, list.object);
+      await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
     }

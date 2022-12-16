@@ -44,6 +44,12 @@
           <v-row v-if="step.type === 'update_record'">
             <update-record :steps="steps" :variables="variables" :step="step" :pool="pool" :objects="objects" />
           </v-row>
+          <v-row v-if="step.type === 'create_record'">
+            <create-record :steps="steps" :variables="variables" :step="step" :pool="pool" :objects="objects" />
+          </v-row>
+          <v-row v-if="step.type === 'create_user'">
+            <create-user :steps="steps" :variables="variables" :step="step" :pool="pool" :objects="objects" />
+          </v-row>
           <v-row v-if="step.type === 'create_pdf'">
             <create-pdf :steps="steps" :step="step" :pool="pool" :objects="objects" />
           </v-row>
@@ -66,6 +72,16 @@
                       },
                       steps: [],
                       fields: [],
+                      user: {
+                        userId: {
+                          variable: '',
+                          field: '',
+                        },
+                        email: {
+                          variable: '',
+                          field: '',
+                        },
+                      },
                       email: {
                         to: {
                           value: {
@@ -100,6 +116,8 @@ import SendEmail from './steps/send-email';
 import ApiCall from './steps/api-call';
 import FindRecord from './steps/find-record';
 import UpdateRecord from './steps/update-record';
+import CreateRecord from './steps/create-record';
+import CreateUser from './steps/create-user';
 import CreatePdf from './steps/create-pdf';
 import _ from 'underscore'
 
@@ -112,6 +130,8 @@ export default {
     ApiCall,
     FindRecord,
     UpdateRecord,
+    CreateRecord,
+    CreateUser,
     CreatePdf,
   },
   model: {
@@ -145,6 +165,10 @@ export default {
         {
           value: 'create_record',
           text: 'Create Record',
+        },
+        {
+          value: 'create_user',
+          text: 'Create User',
         },
         {
           value: 'update_record',

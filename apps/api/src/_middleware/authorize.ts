@@ -18,7 +18,21 @@ export default function authorize(roles: string[] = []) {
    * */
   const secret: secretType = process.env.JWT_SECRET || '';
   return [
-    jwt({ secret, algorithms: ['HS256'] }),
+    jwt({
+      secret,
+      algorithms: ['HS256'],
+      // isRevoked: () =>  (req: Request, payload: any, done: any) => {
+      //   // check if the token is revoked
+      //   console.log('payload: ', payload)
+      //   // const isRevoked = checkIfTokenIsRevoked(payload.jti)
+      //   // if (isRevoked) {
+      //   //   return done(new Error('Token has been revoked'))
+      //   // }
+      //   // if it is, call done with the error object
+      //   // otherwise, call done without any arguments
+      //   done()
+      // }
+    }),
 
     // eslint-disable-next-line consistent-return
     async (req: Request, res: Response, next: NextFunction) => {

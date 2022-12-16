@@ -375,7 +375,7 @@ export default {
       createdDialog: false,
       updatedDialog: false,
       designs: [],
-      icons: ['download', 'approve', 'pay'],
+      icons: ['download', 'approve', 'pay', 'cancel'],
       layout: [],
       index: 0,
       column: 1,
@@ -502,9 +502,6 @@ export default {
     selectBaseObject() {
       this.design.object = this.baseObject.value;
       this.baseObjectDialog = false;
-    },
-    setDialog(bool) {
-      this.executionDialog = bool;
     },
     async onSubmit() {
       if (this.context === 'create') {

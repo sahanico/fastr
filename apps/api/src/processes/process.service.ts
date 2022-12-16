@@ -47,7 +47,7 @@ async function updateRecord(
       record.data[field.text] = field.value;
     })
     try {
-      return db.Record.updateOne({ _id: record._id }, record);
+      return db.Record.updateOne({ _id: record._id.toString() }, record);
     } catch (e) {
       console.log(e);
     }

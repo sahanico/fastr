@@ -40,6 +40,18 @@
             :pool="pool" @addStep="addStep" @cancelStep="cancelStep"
           />
         </v-row>
+        <v-row v-if="step.type.value === 'create_record'">
+          <create-record
+            :steps="steps" :objects="objects" :step="step"
+            :pool="pool" @addStep="addStep" @cancelStep="cancelStep"
+          />
+        </v-row>
+        <v-row v-if="step.type.value === 'create_user'">
+          <create-user
+            :steps="steps" :objects="objects" :step="step"
+            :pool="pool" @addStep="addStep" @cancelStep="cancelStep"
+          />
+        </v-row>
         <v-row v-if="step.type.value === 'api_call'">
           <api-call
               :steps="steps" :name="step.name" :context="context"
@@ -66,6 +78,8 @@ import SendEmail from './steps/send-email';
 import ApiCall from './steps/api-call';
 import FindRecord from './steps/find-record';
 import UpdateRecord from './steps/update-record';
+import CreateRecord from './steps/create-record';
+import CreateUser from './steps/create-user';
 import CreatePdf from './steps/create-pdf';
 
 export default {
@@ -75,6 +89,8 @@ export default {
     ApiCall,
     FindRecord,
     UpdateRecord,
+    CreateRecord,
+    CreateUser,
     CreatePdf,
   },
   props: {

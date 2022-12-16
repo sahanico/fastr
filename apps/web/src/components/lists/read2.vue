@@ -65,13 +65,27 @@
           <v-data-table :headers="listHeaders"
                         :items="formattedRecords"
                         :search="queries"
+                        :sort-by="list.meta.sort.field"
+                        :sort-desc="list.meta.sort.mode === 'descending'"
                         item-key="items.key">
             <template v-slot:item.actions="{ item }">
         <span v-for="(action, index) in item.actions" :key="index">
-          <v-icon small @click="clickAction(action, item)"
-                  :style="{ paddingRight: '5px' }">
-            {{generateIcon(action)}}
-          </v-icon>
+          <template>
+            <div>
+              <v-tooltip top style="background-color: red">
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on" color="red" icon>
+                     <v-icon small @click="clickAction(action, item)"
+                             :style="{ paddingRight: '5px' }">
+                      {{generateIcon(action)}}
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>{{action.label}}</span>
+              </v-tooltip>
+            </div>
+          </template>
+
         </span>
             </template>
             <template v-slot:[`item.${list.meta.routeBy}`]="{ item, index }">
@@ -93,7 +107,7 @@
 </template>
 
 <script>
-import { _ } from 'vue-underscore';
+import _ from 'underscore';
 import CreateForm from '../forms/create';
 
 export default {
@@ -121,25 +135,34 @@ export default {
       let accountId = '';
       const object = _.findWhere(this.objects, { name: this.list.object })
       const recs = [];
-      _.each(this.records, record => {
+      const clonedRecords = JSON.parse(JSON.stringify(this.records));
+      _.each(clonedRecords, record => {
         _.each(object.fields, field => {
 
           if (field.type === 'object_array') {
-            const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
-            const fieldData = record.data[field.name]
-            _.each(fieldData, data => {
-              const rec = _.findWhere(this.records, { _id: data });
-              if (rec && rec.data) {
-                record.data[field.name].push(rec.data[fieldObject.primaryField])
-              }
-            })
+            if (record.data[field.name] && record.data[field.name].text) {
+              record.data[field.name] = record.data[field.name].text;
+            } else {
+              const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
+              const fieldData = record.data[field.name]
+              _.each(fieldData, data => {
+                const rec = _.findWhere(clonedRecords, { _id: data });
+                if (rec && rec.data) {
+                  record.data[field.name].push(rec.data[fieldObject.primaryField])
+                }
+              })
+            }
           }
           if (field.type === 'object') {
-            const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
-            const fieldData = record.data[field.name]
-            const rec = _.findWhere(this.records, { _id: fieldData });
-            if (rec && rec.data) {
-              record.data[field.name] = rec.data[fieldObject.primaryField];
+            if (record.data[field.name] && record.data[field.name].text) {
+              record.data[field.name] = record.data[field.name].text;
+            } else {
+              const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
+              const fieldData = record.data[field.name]
+              const rec = _.findWhere(clonedRecords, { _id: fieldData });
+              if (rec && rec.data) {
+                record.data[field.name] = rec.data[fieldObject.primaryField];
+              }
             }
           }
           if (typeof fieldData === 'string') {
@@ -152,7 +175,6 @@ export default {
             });
           }
         })
-        console.log('record: ', record);
         if (record.actions) {
           recs.push({ id: record.id, ...record.data, accountId, actions: record.actions });
         } else {
@@ -164,13 +186,14 @@ export default {
   },
   methods: {
     generateIcon(action) {
-      console.log('action: ', action);
       if(action.icon === 'pay') {
         return ' mdi-credit-card ';
       } else if (action.icon === 'download') {
         return ' mdi-download ';
       } else if (action.icon === 'approve') {
         return ' mdi-check-decagram ';
+      } else if (action.icon === 'cancel') {
+        return ' mdi-cancel ';
       }
       return ' mdi-check-decagram ';
     },
@@ -192,14 +215,15 @@ export default {
     },
     async clickAction(action, item) {
       if (action.type === 'process') {
-        await this.runProcess(action.process, item);
+        await this.runProcess(action.process, item, action);
       } else if (action.type === 'create-form-dialog') {
         this.selectedAction = action;
         this.selectedItem = item;
         this.createFormDialog = true;
       }
+      location.reload();
     },
-    async runProcess(processName, item) {
+    async runProcess(processName, item, action) {
       const process = await this.$store.dispatch('getDesignByName', {
         name: processName,
       });
@@ -212,31 +236,26 @@ export default {
 
       const data = await this.$store.dispatch('runProcess', {
         process: processName,
-        pool: [{...variable, data: item}],
+        pool: [{...variable, data: item, _id: item.id}],
       });
-      await this.$store.dispatch('downloadAttachment', {
-        path: data.file,
-        name: `${variable.label}.pdf`,
-      });
+      // only download when process is a download process
+      if (action.icon === 'download') {
+        await this.$store.dispatch('downloadAttachment', {
+          path: data.file,
+          name: `${variable.label}.pdf`,
+        });
+      }
     },
     async routeTo(idx, listItem) {
       // eslint-disable-next-line no-underscore-dangle
       const design = await this.$store.dispatch('getDesignByName', {
         name: this.bind,
       });
-      if (listItem.mainAccountId !== listItem.account) {
-        // eslint-disable-next-line no-param-reassign
-        listItem.account = listItem.mainAccountId;
-        // eslint-disable-next-line no-param-reassign
-        delete listItem.mainAccountId;
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        delete listItem.mainAccountId;
-      }
+      const record = _.findWhere(this.records, { id: listItem.id })
       await this.$router.push({
         name: 'DashboardRead',
         // eslint-disable-next-line no-underscore-dangle
-        params: { design, name: this.bind, input: listItem, inputId: listItem._id },
+        params: { design, name: this.bind, input: record, inputId: listItem.id },
       });
       this.$forceUpdate();
     },
