@@ -13,6 +13,10 @@ import User from './users/user.controller';
 const app = express();
 const multipart = require('connect-multiparty');
 
+process.on("uncaughtException", function(err) {
+  console.error(err);
+});
+
 // @ts-ignore
 global.appRoot = path.resolve(__dirname);
 
