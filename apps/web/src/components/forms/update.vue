@@ -21,11 +21,11 @@
                            :x="item.x" :y="item.y"
                            :w="item.w" :h="item.h">
                   <div v-if="context === 'read'">
-                    <fields v-model="input[item.value.name]" :form.sync="input" :item="item"
+                    <fields v-model="input.data[item.value.name]" :form.sync="input.data" :item="item"
                             :input-id="inputId" context="read"></fields>
                   </div>
                   <div v-if="context === 'update'">
-                    <fields v-model="input[item.value.name]" :form.sync="input" :item="item"
+                    <fields v-model="input.data[item.value.name]" :form.sync="input.data" :item="item"
                             :input-id="inputId" context="update"></fields>
                   </div>
                 </grid-item>

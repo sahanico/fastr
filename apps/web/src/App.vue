@@ -18,7 +18,6 @@
                        v-if="index > 1"
                        @click="showMobileOverflowCard = !showMobileOverflowCard"
                        :key="index" router>
-            :key="index" router>
             <v-list-item-content align="right">
               <v-list-item-title v-text="item.label"></v-list-item-title>
             </v-list-item-content>

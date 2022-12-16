@@ -22,7 +22,7 @@
       <v-container>
         <v-row>
           <v-col cols="1" offset="10" v-if="list.meta.import">
-            <div align="right" >
+            <div align="right">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn color="red darken-2" dark v-bind="attrs" v-on="on">
@@ -50,9 +50,9 @@
         </v-row>
       </v-container>
     </div>
-    <v-container>
+    <v-container v-if="list.meta">
       <v-row>
-        <v-col  cols="12" md="2" v-if="list.meta && list.meta.searchable">
+        <v-col cols="12" md="2" v-if="list.meta.searchable">
           <v-text-field
             v-model="queries"
             append-icon="mdi-magnify"
@@ -62,6 +62,9 @@
           ></v-text-field>
         </v-col>
         <v-col>
+          <div>
+            <v-progress-linear v-show="loading" color="red" indeterminate/>
+          </div>
           <v-data-table :headers="listHeaders"
                         :items="formattedRecords"
                         :search="queries"
@@ -69,24 +72,23 @@
                         :sort-desc="list.meta.sort.mode === 'descending'"
                         item-key="items.key">
             <template v-slot:item.actions="{ item }">
-        <span v-for="(action, index) in item.actions" :key="index">
-          <template>
-            <div>
-              <v-tooltip top style="background-color: red">
-                <template v-slot:activator="{ on }">
-                  <v-btn v-on="on" color="red" icon>
-                     <v-icon small @click="clickAction(action, item)"
-                             :style="{ paddingRight: '5px' }">
-                      {{generateIcon(action)}}
-                    </v-icon>
-                  </v-btn>
+              <span v-for="(action, index) in item.actions" :key="index">
+                <template>
+                  <div>
+                    <v-tooltip top style="background-color: red">
+                      <template v-slot:activator="{ on }">
+                        <v-btn v-on="on" color="red" icon>
+                           <v-icon small @click="clickAction(action, item)"
+                                   :style="{ paddingRight: '5px' }">
+                            {{ generateIcon(action) }}
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>{{ action.label }}</span>
+                    </v-tooltip>
+                  </div>
                 </template>
-                <span>{{action.label}}</span>
-              </v-tooltip>
-            </div>
-          </template>
-
-        </span>
+              </span>
             </template>
             <template v-slot:[`item.${list.meta.routeBy}`]="{ item, index }">
               <a @click="routeTo(index, item)" href="javascript:void(0)">{{
@@ -127,6 +129,7 @@ export default {
       importOptions: [{ title: 'csv' }],
       bind: null,
       queries: '',
+      loading: true,
     }
   },
   computed: {
@@ -251,7 +254,9 @@ export default {
       const design = await this.$store.dispatch('getDesignByName', {
         name: this.bind,
       });
+      console.log('listItem: ', listItem);
       const record = _.findWhere(this.records, { id: listItem.id })
+      console.log('record: ', record);
       await this.$router.push({
         name: 'DashboardRead',
         // eslint-disable-next-line no-underscore-dangle
@@ -287,6 +292,7 @@ export default {
       this.listHeaders.push({ text: 'Actions', value: 'actions', sortable: false });
     }
     this.bind = this.list.meta.bindTo;
+    this.loading = false;
   }
 }
 </script>
