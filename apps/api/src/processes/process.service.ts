@@ -8,6 +8,7 @@ import _ from 'underscore';
 import db from '../db';
 import sendEmail from '../send-email';
 import conditionService from "../conditions/condition.service";
+import userService from "../users/user.service";
 
 async function getProcessByName(name: any) {
   const process = await db.Design.findOne({ name });
@@ -50,6 +51,30 @@ async function updateRecord(
       return db.Record.updateOne({ _id: record._id.toString() }, record);
     } catch (e) {
       console.log(e);
+    }
+  }
+  return false;
+}
+
+async function runServiceStep(
+  step: {
+    object: string,
+    meta: {
+      service: {
+        name: string,
+        function: string,
+        parameters: any
+      };
+    };
+  },
+  pool: any,
+) {
+  const { service } = step.meta;
+  if (service.name === 'user') {
+    if (service.function === 'approveUser') {
+      // get the varName from pool
+      const variable = _.filter(pool, item => item.name === step.object)
+      return userService.approveUser(variable[0].data[service.parameters[0].field.value]);
     }
   }
   return false;
@@ -269,6 +294,9 @@ async function runProcess(
     } else if (step.type === 'api_call') {
       console.log('------------------Api Call------------------');
       result = await runApiStep(step, poolMap);
+    } else if (step.type === 'service_call') {
+      console.log('------------------Service Call------------------');
+      result = await runServiceStep(step, poolMap);
     } else if (step.type === 'if') {
       console.log('------------------If Step------------------');
       result = await runIfStep(step, poolMap);

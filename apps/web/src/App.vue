@@ -34,10 +34,10 @@
       <!-- Top app bar for mobile -->
       <v-app-bar class="red white--text hidden-md-and-up" style="position: fixed; top: 0"
                  clipped-left dark>
-        <v-toolbar-items>
-          <v-btn color="white" dark text type="button" style="position: absolute; left: 0"
-                 @click="() => {this.$router.back()}"><v-icon>mdi-arrow-left</v-icon></v-btn>
-        </v-toolbar-items>
+<!--        <v-toolbar-items>-->
+<!--          <v-btn color="white" dark text type="button" style="position: absolute; left: 0"-->
+<!--                 @click="() => {this.$router.back()}"><v-icon>mdi-arrow-left</v-icon></v-btn>-->
+<!--        </v-toolbar-items>-->
         <v-spacer></v-spacer>
         <v-toolbar-title>Tax Dollar</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -100,15 +100,15 @@
         <v-app-bar-title>
           <router-link style="cursor: pointer" tag="span" to="/"/>
         </v-app-bar-title>
-        <v-app-bar-title>
-          <v-container>
-            <v-row>
-              <v-col cols="1">
-                <v-btn color="red darken-2" text type="button" @click="() => {this.$router.back()}">Back</v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-app-bar-title>
+<!--        <v-app-bar-title>-->
+<!--          <v-container>-->
+<!--            <v-row>-->
+<!--              <v-col cols="1">-->
+<!--                <v-btn color="red darken-2" text type="button" @click="() => {this.$router.back()}">Back</v-btn>-->
+<!--              </v-col>-->
+<!--            </v-row>-->
+<!--          </v-container>-->
+<!--        </v-app-bar-title>-->
         <v-toolbar-items v-if="!auth" class="hidden-sm-and-down">
           <v-btn to="/sign_in" data-test="sign-in-btn-app-bar"
                  class="white red--text elevation-0 btn-sign-in" text router>
@@ -116,7 +116,8 @@
           </v-btn>
         </v-toolbar-items>
         <v-toolbar-items v-if="auth" class="hidden-sm-and-down">
-          <v-btn class="white red--text" elevation="0" @click="showAccountCard = !showAccountCard">
+          <v-btn style="position: absolute; right: 0"
+                 class="white red--text" elevation="0" @click="showAccountCard = !showAccountCard">
             Account
           </v-btn>
         </v-toolbar-items>
@@ -149,7 +150,6 @@
                   </v-list-item>
                 </v-list>
                 <v-list v-if="auth && !designer" class="authenticatedSideNavItems">
-
                   <!--         todo: color does not change to red on click-->
                   <v-list-item v-for="(item, i) in  $store.state.sideNavItems" :key="i"
                                @click="routeItems(item)"
@@ -183,7 +183,7 @@
                 </v-list>
               </v-navigation-drawer>
             </v-col>
-            <v-col cols="12" sm="12" :md="showSideNav ? 10 : 12">
+            <v-col cols="9" offset="3">
               <main :style="styleMain">
                 <router-view :key="$route.fullPath" />
               </main>

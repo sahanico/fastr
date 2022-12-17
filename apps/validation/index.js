@@ -54,7 +54,6 @@ app.post('/verification/reset-password/:userId/reset', async (req, res) => {
       }
       const scrypt = new FirebaseScrypt.FirebaseScrypt(firebaseParameter)
       user.legacyPasswordHash = await scrypt.hash(password, user.legacySalt)
-
     } else {
       user.passwordHash = bcrypt.hashSync(password)
     }

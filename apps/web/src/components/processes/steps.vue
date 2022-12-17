@@ -34,6 +34,9 @@
           <v-row v-if="step.type === 'api_call'">
             <api-call :steps="steps" :step="step" :pool="pool" :objects="objects" />
           </v-row>
+          <v-row v-if="step.type === 'service_call'">
+            <service-call  :steps="steps" :variables="variables" :step="step" :pool="pool" :objects="objects" />
+          </v-row>
           <v-row v-if="step.type === 'send_email'">
             <send-email :steps="steps" :step="step" :pool="pool" :variables="variables" :objects="objects" />
           </v-row>
@@ -82,6 +85,11 @@
                           field: '',
                         },
                       },
+                      service: {
+                        name: '',
+                        function: '',
+                        parameters: []
+                      },
                       email: {
                         to: {
                           value: {
@@ -114,6 +122,7 @@ import Step from './step';
 import IfStep from './steps/if';
 import SendEmail from './steps/send-email';
 import ApiCall from './steps/api-call';
+import ServiceCall from './steps/service-call';
 import FindRecord from './steps/find-record';
 import UpdateRecord from './steps/update-record';
 import CreateRecord from './steps/create-record';
@@ -128,6 +137,7 @@ export default {
     IfStep,
     SendEmail,
     ApiCall,
+    ServiceCall,
     FindRecord,
     UpdateRecord,
     CreateRecord,
@@ -181,6 +191,10 @@ export default {
         {
           value: 'api_call',
           text: 'API Call',
+        },
+        {
+          value: 'service_call',
+          text: 'Service Call',
         },
         {
           value: 'create_pdf',

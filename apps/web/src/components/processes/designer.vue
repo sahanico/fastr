@@ -109,6 +109,10 @@ export default {
           text: 'API Call',
         },
         {
+          value: 'service_call',
+          text: 'Service Call',
+        },
+        {
           value: 'create_pdf',
           text: 'Create PDF',
         },

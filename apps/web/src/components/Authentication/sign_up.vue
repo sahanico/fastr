@@ -26,7 +26,7 @@
                 </v-flex>
                 <v-flex offset-xs2 xs8>
                   <address-field v-model="address" class="mb-3" label="Address" :required="true"
-                                 data-text="address-field"/>
+                                 data-text="address-field" name="signup-address"/>
                 </v-flex>
                 <v-flex offset-xs2 xs8>
                   <v-text-field v-model="email" :rules="[rules.required, rules.email]" data-text="email-field"

@@ -9,6 +9,10 @@ dotenv.config({ path: './.env' });
 const hostname = process.env.HOST_ENV || 'localhost';
 const port = process.env.HOST_PORT;
 const server = http.createServer(app);
+process.on("uncaughtException", function(err) {
+  console.error(err);
+});
+
 
 // eslint-disable-next-line no-console
 mongoose

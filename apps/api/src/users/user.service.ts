@@ -315,15 +315,15 @@ async function signup(params: {
       name: fullName,
       address: params.address,
       role: Role.User,
-      approved: false,
+      approved: "false",
       userId: userId.toString(),
       createdAt: date,
       updatedAt: date,
       createdBy: userId.toString(),
       updatedBy: userId.toString(),
-      emailVerified: false,
+      emailVerified: "false",
       acceptedTermsDate: date,
-      acceptedTerms: true,
+      acceptedTerms: "true",
       userImage: '',
       account: accountRecordId.toString(),
       accountMember: accountMemberRecordId.toString(),
@@ -445,19 +445,14 @@ async function sendVerificationEmail(
   });
 }
 
-async function approveUser(userId: string) {
+async function approveUser(userId: any) {
   // todo: update user Record,
-  const user = await db.User.findOne({ userId });
-  const userRecord = await db.User.findOne({ _id: user._id });
-  if (!userRecord.approved) {
-    userRecord.approved = true;
-    await userRecord.save();
-  }
-
-  if (!user.approved) {
-    user.approved = true;
-    await user.save();
+  const user = await db.User.findOne({ _id: userId });
+  const userRecord = await db.Record.findOne({ object: 'user', 'data.userId': userId });
+  if (userRecord.data.approved === 'false') {
+    userRecord.data.approved = "true";
     await sendVerificationEmail(user);
+    return db.Record.updateOne({ _id: userRecord._id.toString() }, userRecord);
     return true;
   }
   return false;

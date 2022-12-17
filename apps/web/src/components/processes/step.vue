@@ -59,6 +59,13 @@
               @addStep="addStep" @updateStep="updateStep"
               @cancelStep="cancelStep"/>
         </v-row>
+        <v-row v-if="step.type.value === 'service_call'">
+          <service-call
+              :steps="steps" :name="step.name" :context="context"
+              :objects="objects" :pool="pool"
+              @addStep="addStep" @updateStep="updateStep"
+              @cancelStep="cancelStep"/>
+        </v-row>
         <v-row v-if="step.type.value === 'send_email'">
           <send-email :steps="steps" :step="step" :objects="objects"
                       :pool="pool" @addStep="addStep" @cancelStep="cancelStep"/>
@@ -76,6 +83,7 @@
 <script>
 import SendEmail from './steps/send-email';
 import ApiCall from './steps/api-call';
+import ServiceCall from './steps/service-call';
 import FindRecord from './steps/find-record';
 import UpdateRecord from './steps/update-record';
 import CreateRecord from './steps/create-record';
@@ -87,6 +95,7 @@ export default {
   components: {
     SendEmail,
     ApiCall,
+    ServiceCall,
     FindRecord,
     UpdateRecord,
     CreateRecord,

@@ -1,7 +1,7 @@
 <template>
   <v-text-field :id="name" v-model="value" :disabled="context === 'read'" :label="label"
                  color="red" :required="required" @input="updateValue(value)"
-                :ref="name"  placeholder="">
+                :ref="name"  placeholder="" autofocus>
   </v-text-field>
 </template>
 
@@ -44,7 +44,7 @@ export default {
     },
   },
   created() {
-    if (this.form[this.name]) {
+    if (this.form && this.form[this.name]) {
       this.value = this.form[this.name];
     }
   },

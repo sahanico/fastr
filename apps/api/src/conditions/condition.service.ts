@@ -6,7 +6,7 @@ async function evaluate(lhsValue: any, operator: string, rhsValue: any, rhs: any
   if (operator === '==') {
     if (_.isArray(lhsValue)) {
       // return the array items that matter
-      return _.filter(lhsValue, item => item.data[lhs.field] === rhsValue)
+      return _.filter(lhsValue, item => item.data[lhs.field] == rhsValue)
     } else {
       evaluation = lhsValue === rhsValue;
     }
