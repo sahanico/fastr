@@ -17,7 +17,7 @@ process.on("uncaughtException", function(err) {
 // eslint-disable-next-line no-console
 mongoose
   .connect(`${process.env.MONGODB_URI || 'http://localhost:27017'}`, {
-    dbName: 'fastr',
+    dbName: 'taxdollar',
   })
   // eslint-disable-next-line no-console
   .then(() => console.log('done'));

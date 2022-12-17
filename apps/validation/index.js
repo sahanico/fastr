@@ -1,4 +1,5 @@
 const http = require('http');
+const path = require('path');
 const express = require('express');
 const db = require('./db');
 const bodyParser = require('body-parser');
@@ -16,16 +17,21 @@ app.use(cors({
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+process.on("uncaughtException", function(err) {
+  console.error(err);
+});
 app.get('/verification/email/:verificationToken', async (req, res) => {
   try {
     const user = await db.User.findOne({ verificationToken: req.params.verificationToken });
+    const userRecord = await db.Record.findOne({ object: 'user', 'data.userId': user._id.toString() });
+
     if (!user) res.status(400).send({ message: 'Verification failed. No user Found' });
-    user.emailVerified = true;
-    user.verificationToken = undefined;
-    await user.save();
-    res.status(200).
-      sendFile('/home/ubuntu/workspaces/taxdollar/taxdollar-verification/success.html');
+    userRecord.data.emailVerified = 'true';
+    await db.Record.updateOne({ _id: userRecord._id }, userRecord);
+    const currentFilePath = __filename;
+    const currentDirectory = path.dirname(currentFilePath);
+    const file = path.join(currentDirectory, 'success.html');
+    res.status(200).sendFile(file);
   } catch (e) {
     console.log('error: ', e);
   }

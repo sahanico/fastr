@@ -19,6 +19,6 @@
     "express": "^4.17.1",
     "firebase-scrypt": "^2.2.0",
     "joi": "^17.4.0",
-    "mongoose": "^5.11.17"
+    "mongoose": "^6.5.1"
   }
 }
