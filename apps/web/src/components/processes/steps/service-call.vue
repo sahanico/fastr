@@ -8,7 +8,7 @@
             <v-select v-model="step.meta.service.name" label="Service Name" required :items="['user']" />
           </v-col>
           <v-col cols="12" sm="3">
-            <v-select v-model="step.meta.service.function" :items="['approveUser']"
+            <v-select v-model="step.meta.service.function" :items="['approveUser', 'inviteUser']"
                       label="Service Function" />
           </v-col>
         </v-row>

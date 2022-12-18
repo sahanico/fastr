@@ -4,6 +4,9 @@ import _ from "underscore";
 async function evaluate(lhsValue: any, operator: string, rhsValue: any, rhs: any, lhs: any) {
   let evaluation: any = false;
   if (operator === '==') {
+    if (_.isArray(rhsValue)) {
+      return _.filter(rhsValue, item => item.data[rhs.field] == lhsValue)[0]
+    }
     if (_.isArray(lhsValue)) {
       // return the array items that matter
       return _.filter(lhsValue, item => item.data[lhs.field] == rhsValue)

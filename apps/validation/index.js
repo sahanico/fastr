@@ -40,15 +40,19 @@ app.get('/verification/email/:verificationToken', async (req, res) => {
 app.get('/verification/reset-password/:userId', async (req, res) => {
   const user = await db.User.findOne({ userId: req.params.userId });
   if (!user) res.status(400).send({ message: 'Reset failed. No user Found' });
+
+  const currentFilePath = __filename;
+  const currentDirectory = path.dirname(currentFilePath);
+  const file = path.join(currentDirectory, 'reset-password.html');
   res.status(200).
-    sendFile('/home/ubuntu/workspaces/taxdollar/taxdollar-verification/reset-password.html');
+    sendFile(file);
 });
 
 app.post('/verification/reset-password/:userId/reset', async (req, res) => {
   const password = req.body.password
   console.log('req.data: ', req.body);
   try {
-    const user = await db.User.findOne({ userId: req.params.userId });
+    const user = await db.User.findOne({ _id: req.params.userId });
     if (!user) res.status(400).send({ message: 'Reset failed. No user Found' });
     console.log('user: ', user)
     if (user.authType === 'legacy') {
@@ -61,12 +65,22 @@ app.post('/verification/reset-password/:userId/reset', async (req, res) => {
       const scrypt = new FirebaseScrypt.FirebaseScrypt(firebaseParameter)
       user.legacyPasswordHash = await scrypt.hash(password, user.legacySalt)
     } else {
+      console.log('password: ', password);
+      console.log('password hash before: ', user.passwordHash);
       user.passwordHash = bcrypt.hashSync(password)
+      console.log('password hash: ', user.passwordHash);
+      const compare4 = bcrypt.compareSync(password, user.passwordHash);
+      console.log('compare4: ', compare4);
     }
     console.log('user: ', user);
-    await user.save();
+    const savedUser = await db.User.updateOne({ _id: user._id.toString() }, user);
+    console.log('savedUser: ', savedUser);
+
+    const currentFilePath = __filename;
+    const currentDirectory = path.dirname(currentFilePath);
+    const file = path.join(currentDirectory, 'success.html');
     res.status(200).
-      sendFile('/home/ubuntu/workspaces/taxdollar/taxdollar-verification/success.html');
+      sendFile(file);
   } catch (e) {
     console.log('error: ', e);
   }

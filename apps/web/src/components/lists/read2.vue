@@ -212,7 +212,7 @@ export default {
       });
       await this.$router.push({
         name: 'DashboardRead',
-        params: { design, name: this.list.meta.create, input: this.input },
+        params: { design, name: this.list.meta.create, input: this.input, context: 'create' },
       });
       this.$forceUpdate();
     },

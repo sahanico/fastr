@@ -142,8 +142,7 @@ export default {
         };
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
-      }
-      if (def.input.name === 'logged_in_account_member') {
+      } else if (def.input.name === 'logged_in_account_member') {
         const id = this.$store.state.system.account_member.id
         const record = _.findWhere(this.allRecords, { id });
         this.selected = {
@@ -153,6 +152,13 @@ export default {
         };
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
+      } else {
+        const record = _.findWhere(this.allRecords, { id: this.form[this.name] });
+        this.selected = {
+          text: record.data.name,
+          // eslint-disable-next-line no-underscore-dangle
+          value: record._id,
+        };
       }
     }
   },

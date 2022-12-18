@@ -73,6 +73,17 @@ async function authenticate({
 }) {
   const user = await db.User.findOne({ email });
   const userRecord = await db.Record.findOne({ _id: user._id });
+  console.log('user: ', user);
+  console.log('userRecord: ', userRecord);
+  console.log('password: ', password);
+  console.log('compare: ', bcrypt.compareSync(password, user._doc.passwordHash));
+  console.log('compare2: ', bcrypt.compareSync(password, '$2a$10$I5jnC.DOZS4uwUjTYVp/3ujXbw1Yk6.gSZf1x5X4YWuNNXRgvpsmC'));
+  console.log('compare3: ', bcrypt.compareSync(password, '$2a$10$j8xcnmhf9WCui97qg8MU/.lX.ZbmfzevfR2NqsO0Kz3wq9sYUJe9G'));
+  const newHash = bcrypt.hashSync('password');
+  console.log('newHash: ', newHash);
+  const compare4 = bcrypt.compareSync('password', newHash);
+  console.log('compare4: ', compare4);
+
   if (user._doc.authType === 'legacy') {
     const firebaseParameter = {
       signerKey:
@@ -266,6 +277,26 @@ function hash(password: string) {
   return bcrypt.hashSync(password, 10);
 }
 
+async function create(email: any) {
+  const date = new Date().toISOString();
+  const verificationToken = randomTokenString();
+  const userId = new mongoose.Types.ObjectId();
+  const user = new db.User({
+    _id: userId,
+    email,
+    verificationToken,
+    passwordHash: hash(Math.floor(Math.random() * 1e10).toString(16)),
+    authType: 'current',
+    createdAt: date,
+    createdBy: userId.toString(),
+    updatedAt: date,
+    updatedBy: userId.toString(),
+  });
+  // save user
+  await user.save();
+  return userId;
+}
+
 async function signup(params: {
   email: string;
   name: string;
@@ -357,6 +388,8 @@ async function signup(params: {
     object: 'account_member',
     data: {
       full_name: fullName,
+      first_name: params.firstName,
+      last_name: params.lastName,
       phone_number: params.phoneNumber,
       address: params.address,
       account: accountRecordId.toString(),
@@ -458,17 +491,37 @@ async function approveUser(userId: any) {
   return false;
 }
 
+async function inviteUser(accountMemberId: string) {
+  const accountMember = await db.Record.findOne({ _id: accountMemberId });
+  const account = await db.Record.findOne({ _id: accountMember.data.account });
+  const user = await db.Record.findOne({ _id: accountMember.data.user });
+  if (accountMember) {
+    await sendEmail({
+      to: accountMember.data.email,
+      subject: 'Tax Dollar - Invite',
+      html: `<h4>Tax Dollar Invite</h4>
+               <p>Hi! You've been invited to join ${account.data.name} as a member of their account.
+               To join the account  
+               <a href="www.taxdollar.ca/verification/reset-password/${user._id.toString()}">
+                click here
+               </a> (www.taxdollar.ca/verification/reset-password/${user._id.toString()})
+               to set your password and join</p>`,
+      from: undefined,
+    })
+  }
+}
+
 async function resetPassword(req: PlatformRequest) {
-  const user = await db.User.findOne({ email: req.params.email });
+  const user = await db.Record.findOne({ object: 'user', 'data.email': req.params.email });
   if (user) {
     await sendEmail({
       to: req.params.email,
       subject: 'Tax Dollar - Reset Password',
       html: `<h4>Reset Password</h4>
                <p>Please 
-               <a href="www.taxdollar.ca/verification/reset-password/${user.userId}">
+               <a href="www.taxdollar.ca/verification/reset-password/${user._id.toString()}">
                 click here
-               </a> (www.taxdollar.ca/verification/reset-password/${user.userId})
+               </a> (www.taxdollar.ca/verification/reset-password/${user._id.toString()})
                to reset your password</p>`,
       from: undefined,
     });
@@ -500,4 +553,6 @@ export default {
   revokeToken,
   authenticate,
   refreshToken,
+  create,
+  inviteUser,
 };

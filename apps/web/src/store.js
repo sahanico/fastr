@@ -113,11 +113,11 @@ export default new Vuex.Store({
       if (res.data === 'Username or password is incorrect') {
         return res.data;
       }
-      if (!res.data['approved']) {
+      if (res.data['approved'] === 'false') {
         // return 'your account has not been approved yet. Please contact an administrator'
         return 'not approved';
       }
-      if (res.data['approved'] && !res.data['emailVerified']) {
+      if (res.data['emailVerified'] === 'false') {
         // return 'your account has not been approved yet. Please contact an administrator'
         return 'not verified';
       }

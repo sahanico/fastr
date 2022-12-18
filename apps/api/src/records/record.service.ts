@@ -15,11 +15,12 @@ async function createRecord(record: PlatformRecord) {
       uniqueFields.push(field.name);
     }
   });
-  console.log('record: ', record)
+  const id = new mongoose.Types.ObjectId()
+  console.log('record: ', record);
   const data = {
-    _id: new mongoose.Types.ObjectId(),
+    _id: id,
     object: record.object,
-    data: record.data,
+    data: { ...record.data, id: id.toString()},
     createdAt: new Date().toISOString(),
   };
 

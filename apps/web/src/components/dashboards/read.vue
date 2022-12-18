@@ -23,11 +23,11 @@
                        :h="item.h"
                        :i="item.i">
               <div v-if="item.value.type==='form'">
-                <div :style="{height: item.h}" v-if="!input">
+                <div :style="{height: item.h}" v-if="context === 'create' || !input">
                   <create-form :input="input" :form-name="item.value.name"
                                :name="`create-form-${item.value.name}`"/>
                 </div>
-                <div :style="{height: item.h}" v-if="input">
+                <div :style="{height: item.h}" v-if="context !== 'create' && input">
                   <form-update :input="input"
                                context="update" :design-name="item.value.name"
                                :name="`update-form-${item.value.name}`" :inputId="inputId"/>
@@ -108,7 +108,7 @@ export default {
     RequestRead,
     CalendarRead,
   },
-  props: ['input', 'inputId', 'name', 'getPageLabel', 'designTest'],
+  props: ['input', 'inputId', 'name', 'getPageLabel', 'designTest', 'context'],
   data() {
     return {
       layout: [],

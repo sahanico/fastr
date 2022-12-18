@@ -9,6 +9,7 @@ import db from '../db';
 import sendEmail from '../send-email';
 import conditionService from "../conditions/condition.service";
 import userService from "../users/user.service";
+import ObjectDictionaryService from "../objectDictionary/objectDictionary.service";
 
 async function getProcessByName(name: any) {
   const process = await db.Design.findOne({ name });
@@ -17,6 +18,48 @@ async function getProcessByName(name: any) {
   }
   return false;
 }
+async function createUser(step: any, pool: any) {
+  console.log('step: ', step);
+  // get the step.meta.user - grab the variable from pool. use the value of the field
+  const variable = pool[step.meta.user.email.variable.value.name];
+  return userService.create(variable.data[step.meta.user.email.field.value]);
+}
+
+async function createRecord(step: any, pool: any) {
+  console.log('step: ', step);
+  const object = await db.ObjectDictionary.findOne( { name: step.object });
+  const record: any = {
+    _id: pool['create_user'], // for inviting account members
+    object: step.object,
+    createdAt: new Date().toISOString(),
+  }
+  // compose data:
+  const data: any = {};
+  _.each(step.meta.fields, field => {
+    console.log('field: ', field);
+    if (field.type === 'field') {
+    const variable = pool[field.variable.value.name];
+      if (field.variable.value.name === 'create_user') {
+        data[field.text] = variable.toString();
+      } else {
+        data[field.text] = variable.data[field.field.value];
+      }
+    } else if (field.type === 'literal') {
+      data[field.text] = field.value;
+    }
+
+    console.log('data: ', data)
+  })
+
+  record.data = data;
+  console.log('record: ', record);
+  const create = await db.Record.create(record);
+  if (create) {
+    return record;
+  }
+  return false;
+}
+
 async function updateRecord(
     step: {
       label: string,
@@ -28,6 +71,7 @@ async function updateRecord(
         fields: {
           text: string,
           value: string,
+          variable: any,
         }[],
         variable: {
           text: string
@@ -41,11 +85,28 @@ async function updateRecord(
     pool: any,
 ) {
   const variable = pool[step.meta.variable.value.name];
+  const object = await ObjectDictionaryService.getObjectByName({ name: step.meta.variable.value.object })
   // find and update
-  const record = await db.Record.findOne({ _id: variable._id });
+  let record = await db.Record.findOne({ _id: variable._id });
+  if (!record) {
+    record = await db.Record.findOne({ _id: variable.data.id });
+  }
   if (record) {
     _.each(step.meta.fields, field => {
-      record.data[field.text] = field.value;
+      // account member is array - need to append.
+      const objectField = _.findWhere(object.fields, { name: field.text });
+      if (objectField.type === 'object_array') {
+        const value = pool[field.text].data[field.value]
+        record.data[field.text].push(value);
+      } else if (objectField.type === 'object') {
+        const value = pool[field.text].data[field.value]
+        record.data[field.text] = value;
+      }  else if (objectField.type === 'user') {
+        const value = pool[field.variable.value.name].data[field.value]
+        record.data[field.text] = value;
+      } else {
+        record.data[field.text] = field.value;
+      }
     })
     try {
       return db.Record.updateOne({ _id: record._id.toString() }, record);
@@ -75,6 +136,9 @@ async function runServiceStep(
       // get the varName from pool
       const variable = _.filter(pool, item => item.name === step.object)
       return userService.approveUser(variable[0].data[service.parameters[0].field.value]);
+    } else if (service.function === 'inviteUser') {
+      const variable = _.filter(pool, item => item.name === step.object);
+      return userService.inviteUser(variable[0].data[service.parameters[0].field.value])
     }
   }
   return false;
@@ -306,6 +370,12 @@ async function runProcess(
     } else if (step.type === 'update_record') {
       console.log('------------------Update Record------------------');
       poolMap[step.name] = await updateRecord(step, poolMap);
+    } else if (step.type === 'create_record') {
+      console.log('------------------Create Record------------------');
+      poolMap[step.name] = await createRecord(step, poolMap);
+    } else if (step.type === 'create_user') {
+      console.log('------------------Create User------------------');
+      poolMap[step.name] = await createUser(step, poolMap);
     }
   }
   return result || true;
