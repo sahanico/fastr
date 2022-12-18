@@ -222,7 +222,7 @@ import AccountCard from './components/Users/account-card';
 import Terms from './components/Users/terms';
 
 export default {
-  title: 'Factor-e',
+  title: 'Taxdollar',
   name: 'App',
   components: {
     AccountCard,

@@ -97,7 +97,7 @@
                 }}</a>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <v-chip  v-if="attachment.name"
+              <v-chip  dense v-if="attachment.name"
                 truncate v-for="(attachment, index) in item['attachments']" :key="index">
                 <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
                   {{ attachment.name }}

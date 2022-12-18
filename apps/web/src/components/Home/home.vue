@@ -249,7 +249,7 @@
 <script>
 
 export default {
-  title: 'Factor-e',
+  title: 'Taxdollar',
   data() {
     return {
       carouselItems: [
