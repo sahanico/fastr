@@ -154,8 +154,9 @@ export default {
         this.$emit('input', record._id);
       } else {
         const record = _.findWhere(this.allRecords, { id: this.form[this.name] });
+
         this.selected = {
-          text: record.data.name,
+          text: record.data.name || record.data.first_name,
           // eslint-disable-next-line no-underscore-dangle
           value: record._id,
         };

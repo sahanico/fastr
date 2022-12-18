@@ -223,7 +223,12 @@ async function runCreatePdf(
     if (stepFields[fieldName]) {
       const field = form.getTextField(fieldName);
       try {
-        field.setText(variable.data[fieldName]);
+        if (typeof variable.data[fieldName] === 'number') {
+          field.setText(variable.data[fieldName]?.toString());
+        } else {
+          field.setText(variable.data[fieldName]);
+        }
+
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log('e: ', e);

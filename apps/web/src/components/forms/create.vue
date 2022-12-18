@@ -257,6 +257,7 @@ export default {
           data: this.form,
         };
 
+        const createRecord = await this.$store.dispatch('createRecord', record);
         if (record && record.data.attachments) {
           if (createRecord) {
             const fd = new FormData();
@@ -277,7 +278,6 @@ export default {
         this.createdDialog = true;
         // todo : get response from backend, if unique field data already exists, show dialog
 
-        const createRecord = await this.$store.dispatch('createRecord', record);
         this.$emit('submitForm', createRecord.id);
         this.form = {};
       }

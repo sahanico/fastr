@@ -31,6 +31,18 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    updateAcceptedTerms(state) {
+      state = {
+        ...state,
+        system: {
+          ...state.system,
+          user: {
+            ...state.system.user,
+            acceptedTerms: 'true'
+          }
+        }
+      }
+    },
     authUser(state, userData) {
       state.user = userData;
     },

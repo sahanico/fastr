@@ -28,19 +28,18 @@ async function uploadAttachment(req: PlatformRequest | Request, res: Response) {
           console.log('err: ', err);
         });
         doc.path.push(attachmentPath as never);
-        doc.path.push(attachmentPath as never);
       });
-      // eslint-disable-next-line no-await-in-loop
-      await db.Record.findOne({ _id: req.body.record });
-      // eslint-disable-next-line no-await-in-loop
-      await db.Record.updateOne(
-        { _id: req.body.record },
-        { 'data.attachments': data }
-      );
-      return res.sendStatus(200);
-    }
 
-    return res.sendStatus(500);
+    }
+    // eslint-disable-next-line no-await-in-loop
+    await db.Record.findOne({ _id: req.body.record });
+    // eslint-disable-next-line no-await-in-loop
+    await db.Record.updateOne(
+      { _id: req.body.record },
+      { 'data.attachments': data }
+    );
+
+    return res.sendStatus(200);
   }
   return res.sendStatus(500);
 }

@@ -260,7 +260,7 @@ export default {
       }
       this.acceptedTerms = signedInUser.acceptedTerms;
       this.termsDialog = !signedInUser.acceptedTerms;
-      if (signedInUser.acceptedTerms === false) {
+      if (signedInUser.acceptedTerms === 'false') {
         this.termsDialog = true;
       }
       if (signedInUser === 'not approved') {

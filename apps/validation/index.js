@@ -50,11 +50,9 @@ app.get('/verification/reset-password/:userId', async (req, res) => {
 
 app.post('/verification/reset-password/:userId/reset', async (req, res) => {
   const password = req.body.password
-  console.log('req.data: ', req.body);
   try {
     const user = await db.User.findOne({ _id: req.params.userId });
     if (!user) res.status(400).send({ message: 'Reset failed. No user Found' });
-    console.log('user: ', user)
     if (user.authType === 'legacy') {
       const firebaseParameter = {
         signerKey: 'h/h6oax0PvR8Kjyz1ZGEnzD4lPacK/EdIJr/d6zFJ9bj2lSSDQVOY+vSrAYZfe9Lc9WSgzPfFLpD+/aV5dLk7w==',
@@ -65,12 +63,7 @@ app.post('/verification/reset-password/:userId/reset', async (req, res) => {
       const scrypt = new FirebaseScrypt.FirebaseScrypt(firebaseParameter)
       user.legacyPasswordHash = await scrypt.hash(password, user.legacySalt)
     } else {
-      console.log('password: ', password);
-      console.log('password hash before: ', user.passwordHash);
       user.passwordHash = bcrypt.hashSync(password)
-      console.log('password hash: ', user.passwordHash);
-      const compare4 = bcrypt.compareSync(password, user.passwordHash);
-      console.log('compare4: ', compare4);
     }
     console.log('user: ', user);
     const savedUser = await db.User.updateOne({ _id: user._id.toString() }, user);

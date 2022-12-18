@@ -193,6 +193,19 @@
       </div>
     </template>
 
+    <template>
+      <v-dialog v-model="termsDialog" :persistent="!acceptedTerms">
+        <div>
+          <v-card style="padding:25px;">
+            <Terms></Terms>
+            <v-btn color="red darken-2 white--text" type="button"
+                   @click="acceptTerms()">ACCEPT
+            </v-btn>
+          </v-card>
+        </div>
+      </v-dialog>
+    </template>
+
 
     <!--    <div v-if="auth">-->
     <div v-if="showAccountCard" class="hidden-sm-and-down"
@@ -206,12 +219,14 @@
 <script>
 import _ from 'underscore';
 import AccountCard from './components/Users/account-card';
+import Terms from './components/Users/terms';
 
 export default {
   title: 'Factor-e',
   name: 'App',
   components: {
     AccountCard,
+    Terms
   },
   data() {
     return {
@@ -220,6 +235,7 @@ export default {
       showAccountCard: false,
       showMobileOverflowCard: false,
       showSideNav: true,
+      termsDialog: false,
       authenticatedSideNavItems: [],
       designerSideNavItems: [],
       designItems: [
@@ -240,9 +256,20 @@ export default {
       ],
       adminItems: [],
       userItems: [],
+      acceptedTerms: false
     };
   },
   methods: {
+    async acceptTerms() {
+      this.termsDialog = false;
+      await this.$store.commit('updateAcceptedTerms')
+      const acceptedTermsUser = await this.$store.dispatch('updateUserTermsAndConditions', {
+        acceptedTerms: 'true',
+      });
+      if (acceptedTermsUser) {
+        await this.$router.push('/signed_in');
+      }
+    },
     myProfile() {
       this.$router.push('/users/user_profile');
     },
@@ -367,6 +394,13 @@ export default {
     },
   },
   computed: {
+    showTermsDialog() {
+      if (this.$store.state.system.user && this.$store.state.system.user.acceptedTerms === 'false') {
+        this.termsDialog = true;
+      } else {
+        this.acceptedTerms = false;
+      }
+    },
     styleMain() {
       const style = 'padding-top: 64px; background-color: #f5f5f5';
       // if (this.showSideNav) {
@@ -385,9 +419,6 @@ export default {
     },
     designer() {
       return this.$store.getters.isDesigner;
-    },
-    acceptedTerms() {
-      return this.$store.getters.acceptedTerms;
     },
     user() {
       return this.$store.getters.user;

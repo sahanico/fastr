@@ -73,17 +73,6 @@ async function authenticate({
 }) {
   const user = await db.User.findOne({ email });
   const userRecord = await db.Record.findOne({ _id: user._id });
-  console.log('user: ', user);
-  console.log('userRecord: ', userRecord);
-  console.log('password: ', password);
-  console.log('compare: ', bcrypt.compareSync(password, user._doc.passwordHash));
-  console.log('compare2: ', bcrypt.compareSync(password, '$2a$10$I5jnC.DOZS4uwUjTYVp/3ujXbw1Yk6.gSZf1x5X4YWuNNXRgvpsmC'));
-  console.log('compare3: ', bcrypt.compareSync(password, '$2a$10$j8xcnmhf9WCui97qg8MU/.lX.ZbmfzevfR2NqsO0Kz3wq9sYUJe9G'));
-  const newHash = bcrypt.hashSync('password');
-  console.log('newHash: ', newHash);
-  const compare4 = bcrypt.compareSync('password', newHash);
-  console.log('compare4: ', compare4);
-
   if (user._doc.authType === 'legacy') {
     const firebaseParameter = {
       signerKey:
@@ -203,13 +192,14 @@ async function updateUserTermsAndConditions(
   req: PlatformRequest,
   payload: Record<string, any>
 ) {
-  // todo: update user record, not user.
-  const user = await db.User.findOneAndUpdate(
-    { userId: req.params.id },
-    payload
-  );
+  const user = await db.Record.findOne( {_id: req.params.id });
+  user.data = {
+    ...user.data,
+    ...payload,
+  }
+  const updatedUser = await db.Record.updateOne( {_id: req.params.id }, user);
   const jwtToken = generateJwtToken(user);
-  if (user) {
+  if (updatedUser) {
     return {
       ...basicDetails(user._doc),
       ...payload,
@@ -255,9 +245,9 @@ async function getRefreshTokens(userId: string) {
 
 async function sendAlreadyRegisteredEmail(
   email: string
-  // origin = 'https://www.taxdollar.ca'
+  // origin = 'https://new.taxdollar.ca'
 ) {
-  const message = `<p>If you don't know your password please visit the <a href="https://www.taxdollar.ca/sign_in">
+  const message = `<p>If you don't know your password please visit the <a href="https://new.taxdollar.ca/sign_in">
         Sign in page and click the forgot password button</a>
         </p>`;
 
@@ -409,7 +399,7 @@ async function signup(params: {
       to: params.email, // todo: change email address to const email
       subject: 'Taxdollar - Sign Up Successful',
       html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
-        in www.taxdollar.ca</p>\n
+        in new.taxdollar.ca</p>\n
         </p>\n<p><b>What to expect Next:</b> </p>\n
         </p>\n<p>An admin will approve your newly created account
         before you can continue to use our exciting services to fulfill all your tax needs ! </p>
@@ -456,7 +446,7 @@ async function getApprovalRequests() {
 
 async function sendVerificationEmail(
   user: PlatformUser,
-  origin = 'https://www.taxdollar.ca'
+  origin = 'https://new.taxdollar.ca'
 ) {
   let message;
 
@@ -502,9 +492,9 @@ async function inviteUser(accountMemberId: string) {
       html: `<h4>Tax Dollar Invite</h4>
                <p>Hi! You've been invited to join ${account.data.name} as a member of their account.
                To join the account  
-               <a href="www.taxdollar.ca/verification/reset-password/${user._id.toString()}">
+               <a href="new.taxdollar.ca/verification/reset-password/${user._id.toString()}">
                 click here
-               </a> (www.taxdollar.ca/verification/reset-password/${user._id.toString()})
+               </a> (new.taxdollar.ca/verification/reset-password/${user._id.toString()})
                to set your password and join</p>`,
       from: undefined,
     })
@@ -519,9 +509,9 @@ async function resetPassword(req: PlatformRequest) {
       subject: 'Tax Dollar - Reset Password',
       html: `<h4>Reset Password</h4>
                <p>Please 
-               <a href="www.taxdollar.ca/verification/reset-password/${user._id.toString()}">
+               <a href="new.taxdollar.ca/verification/reset-password/${user._id.toString()}">
                 click here
-               </a> (www.taxdollar.ca/verification/reset-password/${user._id.toString()})
+               </a> (new.taxdollar.ca/verification/reset-password/${user._id.toString()})
                to reset your password</p>`,
       from: undefined,
     });

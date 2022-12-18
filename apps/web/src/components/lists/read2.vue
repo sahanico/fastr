@@ -96,10 +96,11 @@
                 }}</a>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <a v-for="(attachment, index) in item['attachments']" :key="index"
-                 @click="downloadAttachment(attachment)" href="javascript:void(0)">
-                {{ attachment.name }}
-              </a>
+              <div v-for="(attachment, index) in item['attachments']" :key="index">
+                <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
+                  {{ attachment.name }}
+                </a>
+              </div>
             </template>
           </v-data-table>
         </v-col>
