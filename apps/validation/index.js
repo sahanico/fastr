@@ -38,7 +38,7 @@ app.get('/verification/email/:verificationToken', async (req, res) => {
 });
 
 app.get('/verification/reset-password/:userId', async (req, res) => {
-  const user = await db.User.findOne({ userId: req.params.userId });
+  const user = await db.User.findOne({ _id: req.params.userId });
   if (!user) res.status(400).send({ message: 'Reset failed. No user Found' });
 
   const currentFilePath = __filename;
