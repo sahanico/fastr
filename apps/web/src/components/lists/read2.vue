@@ -68,6 +68,7 @@
           <v-data-table :headers="listHeaders"
                         :items="formattedRecords"
                         :search="queries"
+                        items-per-page="8"
                         :sort-by="list.meta.sort.field"
                         :sort-desc="list.meta.sort.mode === 'descending'"
                         item-key="items.key">
@@ -96,11 +97,12 @@
                 }}</a>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <div v-for="(attachment, index) in item['attachments']" :key="index">
+              <v-chip  v-if="attachment.name"
+                truncate v-for="(attachment, index) in item['attachments']" :key="index">
                 <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
                   {{ attachment.name }}
                 </a>
-              </div>
+              </v-chip>
             </template>
           </v-data-table>
         </v-col>
