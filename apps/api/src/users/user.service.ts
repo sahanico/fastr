@@ -98,7 +98,9 @@ async function authenticate({
   const token = generateRefreshToken(user, ipAddress);
 
   // save refresh token
-  await token.save();
+  const saveToken = await token.save();
+
+  console.log('saveToken: ', saveToken);
 
   // return basic details and tokens
   return {

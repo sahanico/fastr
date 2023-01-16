@@ -222,7 +222,6 @@ export default (app: Application) => {
   );
   app.get(
     '/api/user/:id/get-all-dashboard-permission',
-    authorize(),
     Permission.getAllDashboardPermission
   );
   app.post(

@@ -94,6 +94,7 @@ export default {
   methods: {
     logOut() {
       this.$router.push('/log_out');
+      this.$emit('hideAccountCard');
     },
   },
 };

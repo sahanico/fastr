@@ -13,7 +13,7 @@ import db from "../db";
 function setTokenCookie(res: Response, token: string) {
   const cookieOptions = {
     httpOnly: true,
-    expires: new Date(Date.now() + 60 * 60 * 1000),
+    expires: new Date(Date.now() + 15 * 1000),
     secure: true,
     sameSite: 'none',
   };
