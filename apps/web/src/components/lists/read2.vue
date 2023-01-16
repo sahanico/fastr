@@ -20,6 +20,13 @@
         {{ list.meta.showLabel ? list.label : '' }}
       </div>
       <v-container>
+        <v-row v-if="list.meta.inputBoilerPlate">
+          <v-col>
+            <div class="headline red--text pt-2 mt-2">
+              {{ input.data.full_name }}
+            </div>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col cols="1" offset="10" v-if="list.meta.import">
             <div align="right">

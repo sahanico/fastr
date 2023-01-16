@@ -156,6 +156,9 @@
                     <v-checkbox v-model="design.meta.searchable" label="Global Search" />
                   </v-col>
                   <v-col>
+                    <v-checkbox v-model="design.meta.inputBoilerPlate" label="Input Boilerplate" />
+                  </v-col>
+                  <v-col>
                     <v-checkbox v-model="design.meta.import" label="Show Import Button" />
                   </v-col>
                   <v-col>
@@ -358,6 +361,7 @@ export default {
           adminFilter: '',
           create: '',
           searchable: false,
+          inputBoilerPlate: false,
           import: false,
           showLabel: false,
           sort: {
