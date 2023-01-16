@@ -23,7 +23,7 @@
         <v-row v-if="list.meta.inputBoilerPlate">
           <v-col>
             <div class="headline red--text pt-2 mt-2">
-              {{ input.data.full_name }}
+              {{ `${input.data.first_name} ${input.data.last_name}` }}
             </div>
           </v-col>
         </v-row>
