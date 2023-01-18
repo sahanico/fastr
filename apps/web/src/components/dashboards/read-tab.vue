@@ -27,11 +27,11 @@
                        :h="item.h"
                        :i="item.i">
               <div v-if="item.value.type==='form'">
-                <div :style="{height: item.h}" v-if="!input">
+                <div :style="{height: item.h}" v-if="!inputId">
                   <create-form :input="input" :form-name="item.value.name"
                                :name="`create-form-${item.value.name}`"/>
                 </div>
-                <div :style="{height: item.h}" v-if="input">
+                <div :style="{height: item.h}" v-if="inputId">
                   <form-update :input="input" :name="`form-update-${item.value.name}`"
                                context="update"
                                :design-name="item.value.name" :inputId="inputId"/>

@@ -25,7 +25,7 @@ import DashboardRead from '../dashboards/read-tab';
 
 export default {
   components: { DashboardRead },
-  props: ['design', 'name', 'obj', 'input', 'inputId'],
+  props: ['design', 'name', 'obj', 'input', 'inputId', 'id'],
   data() {
     return {
       tab: 0,

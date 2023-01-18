@@ -70,7 +70,7 @@
               </v-list>
             </v-navigation-drawer>
           </v-col>
-          <v-col :cols="auth ? 10 : 12" >
+          <v-col :cols="auth ? 10 : 12" :offset="showSideNav ? 2 : 0" >
             <main :style="styleMain">
               <router-view :key="$route.fullPath" />
             </main>
@@ -124,7 +124,7 @@ export default {
       return this.$store.getters.isDesigner;
     },
     styleMain() {
-      return 'padding-top: 64px; background-color: #f5f5f5';
+      return 'padding-top: 50px; background-color: #f5f5f5';
     },
   },
   methods: {

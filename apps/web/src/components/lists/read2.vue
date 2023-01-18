@@ -23,6 +23,7 @@
         <v-row v-if="list.meta.inputBoilerPlate">
           <v-col>
             <div class="headline red--text pt-2 mt-2">
+              <!-- fix hardcoding -->
               {{ `${input.data.first_name} ${input.data.last_name}` }}
             </div>
           </v-col>
@@ -75,7 +76,7 @@
           <v-data-table :headers="listHeaders"
                         :items="formattedRecords"
                         :search="queries"
-                        items-per-page="8"
+                        :items-per-page="8"
                         :sort-by="list.meta.sort.field"
                         :sort-desc="list.meta.sort.mode === 'descending'"
                         item-key="items.key">
@@ -104,8 +105,8 @@
                 }}</a>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <v-chip  dense v-if="attachment.name"
-                truncate v-for="(attachment, index) in item['attachments']" :key="index">
+              <v-chip dense v-if="attachment.name"
+                      truncate v-for="(attachment, index) in item['attachments']" :key="index">
                 <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
                   {{ attachment.name }}
                 </a>
@@ -126,7 +127,7 @@ export default {
   components: {
     CreateForm,
   },
-  props: ['designName', 'input'],
+  props: ['designName', 'input', 'inputId'],
   data() {
     return {
       list: {},
@@ -140,13 +141,13 @@ export default {
       bind: null,
       queries: '',
       loading: true,
-    }
+    };
   },
   computed: {
     formattedRecords() {
       if (!this.list) return [];
       let accountId = '';
-      const object = _.findWhere(this.objects, { name: this.list.object })
+      const object = _.findWhere(this.objects, { name: this.list.object });
       const recs = [];
       const clonedRecords = JSON.parse(JSON.stringify(this.records));
       _.each(clonedRecords, record => {
@@ -157,13 +158,13 @@ export default {
               record.data[field.name] = record.data[field.name].text;
             } else {
               const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
-              const fieldData = record.data[field.name]
+              const fieldData = record.data[field.name];
               _.each(fieldData, data => {
                 const rec = _.findWhere(clonedRecords, { _id: data });
                 if (rec && rec.data) {
-                  record.data[field.name].push(rec.data[fieldObject.primaryField])
+                  record.data[field.name].push(rec.data[fieldObject.primaryField]);
                 }
-              })
+              });
             }
           }
           if (field.type === 'object') {
@@ -171,7 +172,7 @@ export default {
               record.data[field.name] = record.data[field.name].text;
             } else {
               const fieldObject = _.findWhere(this.objects, { name: field.meta.object });
-              const fieldData = record.data[field.name]
+              const fieldData = record.data[field.name];
               const rec = _.findWhere(clonedRecords, { _id: fieldData });
               if (rec && rec.data) {
                 record.data[field.name] = rec.data[fieldObject.primaryField];
@@ -187,19 +188,19 @@ export default {
               record.data[field.name].push(data.name);
             });
           }
-        })
+        });
         if (record.actions) {
           recs.push({ id: record.id, ...record.data, accountId, actions: record.actions });
         } else {
           recs.push({ id: record.id, ...record.data, accountId, actions: [] });
         }
-      })
+      });
       return recs;
-    }
+    },
   },
   methods: {
     generateIcon(action) {
-      if(action.icon === 'pay') {
+      if (action.icon === 'pay') {
         return ' mdi-credit-card ';
       } else if (action.icon === 'download') {
         return ' mdi-download ';
@@ -249,7 +250,7 @@ export default {
 
       const data = await this.$store.dispatch('runProcess', {
         process: processName,
-        pool: [{...variable, data: item, _id: item.id}],
+        pool: [{ ...variable, data: item, _id: item.id }],
       });
       // only download when process is a download process
       if (action.icon === 'download') {
@@ -265,19 +266,25 @@ export default {
         name: this.bind,
       });
       console.log('listItem: ', listItem);
-      const record = _.findWhere(this.records, { id: listItem.id })
+      const record = _.findWhere(this.records, { id: listItem.id });
       console.log('record: ', record);
       await this.$router.push({
-        name: 'DashboardRead',
+        path: `/dashboard/read/${this.bind}/${record.id}`,
+        name: 'DashboardReadWithInput',
         // eslint-disable-next-line no-underscore-dangle
-        params: { design, name: this.bind, input: record, inputId: listItem.id },
+        params: { design, name: this.bind, input: record, inputId: record.id },
       });
       this.$forceUpdate();
     },
   },
-  async created () {
-    this.list = await this.$store.dispatch('getDesignByName', { name: this.designName })
+  async created() {
+    this.list = await this.$store.dispatch('getDesignByName', { name: this.designName });
     console.log('list: ', this.list);
+    console.log('input: ', this.input);
+    if (!this.input && this.inputId) {
+      this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
+    }
+    console.log('inputId: ', this.inputId);
     console.log('input: ', this.input);
     this.objects = await this.$store.dispatch('getAllObjects');
     this.records = await this.$store.dispatch(
@@ -285,8 +292,8 @@ export default {
       {
         list: this.designName,
         system: this.$store.state.system,
-        input: { object: this.list.object, data: this.input }
-      }
+        input: { object: this.list.object, data: this.input },
+      },
     );
     console.log('this.record: ', this.records);
     _.each(this.list.meta.layout, (item) => {
@@ -303,6 +310,6 @@ export default {
     }
     this.bind = this.list.meta.bindTo;
     this.loading = false;
-  }
-}
+  },
+};
 </script>

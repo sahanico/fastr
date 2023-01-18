@@ -110,6 +110,7 @@ class Record {
     res: Response
   ) {
     const { list: listName, system, input } = req.body;
+
     // get the list
     const list = await designService.getDesignByName({ name: listName});
     let records = await recordService.getRecordsByObject({ object: list.object });

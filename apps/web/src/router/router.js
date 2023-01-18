@@ -367,10 +367,12 @@ export default new Router({
       name: 'DashboardRead',
       component: DashboardRead,
       props: true,
-      // children: [{
-      //   path: 'tabs/:name',
-      //   component: DashboardRead,
-      // }],
+    },
+    {
+      path: '/dashboards/read/:name/:inputId',
+      name: 'DashboardReadWithInput',
+      component: DashboardRead,
+      props: true,
     },
     {
       path: '/forms/create',

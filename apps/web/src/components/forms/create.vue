@@ -8,7 +8,7 @@
           </v-card-title>
           <v-spacer></v-spacer>
           <v-btn color="black" text type="button"
-                 @click="createdDialog = false">Ok
+                 @click="createdDialog = false; $router.back();">Ok
           </v-btn>
         </v-card>
       </v-dialog>
