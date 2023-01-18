@@ -8,6 +8,7 @@
       </v-app-bar-title>
       <v-toolbar-items v-if="!auth" class="hidden-sm-and-down">
         <v-btn to="/sign_in" data-test="sign-in-btn-app-bar"
+               style="position: absolute; right: 0"
                class="white red--text elevation-0 btn-sign-in" text router>
           Sign In
         </v-btn>

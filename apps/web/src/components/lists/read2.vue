@@ -3,7 +3,7 @@
     <v-dialog v-model="createFormDialog" width="500" height="100%">
       <v-card>
         <v-container>
-          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
+          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog" :inDialog="true"
                        :name="`create-form-${selectedAction.createFormDialog}`"/>
         </v-container>
         <v-card-actions>
@@ -22,7 +22,7 @@
       <v-container>
         <v-row v-if="list.meta.inputBoilerPlate">
           <v-col>
-            <div class="headline red--text pt-2 mt-2">
+            <div class="headline red--text pt-2 mt-2" v-if="input && input.data">
               <!-- fix hardcoding -->
               {{ `${input.data.first_name} ${input.data.last_name}` }}
             </div>
@@ -90,7 +90,7 @@
                            <v-icon small @click="clickAction(action, item)"
                                    :style="{ paddingRight: '5px' }">
                             {{ generateIcon(action) }}
-                          </v-icon>
+                          </v-icon> {{ action.label }}
                         </v-btn>
                       </template>
                       <span>{{ action.label }}</span>
@@ -108,7 +108,13 @@
               <v-chip dense v-if="attachment.name"
                       truncate v-for="(attachment, index) in item['attachments']" :key="index">
                 <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
-                  {{ attachment.name }}
+                  {{ attachment ?
+                  attachment.name ?
+                    attachment.name.length > 20 ?
+                      `...${attachment.name.slice(-20)}` :
+                      attachment.name :
+                    '' :
+                  '' }}
                 </a>
               </v-chip>
             </template>
@@ -179,6 +185,11 @@ export default {
               }
             }
           }
+          if (field.type === 'date' || field.type === 'date_time' || field.type === 'user') {
+            if (record.data[field.name] && record.data[field.name].text) {
+              record.data[field.name] = record.data[field.name].text;
+            }
+          }
           if (typeof fieldData === 'string') {
             accountId = (fieldData);
           }
@@ -208,6 +219,8 @@ export default {
         return ' mdi-check-decagram ';
       } else if (action.icon === 'cancel') {
         return ' mdi-cancel ';
+      } else if (action.icon === 'archive') {
+        return ' inventory ';
       }
       return ' mdi-check-decagram ';
     },
@@ -230,12 +243,12 @@ export default {
     async clickAction(action, item) {
       if (action.type === 'process') {
         await this.runProcess(action.process, item, action);
+        location.reload();
       } else if (action.type === 'create-form-dialog') {
         this.selectedAction = action;
         this.selectedItem = item;
         this.createFormDialog = true;
       }
-      location.reload();
     },
     async runProcess(processName, item, action) {
       const process = await this.$store.dispatch('getDesignByName', {

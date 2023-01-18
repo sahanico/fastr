@@ -12,11 +12,10 @@
             flat>
       <v-list class="white red--text">
         <v-list-item v-for="(item, index) in $store.state.sideNavItems"
-                     :to="`${$route.path === '/'
-                      ? 'dashboards/read/' + $store.state.sideNavItems[index].name
-                       : $store.state.sideNavItems[index].name}`"
                      v-if="index > 1"
-                     @click="showMobileOverflowCard = !showMobileOverflowCard"
+                     @click="$router.push({
+                      path: `${'/dashboards/read/' + $store.state.sideNavItems[index].name}`
+                     }); showMobileOverflowCard = !showMobileOverflowCard"
                      :key="index" router>
           <v-list-item-content align="right">
             <v-list-item-title v-text="item.label"></v-list-item-title>
@@ -39,7 +38,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="auth">
         <v-btn color="white" text dark type="button" style="position: absolute; right: 0"
-               @click="showAccountCard = !showAccountCard">
+               @click="showAccountCard = !showAccountCard;">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </v-toolbar-items>
@@ -61,18 +60,16 @@
         <v-icon>mdi-lock</v-icon>
       </v-btn>
       <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
-             :to="`${$route.path === '/'
-              ? 'dashboards/read/' + $store.state.sideNavItems[0].name
-               : $store.state.sideNavItems[0].name}`"
-             @click="showMobileOverflowCard = false">
+             @click="$router.push({
+                      path: `${'/dashboards/read/' + $store.state.sideNavItems[0].name}`
+                     }); showMobileOverflowCard = false">
         <span>{{ $store.state.sideNavItems[0].label }}</span>
         <v-icon>mdi-{{ $store.state.sideNavItems[0].icon }}</v-icon>
       </v-btn>
       <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
-             :to="`${$route.path === '/'
-              ? 'dashboards/read/' + $store.state.sideNavItems[1].name
-               : $store.state.sideNavItems[1].name}`"
-             @click="showMobileOverflowCard = false">
+             @click="$router.push({
+                      path: `${'/dashboards/read/' + $store.state.sideNavItems[1].name}`
+                     }); showMobileOverflowCard = false">
         <span>{{ $store.state.sideNavItems[1].label }}</span>
         <v-icon>mdi-{{ $store.state.sideNavItems[1].icon }}</v-icon>
       </v-btn>
@@ -82,7 +79,9 @@
       </v-btn>
       <v-btn v-if="auth && $store.state.sideNavItems.length < 4"
              v-for="(item, index) in $store.state.sideNavItems"
-             :to="`${$route.path === '/' ? 'dashboards/read/' + item.name : item.name}`"
+             @click="$router.push({
+                      path: `${'/dashboards/read/' + $store.state.sideNavItems[index].name}`
+                     }); showMobileOverflowCard = !showMobileOverflowCard"
              :key="index" router>
         <span>{{ item.label }}</span>
         <v-icon>mdi-{{ item.icon }}</v-icon>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-click-outside="config">
     <v-card width="375" min-height="440" rounded>
       <div>
         <v-flex offset-xs4 xs8 style="margin-top: 12px;padding-top: 12px;">
@@ -82,6 +82,10 @@ export default {
   },
   data() {
     return {
+      config: {
+        handler: this.hideAccountCard,
+        events: ['click'],
+      },
       termsDialog: false,
       privacyDialog: false,
     };
@@ -94,6 +98,9 @@ export default {
   methods: {
     logOut() {
       this.$router.push('/log_out');
+      this.$emit('hideAccountCard');
+    },
+    hideAccountCard() {
       this.$emit('hideAccountCard');
     },
   },

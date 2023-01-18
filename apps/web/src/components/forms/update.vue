@@ -24,7 +24,7 @@
                     <fields v-model="input.data[item.value.name]" :form.sync="input.data" :item="item"
                             :input-id="inputId" context="read"></fields>
                   </div>
-                  <div v-if="context === 'update'">
+                  <div v-if="context === 'update' && input && input.data">
                     <fields v-model="input.data[item.value.name]" :form.sync="input.data" :item="item"
                             :input-id="inputId" context="update"></fields>
                   </div>

@@ -8,7 +8,7 @@
           </v-card-title>
           <v-spacer></v-spacer>
           <v-btn color="black" text type="button"
-                 @click="createdDialog = false; $router.back();">Ok
+                 @click="createdDialog = false; updateNavigation;">Ok
           </v-btn>
         </v-card>
       </v-dialog>
@@ -87,7 +87,7 @@ export default {
     VueSignaturePad,
     Fields,
   },
-  props: ['formName', 'input', ' pool'],
+  props: ['formName', 'input', ' pool', 'inDialog'],
   data() {
     return {
       pool: {},
@@ -181,6 +181,13 @@ export default {
     },
   },
   methods: {
+    updateNavigation() {
+      if (this.inDialog) {
+        this.$router.go();
+      } else {
+        this.$router.back();
+      }
+    },
     updateHeight(value, index) {
       this.layout[index].h = Math.ceil(value / this.height);
     },

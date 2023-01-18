@@ -5,6 +5,7 @@ import router from '@/router/router';
 import underscore from 'vue-underscore';
 // import DatetimePicker from 'vuetify-datetime-picker';
 import Vuetify from 'vuetify';
+import vco from 'v-click-outside';
 import 'vuetify/dist/vuetify.min.css';
 // import 'vuetify/src/styles/main.sass';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
@@ -14,6 +15,8 @@ import VueYouTubeEmbed from 'vue-youtube-embed';
 import App from './App';
 import store from './store';
 import titleMixin from './mixins/titleMixin';
+
+Vue.use(vco);
 
 Vue.use(Vuetify);
 

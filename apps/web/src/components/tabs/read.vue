@@ -35,6 +35,7 @@ export default {
   },
   computed: {
     tabs() {
+      if (!this.tab || !this.tab.meta || !this.tab.meta.layout) return [];
       return _.map(this.tab.meta.layout, (item) => {
         const design = _.findWhere(this.designs, { name: item.value.name });
         return {

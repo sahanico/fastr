@@ -297,8 +297,20 @@ async function transformRecordObjects(records: any, objectName: string) {
   const object = await ObjectDictionaryService.getObjectByName({ name: objectName });
   let objectFields: any[] = [];
   _.each(object.fields, field => {
-    if (field.type === 'object' || field.type === 'object_array') {
+    if (field.type === 'object' || field.type === 'object_array' ) {
       objectFields.push(field);
+    }
+  });
+  let dateFields: any[] = [];
+  _.each(object.fields, field => {
+    if (field.type === 'date' || field.type === 'date_time') {
+      dateFields.push(field);
+    }
+  });
+  let userFields: any[] = [];
+  _.each(object.fields, field => {
+    if (field.type === 'user' ) {
+      userFields.push(field);
     }
   });
   for (const field of objectFields) {
@@ -318,6 +330,30 @@ async function transformRecordObjects(records: any, objectName: string) {
             }
           }
         }
+      }
+    }
+  }
+  for (const field of dateFields) {
+    for (const record of records) {
+      if (record.data[field.name]) {
+        record.data[field.name] = {
+          value: record.data[field.name],
+          text: new Date(record.data[field.name]).toLocaleDateString(
+            "en-US",
+            {year: "numeric", month: "long", day: "numeric"}
+          )
+        };
+      }
+    }
+  }
+  for (const field of userFields) {
+    for (const record of records) {
+      if (record.data[field.name]) {
+        const userRecord = await getRecordByObjectID({ id: record.data[field.name]})
+        record.data[field.name] = {
+          value: record.data[field.name],
+          text: `${userRecord.data.firstName} ${userRecord.data.lastName}`
+        };
       }
     }
   }

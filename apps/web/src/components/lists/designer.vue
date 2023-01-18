@@ -379,7 +379,7 @@ export default {
       createdDialog: false,
       updatedDialog: false,
       designs: [],
-      icons: ['download', 'approve', 'pay', 'cancel'],
+      icons: ['download', 'approve', 'pay', 'cancel', 'archive'],
       layout: [],
       index: 0,
       column: 1,

@@ -58,6 +58,7 @@
     <template v-if="item.value.type==='dropdown'">
       <dropdown-field v-model="form[item.value.name]" :context="context" :item="item"
                       :disabled="item.value.meta.disabled"
+                      :default="item.value.meta ? item.value.meta.default : null"
                       :name=item.value.name :form="form" :required="item.value.required">
       </dropdown-field>
     </template>
@@ -77,7 +78,7 @@
     <template v-if="item.value.type==='date'">
       <date-field v-model="form[item.value.name]" :name="item.value.name" :form="form"
                   :required="item.value.required" :label="item.value.label"
-                  :default="item.value.meta.default"
+                  :default="item.value.meta ? item.value.meta.default : null"
                   :context="context"></date-field>
     </template>
     <!-- Checkbox Field -->
