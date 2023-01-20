@@ -94,9 +94,6 @@ export default {
       { name: this.designName },
     );
 
-    console.log('this.input: ', this.input);
-    console.log('this.inputId: ', this.inputId);
-
     if (!this.input && this.inputId) {
       this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
     }

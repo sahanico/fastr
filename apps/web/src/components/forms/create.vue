@@ -164,7 +164,6 @@ export default {
           const createRecord = await this.$store.dispatch('createRecord', record);
           this.$emit('submitForm', createRecord.id);
           this.form = {};
-          console.log('approval', JSON.stringify(response));
         },
       },
     };
@@ -206,10 +205,8 @@ export default {
         });
         // });
         _.each(this.design.meta.layout, (item) => {
-          console.log('ping');
           const def = item.value.meta.default;
           if (def && def.type === 'input') {
-            console.log('def: ', def)
             if (def.input.field && def.input.name && this.pool[def.input.name]) {
               const record = this.pool[def.input.name]
               this.form[item.value.name] = record.data.id;
@@ -223,7 +220,6 @@ export default {
           }
         });
       });
-      console.log('this.form: ', this.form)
       this.inputsDialog = false;
     },
     getObjectRecords(name) {
@@ -258,7 +254,6 @@ export default {
       if (this.design.object === 'payment') {
         this.processPayment();
       } else {
-        console.log('this.form', this.form);
         const record = {
           object: this.design.object,
           data: this.form,
@@ -357,14 +352,11 @@ export default {
       _.each(this.design.meta.inputs, input => {
         if (input.type === 'object' && input.feeder === 'pool') {
           _.each(this.layout, item => {
-            console.log(input.name);
             if (
               item.value.meta &&
               item.value.meta.default &&
               item.value.meta.default.input.name === input.name
             ) {
-              console.log('ping: ', item.value.name);
-              console.log('ping: ', this.input[item.value.meta.default.input.field]);
               if(item.value.type === 'number') {
                 this.form[item.value.name] = parseInt(this.input[item.value.meta.default.input.field], 10)
               } else {

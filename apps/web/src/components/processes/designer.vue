@@ -127,7 +127,6 @@ export default {
           object: item.object,
         }
       }));
-      console.log('poolVariables: ', poolVariables);
       const stepVariables = _.map(this.design.meta.steps, step => {
         if(step.type === 'if') {
           _.each(step.meta.steps, item =>  ({ text: item.label, value: item.name }));

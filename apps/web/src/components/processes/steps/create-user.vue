@@ -39,7 +39,6 @@ export default {
       if (this.step.meta.user.email.variable === '') return [];
       if (this.step.meta.user.email.variable) {
         const object = _.findWhere(this.objects, {name: this.step.meta.user.email.variable.value.object });
-        console.log('object: ', object);
         if (!object) return [];
         return _.map(object.fields, item => ({
           text: item.label,

@@ -139,7 +139,6 @@ export default {
     },
     // inputObject() {
     //   if (this.field.value.meta.default.input.name) {
-    //     console.log('ping');
     //     const input = _.findWhere(this.design.meta.inputs, {
     //       name: this.field.value.meta.default.input.name,
     //     });
@@ -154,7 +153,6 @@ export default {
       }));
     },
     autocompleteObjectFields() {
-      console.log('this.inputObject: ', this.inputObject);
       if (this.inputObject) {
         const object = _.findWhere(this.objects, { name: this.inputObject });
 

@@ -14,7 +14,6 @@ export default {
   methods: {
     updateValue(value) {
       // change value to string instead of boolean
-      // console.log(typeof value);
       this.$emit('input', value);
     },
   },

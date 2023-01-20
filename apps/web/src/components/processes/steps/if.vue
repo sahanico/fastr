@@ -52,9 +52,7 @@ export default {
     autocompleteLHSPoolItemFields() {
       if (this.step.meta.lhs_pool_item) {
         const poolItem = _.findWhere(this.pool, { name: this.step.meta.lhs_pool_item })
-        console.log('object: ', object);
         const object = _.findWhere(this.objects, { name: poolItem.object });
-        console.log('object: ', object);
         if(!object) return [];
         return _.map(object.fields, field => ({ text: field.label, value: field.name }));
       }

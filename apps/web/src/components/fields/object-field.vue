@@ -67,7 +67,6 @@ export default {
         // if (height !== 0) this.$emit('updateHeight', height, this.rootFormFieldIndex);
         // return height;
         if (form[this.name] !== this.selected) {
-          console.log('this.pool:', this.pool);
           if (this.pool && this.pool[this.name] && this.pool[this.name].data) {
             this.selected = {
               text: this.pool[this.name].data.name,
@@ -82,7 +81,6 @@ export default {
     },
   },
   async created() {
-    console.log('this.form[this.name]', this.form[this.name]);
     if (this.context === 'create' || this.context === 'update') {
       if (typeof this.object.meta.object === 'string') {
         this.allRecords = await this.$store.dispatch('getRecordsByObject', {

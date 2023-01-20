@@ -61,7 +61,6 @@ export default {
     autocompleteLHSVariableFields() {
       if (this.statement.lhs.variable) {
         const object = _.findWhere(this.objects, { name: this.statement.lhs.variable.object });
-        console.log('object: ', object);
         if(!object) return [];
         return _.map(object.fields, field => ({ text: field.label, value: field.name }));
       }

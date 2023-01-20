@@ -61,7 +61,6 @@ export default {
       // } else if ((comstr = e.dataTransfer.getData('text/component'))) {
       //   let com = JSON.parse(comstr);
       //   com = { ...com, ...coords };
-      //   console.log('in handledrop:::: else bloc 2');
       //   addComponents.push(com);
       // }
       this.eventbus.$emit(EVENT_COMPONENT_ADD,

@@ -10,8 +10,6 @@ import {saveAs} from 'file-saver';
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex);
-
-console.log('BASE_API_URL: ', process.env.BASE_API_URL);
 const BASE_API_URL = `${process.env.BASE_API_URL}/api`;
 
 export default new Vuex.Store({
@@ -249,7 +247,6 @@ export default new Vuex.Store({
 
     },
     async uploadAttachment({ state }, fd) {
-      console.log('fd: ', fd);
       let res = await $.ajax({
         url: `${BASE_API_URL}/admin/${state.user.userId}/upload-attachment`,
         cache: false,
@@ -259,14 +256,12 @@ export default new Vuex.Store({
         type: 'POST',
         headers: authHeader(),
       });
-      console.log('reS: ', res);
       if (res.status === 200) {
         return res.data;
       }
       return false;
     },
     async uploadTemplate({ state }, fd) {
-      console.log('fd: ', fd);
       let res = await $.ajax({
         url: `${BASE_API_URL}/admin/${state.user.userId}/upload-template`,
         cache: false,
@@ -276,7 +271,6 @@ export default new Vuex.Store({
         type: 'POST',
         headers: authHeader(),
       });
-      console.log('reS: ', res);
       if (res.status === 200) {
         return res.data;
       }
@@ -1090,7 +1084,6 @@ export default new Vuex.Store({
       return false;
     },
     async getRecordByObjectID({ state }, payload) {
-      console.log('payload',payload);
       const records = await axios({
         method: 'post',
         url: `${BASE_API_URL}/admin/${state.user.userId}/get-record-by-objectID`,

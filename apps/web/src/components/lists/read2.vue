@@ -259,8 +259,6 @@ export default {
 
       const variable = _.findWhere(pool, { feeder: 'input' });
 
-      console.log('variable: ', variable);
-
       const data = await this.$store.dispatch('runProcess', {
         process: processName,
         pool: [{ ...variable, data: item, _id: item.id }],
@@ -278,9 +276,7 @@ export default {
       const design = await this.$store.dispatch('getDesignByName', {
         name: this.bind,
       });
-      console.log('listItem: ', listItem);
       const record = _.findWhere(this.records, { id: listItem.id });
-      console.log('record: ', record);
       await this.$router.push({
         path: `/dashboard/read/${this.bind}/${record.id}`,
         name: 'DashboardReadWithInput',
@@ -292,13 +288,9 @@ export default {
   },
   async created() {
     this.list = await this.$store.dispatch('getDesignByName', { name: this.designName });
-    console.log('list: ', this.list);
-    console.log('input: ', this.input);
     if (!this.input && this.inputId) {
       this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
     }
-    console.log('inputId: ', this.inputId);
-    console.log('input: ', this.input);
     this.objects = await this.$store.dispatch('getAllObjects');
     this.records = await this.$store.dispatch(
       'getRecordsForList',
@@ -308,7 +300,6 @@ export default {
         input: { object: this.list.object, data: this.input },
       },
     );
-    console.log('this.record: ', this.records);
     _.each(this.list.meta.layout, (item) => {
       this.listHeaders.push({
         value: item.value.name,
