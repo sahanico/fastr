@@ -84,17 +84,10 @@
               <span v-for="(action, index) in item.actions" :key="index">
                 <template>
                   <div>
-                    <v-tooltip top style="background-color: red">
-                      <template v-slot:activator="{ on }">
-                        <v-btn v-on="on" color="red" icon>
-                           <v-icon small @click="clickAction(action, item)"
-                                   :style="{ paddingRight: '5px' }">
-                            {{ generateIcon(action) }}
-                          </v-icon> {{ action.label }}
+                        <v-btn class="white red--text" elevation="0"
+                               @click="clickAction(action, item)">
+                          {{ action.label }}
                         </v-btn>
-                      </template>
-                      <span>{{ action.label }}</span>
-                    </v-tooltip>
                   </div>
                 </template>
               </span>
