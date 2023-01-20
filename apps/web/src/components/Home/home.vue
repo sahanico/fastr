@@ -141,17 +141,41 @@
 
               <div class="subheading pr-3 pl-3 pb-2 red--text ">Canada Pension Plan</div>
               <div class="body-2 pr-3 pl-4 pb-2  ">
-                - Contributions are up from 4.95 % to 5.1 % on earnings between
-                $3,500 and $47,400.
+                - Contributions are 5.70% (2022) and 5.7% (2023)on earnings between $3,500 and
+                $47,400.
               </div>
               <div class="body-2 pr-3 pl-4 pb-2  ">
-                - The rate will gradually increase to 5.95 % by 2023
+                - The rate will gradually increase to 5.95% by 2023
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-2  ">
+                - Maximum Pensionable Amounts $64,900 (for 2022) and $ 66,600 (for 2023)
               </div>
 
               <div class="subheading pr-3 pl-3 pb-2 red--text">Employment Insurance Premiums</div>
               <div class="body-2 pr-3 pl-4 pb-3">
-                - Premiums are reduced from $1.66 to $1.62 per $100 of insurable
-                earnings.
+                - Premiums are $1.58% (2022) and $1.63 per $100 of insurable earnings.
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-3">
+                - Maximum Insurable Earnings $ 60,300 for 2022 and $ 61500 for 2023.
+              </div>
+
+              <div class="subheading pr-3 pl-3 pb-2 red--text">Tax Filing Deadline for 2022</div>
+              <div class="body-2 pr-3 pl-4 pb-3">
+                - April 30, 2023 falls on Sunday, May 1st is the Last day for filing your return.
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-3">
+                - If you or your spouse has self employment income the last date for filing Income
+                Tax Return is June 15th.
+              </div>
+
+              <div class="subheading pr-3 pl-3 pb-2 red--text">Balance Owing for 2022</div>
+              <div class="body-2 pr-3 pl-4 pb-3">
+                - For payment of Balance owing for 2022 April 30 , even if you or your spouse are
+                self employed.
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-3">
+                - If you or your spouse has self employment income the last date for filing Income
+                Tax Return is June 15th.
               </div>
 
               <div class="subheading pr-3 pl-3 pb-2 red--text">Canada Workers Benefit</div>
@@ -168,14 +192,33 @@
 
               <div class="subheading pr-3 pl-3 pb-2 red--text">Basic Personal Amount</div>
               <div class="body-2 pr-3 pl-4 pb-3 ">
-                - The basic personal amount rises from $11,809 to $12,069.
+                The maximum BPA will be increased to $15,000 by 2023 as follows:
+              </div>
+              <div class="body-2 pr-3 pl-4 ">
+                - $13,808 for the 2021 taxation year
+              </div>
+              <div class="body-2 pr-3 pl-4">
+                - $14,398 for the 2022 taxation year
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-3 ">
+                - $15,000 for the 2023 taxation year, and indexed for inflation for
+                subsequent years.
+              </div>
+              <div class="body-2 pr-3 pl-4 pb-3 ">
+                Individuals whose net income is too high to benefit from the increased
+                BPA will continue to claim the existing BPA. This existing amount will
+                continue to be indexed for inflation each year.
               </div>
 
 
               <div class="subheading pr-3 pl-3 pb-2 red--text">Tax Free Saving Account</div>
               <div class="body-2 pr-3 pl-4 pb-3  ">
-                - The annual contribution limit to tax-free savings accounts will
-                increase from $5,500 to $6,000.
+                - The annual contribution limit to tax-free savings accounts will increase from
+                $6,000 to $6500.
+              </div>
+              <div class="subheading pr-3 pl-3 pb-2 red--text">Age Amount</div>
+              <div class="body-2 pr-3 pl-4 pb-3  ">
+                - Age amount (for seniors) has been increased from $7713 (2021) to $7898 (2022)
               </div>
 
             </v-card>
