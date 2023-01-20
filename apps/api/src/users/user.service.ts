@@ -247,9 +247,9 @@ async function getRefreshTokens(userId: string) {
 
 async function sendAlreadyRegisteredEmail(
   email: string
-  // origin = 'https://new.taxdollar.ca'
+  // origin = 'https://taxdollar.ca'
 ) {
-  const message = `<p>If you don't know your password please visit the <a href="https://new.taxdollar.ca/sign_in">
+  const message = `<p>If you don't know your password please visit the <a href="https://taxdollar.ca/sign_in">
         Sign in page and click the forgot password button</a>
         </p>`;
 
@@ -401,7 +401,7 @@ async function signup(params: {
       to: params.email, // todo: change email address to const email
       subject: 'Taxdollar - Sign Up Successful',
       html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
-        in new.taxdollar.ca</p>\n
+        in taxdollar.ca</p>\n
         </p>\n<p><b>What to expect Next:</b> </p>\n
         </p>\n<p>An admin will approve your newly created account
         before you can continue to use our exciting services to fulfill all your tax needs ! </p>
@@ -448,7 +448,7 @@ async function getApprovalRequests() {
 
 async function sendVerificationEmail(
   user: PlatformUser,
-  origin = 'https://new.taxdollar.ca'
+  origin = 'https://taxdollar.ca'
 ) {
   let message;
 
@@ -494,9 +494,9 @@ async function inviteUser(accountMemberId: string) {
       html: `<h4>Tax Dollar Invite</h4>
                <p>Hi! You've been invited to join ${account.data.name} as a member of their account.
                To join the account  
-               <a href="new.taxdollar.ca/verification/reset-password/${user._id.toString()}">
+               <a href="taxdollar.ca/verification/reset-password/${user._id.toString()}">
                 click here
-               </a> (new.taxdollar.ca/verification/reset-password/${user._id.toString()})
+               </a> (taxdollar.ca/verification/reset-password/${user._id.toString()})
                to set your password and join</p>`,
       from: undefined,
     })
@@ -511,9 +511,9 @@ async function resetPassword(req: PlatformRequest) {
       subject: 'Tax Dollar - Reset Password',
       html: `<h4>Reset Password</h4>
                <p>Please 
-               <a href="new.taxdollar.ca/verification/reset-password/${user._id.toString()}">
+               <a href="taxdollar.ca/verification/reset-password/${user._id.toString()}">
                 click here
-               </a> (new.taxdollar.ca/verification/reset-password/${user._id.toString()})
+               </a> (taxdollar.ca/verification/reset-password/${user._id.toString()})
                to reset your password</p>`,
       from: undefined,
     });
