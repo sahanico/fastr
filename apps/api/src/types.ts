@@ -8,7 +8,7 @@ export type SendEmail = {
 };
 
 export type PlatformRequest = Request & {
-  user: {
+  auth: {
     id: string;
     role: string;
     ownsToken: (token: string) => boolean;

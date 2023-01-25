@@ -18,7 +18,7 @@ function generateJwtToken(user: { id: string }) {
     { sub: user.id, id: user.id },
     process.env.JWT_SECRET || 'abcd',
     {
-      expiresIn: '3600m',
+      expiresIn: '15m',
     }
   );
 }
@@ -28,7 +28,7 @@ function randomTokenString() {
 }
 
 function generateRefreshToken(user: { id: string }, ipAddress: string) {
-  // create a refresh token that expires in 1 hour
+  // create a refresh token that expires in 1 day
   return new db.RefreshToken({
     user: user.id,
     token: randomTokenString(),
@@ -40,9 +40,7 @@ function generateRefreshToken(user: { id: string }, ipAddress: string) {
 function basicDetails(user: PlatformUser) {
   const {
     email,
-    verificationToken,
     _id,
-    passwordHash,
     authType,
     createdAt,
     createdBy,
@@ -51,9 +49,7 @@ function basicDetails(user: PlatformUser) {
   } = user;
   return {
     email,
-    verificationToken,
     _id,
-    passwordHash,
     authType,
     createdAt,
     createdBy,
@@ -100,16 +96,19 @@ async function authenticate({
   // save refresh token
   const saveToken = await token.save();
 
-  console.log('saveToken: ', saveToken);
-
   // return basic details and tokens
-  return {
+  const returnedUserData = {
     ...basicDetails(user),
     ...userRecord._doc.data,
     jwtToken,
     refreshToken: token.token,
     expiresIn: '15m',
   };
+
+  delete returnedUserData.passwordHash;
+  delete returnedUserData.verificationToken;
+
+  return returnedUserData;
 }
 
 async function getRefreshToken(token: string) {
@@ -547,4 +546,5 @@ export default {
   refreshToken,
   create,
   inviteUser,
+  generateJwtToken,
 };

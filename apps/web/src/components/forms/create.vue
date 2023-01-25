@@ -4,11 +4,11 @@
       <v-dialog v-model="createdDialog" width="400">
         <v-card>
           <v-card-title class="headline red white--text" dark
-                        primary-title> Design record has been saved!
+                        primary-title> {{ design.object }} has been saved!
           </v-card-title>
           <v-spacer></v-spacer>
           <v-btn color="black" text type="button"
-                 @click="createdDialog = false; updateNavigation;">Ok
+                 @click="updateNavigation;">Ok
           </v-btn>
         </v-card>
       </v-dialog>
@@ -181,7 +181,9 @@ export default {
   },
   methods: {
     updateNavigation() {
+      this.createdDialog = false;
       if (this.inDialog) {
+        this.$emit('closeDialog');
         this.$router.go();
       } else {
         this.$router.back();
@@ -277,11 +279,16 @@ export default {
             await this.$store.dispatch('uploadAttachment', fd);
           }
         }
-        this.createdDialog = true;
         // todo : get response from backend, if unique field data already exists, show dialog
 
-        this.$emit('submitForm', createRecord.id);
-        this.form = {};
+        if (this.inDialog) {
+          this.$emit('closeDialog');
+          this.createdDialog = false;
+        } else {
+          this.createdDialog = true;
+          this.$emit('submitForm', createRecord.id);
+          this.form = {};
+        }
       }
     },
     async processPayment() {

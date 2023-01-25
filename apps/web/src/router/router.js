@@ -363,15 +363,21 @@ export default new Router({
       props: true,
     },
     {
-      path: '/dashboards/read/:name',
+      path: '/dashboards/read/:designName',
       name: 'DashboardRead',
       component: DashboardRead,
+      meta: {
+        breadcrumb: 'List',
+      },
       props: true,
     },
     {
-      path: '/dashboards/read/:name/:inputId',
+      path: '/dashboards/read/:designName/:inputId',
       name: 'DashboardReadWithInput',
       component: DashboardRead,
+      meta: {
+        breadcrumb: 'List with input',
+      },
       props: true,
     },
     {

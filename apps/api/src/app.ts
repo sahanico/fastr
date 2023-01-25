@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: (origin, callback) => callback(null, true),
     credentials: true,
-    exposedHeaders: ['Set-Cookie'],
+    exposedHeaders: ['Set-Cookie', 'newAuthHeader'],
   })
 );
 app.post('/api/user/reset-password/:email', User.resetPassword as any);

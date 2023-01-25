@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, {InferSchemaType} from 'mongoose';
 
 const schema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -22,5 +22,7 @@ schema.set('toJSON', {
   versionKey: false,
 });
 
+
+export type PlatformRefreshToken = InferSchemaType<typeof schema>;
 // eslint-disable-next-line import/no-unused-modules
 export default mongoose.connection.useDb('taxdollar').model('RefreshToken', schema);

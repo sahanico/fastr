@@ -86,6 +86,7 @@ import WorkflowRead from '../workflows/read';
 import RequestRead from '../requests/read';
 
 export default {
+  name: 'DashboardReadTab',
   components: {
     GridLayout,
     GridItem,

@@ -72,7 +72,10 @@
             </v-navigation-drawer>
           </v-col>
           <v-col :cols="auth ? 10 : 12" :offset="showSideNav ? 2 : 0" >
-            <main :style="styleMain">
+            <main style="padding-top: 50px; background-color: #f5f5f5">
+              <div>
+                <breadcrumbs />
+              </div>
               <router-view :key="$route.fullPath" />
             </main>
           </v-col>
@@ -89,10 +92,12 @@
 
 <script>
 import AccountCard from './components/Users/account-card';
+import Breadcrumbs from './components/breadcrumbs';
 
 export default {
   components: {
     AccountCard,
+    Breadcrumbs,
   },
   data() {
     return {
@@ -124,9 +129,6 @@ export default {
     designer() {
       return this.$store.getters.isDesigner;
     },
-    styleMain() {
-      return 'padding-top: 50px; background-color: #f5f5f5';
-    },
   },
   methods: {
     async routeItems(item) {
@@ -136,7 +138,7 @@ export default {
       if (item.type === 'dashboard') {
         await this.$router.push({
           name: 'DashboardRead',
-          params: { name: item.name },
+          params: { designName: item.name },
         });
       } else if (item.type === 'screen') {
         await this.$router.replace({

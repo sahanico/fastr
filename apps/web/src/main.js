@@ -13,7 +13,7 @@ import '@mdi/font/css/materialdesignicons.css';
 // import './plugins/vuetify';
 import VueYouTubeEmbed from 'vue-youtube-embed';
 import App from './App';
-import store from './store';
+import { store } from './store';
 import titleMixin from './mixins/titleMixin';
 
 Vue.use(vco);

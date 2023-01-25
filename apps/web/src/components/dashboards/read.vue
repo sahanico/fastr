@@ -24,11 +24,11 @@
                        :i="item.i">
               <div v-if="item.value.type==='form'">
                 <div :style="{height: item.h}" v-if="context === 'create' || !input">
-                  <create-form :input="input" :form-name="item.value.name"
-                               :name="`create-form-${item.value.name}`"/>
+                  <create-form :input="input" :form-name="item.value.name" :inDialog="inDialog"
+                               :name="`create-form-${item.value.name}`" @closeDialog="closeDialog"/>
                 </div>
                 <div :style="{height: item.h}" v-if="context !== 'create' && input">
-                  <form-update :input="input"
+                  <form-update :input="input" :inDialog="inDialog"
                                context="update" :design-name="item.value.name"
                                :name="`update-form-${item.value.name}`" :inputId="inputId"/>
                 </div>
@@ -81,7 +81,7 @@
 <script>
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import VueSignaturePad from 'vue-signature-pad';
-import createForm from '../forms/create';
+import CreateForm from '../forms/create';
 import FormUpdate from '../forms/update';
 import ListRead from '../lists/read2';
 import ChartRead from '../charts/read';
@@ -91,13 +91,15 @@ import ButtonRead from '../buttons/read';
 import WorkflowRead from '../workflows/read';
 import RequestRead from '../requests/read';
 import CalendarRead from '../calendars/read';
+// import Breadcrumbs from '../breadcrumbs'
 
 export default {
+  name: 'DashboardRead',
   components: {
     GridLayout,
     GridItem,
     VueSignaturePad,
-    createForm,
+    CreateForm,
     FormUpdate,
     ListRead,
     ChartRead,
@@ -107,8 +109,9 @@ export default {
     WorkflowRead,
     RequestRead,
     CalendarRead,
+    // Breadcrumbs,
   },
-  props: ['input', 'inputId', 'name', 'getPageLabel', 'designTest', 'context'],
+  props: ['input', 'inputId', 'designName', 'getPageLabel', 'designTest', 'context', 'inDialog'],
   data() {
     return {
       layout: [],
@@ -117,14 +120,20 @@ export default {
       design: {},
     };
   },
-  computed: {
-    getDesignName(item) {
-      return item.value.name;
+  methods: {
+    closeDialog() {
+      this.$emit('closeDialog');
     },
   },
+  beforeCreate() {
+    if (!this.$attrs.name) {
+      this.$attrs.name = this.$route.params.designName;
+    }
+  },
   async created() {
+    console.log('this.designName: ', this.designName);
     this.design = await this.$store.dispatch('getDesignByName', {
-      name: this.name,
+      name: this.designName,
     });
   },
 };

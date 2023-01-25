@@ -13,7 +13,7 @@ import db from "../db";
 function setTokenCookie(res: Response, token: string) {
   const cookieOptions = {
     httpOnly: true,
-    expires: new Date(Date.now() + 15 * 1000),
+    expires: new Date(Date.now() + 60 * 60 * 1000),
     secure: true,
     sameSite: 'none',
   };
@@ -115,7 +115,7 @@ class Users {
     if (!token) return res.status(400).json({ message: 'Token is required' });
 
     // users can revoke their own tokens and admins can revoke any tokens
-    if (!req.user.ownsToken(token) && req.user.role !== Role.Admin) {
+    if (!req.auth.ownsToken(token) && req.auth.role !== Role.Admin) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
@@ -164,7 +164,7 @@ class Users {
 
   static getById(req: PlatformRequest, res: Response, next: NextFunction) {
     // regular users can get their own record and admins can get any record
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.auth.id && req.auth.role !== Role.Admin) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
@@ -181,7 +181,7 @@ class Users {
     res: Response,
     next: NextFunction
   ) {
-    if (req.params.id !== req.user.id && req.user.role !== Role.Admin) {
+    if (req.params.id !== req.auth.id && req.auth.role !== Role.Admin) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 

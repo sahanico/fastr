@@ -42,10 +42,10 @@ class Record {
     console.log('autoIncrementFields: ', autoIncrementFields)
     const now = new Date().toISOString();
     // @ts-ignore
-    data.createdBy = req.user.id;
+    data.createdBy = req.auth.id;
     data.createdAt = now;
     // @ts-ignore
-    data.updatedBy = req.user.id;
+    data.updatedBy = req.auth.id;
     data.updatedAt = now;
 
     for (const key of _.keys(autoIncrementFields)) {
@@ -77,7 +77,7 @@ class Record {
   static async updateRecord(req: PlatformRequest | Request, res: Response) {
     const payload = {...req.body};
     // @ts-ignore
-    const record = await recordService.updateRecord(payload, req.user);
+    const record = await recordService.updateRecord(payload, req.auth);
     if (record) {
       res.status(200).send(record);
     } else {
@@ -228,7 +228,7 @@ class Record {
     });
     let filteredRecords = records;
     // @ts-ignore
-    if (req.user.role === 'Admin' && adminFilter) {
+    if (req.auth.role === 'Admin' && adminFilter) {
       filteredRecords = await recordService.filterRecords(
         req.body.object,
         records,
@@ -237,7 +237,7 @@ class Record {
         req.body.input
       );
       // @ts-ignore
-    } else if (req.user.role === 'User' && filter) {
+    } else if (req.auth.role === 'User' && filter) {
       filteredRecords = await recordService.filterRecords(
         req.body.object,
         records,

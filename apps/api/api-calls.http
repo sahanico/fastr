@@ -1,0 +1,24 @@
+// login - taxdollar.ca/api/user/authenticate
+POST http://localhost:3010/api/user/authenticate
+Content-Type: application/json
+
+{
+  "email": "mradul-tester@sahanico.com",
+  "password": "password"
+}
+
+###
+// get the jwttoken and make an api call that has an authorization middleware
+POST http://localhost:3010/api/designer/636fc646a684fbc50e1f0ef4/get-designs-by-type
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzZmYzY0NmE2ODRmYmM1MGUxZjBlZjQiLCJpZCI6IjYzNmZjNjQ2YTY4NGZiYzUwZTFmMGVmNCIsImlhdCI6MTY3NDM2NjIxMCwiZXhwIjoxNjc0MzY2MjMwfQ.QQXpt8cUgfUcDgWSRhjOg61tEfXiZw2wX4gVFg3ubsQ
+Cookie: refreshToken=61ab33a57b7cebc7e6bf5f3c4c63268d45c96b64b3102b60dfc2996ea81ee219db8e536b95fb7dd7
+
+{
+  "type": "list"
+}
+
+###
+// when user makes new request replace old jwt token with new jwt token that expires 15 minutes from previous request
+// refresh tokens expire after 1 day. user must re-request for a new refresh token when it expires
+

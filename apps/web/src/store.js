@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
+import axiosBase from 'axios';
 import db from '@/db';
 import $ from 'jquery';
 import router from './router/router';
@@ -12,19 +12,23 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex);
 const BASE_API_URL = `${process.env.BASE_API_URL}/api`;
 
-export default new Vuex.Store({
+const axios = axiosBase.create();
+
+axios.defaults.withCredentials = true;
+
+export const store = new Vuex.Store({
   plugins: [createPersistedState({
     storage: window.localStorage,
   })],
   state: {
-    token: localStorage.getItem('token'),
-    user: localStorage.getItem('user'),
+    token: null,
+    user: null,
     acceptedTerms: null,
     sideNavItems: [],
     system: {
-      user: localStorage.getItem('user'),
-      account: localStorage.getItem('account'),
-      account_member: localStorage.getItem('account_member'),
+      user: null,
+      account: null,
+      account_member: null,
       today: this.today, // 2022-01-30 ; use this format
     }
   },
@@ -39,6 +43,12 @@ export default new Vuex.Store({
             acceptedTerms: 'true'
           }
         }
+      }
+    },
+    updateJwtToken(state, jwtToken) {
+      state.user = {
+        ...state.user,
+        jwtToken,
       }
     },
     authUser(state, userData) {
@@ -185,8 +195,7 @@ export default new Vuex.Store({
     logout({ commit }, path) {
       commit('clearAuthData');
       sessionStorage.clear();
-      localStorage.removeItem('expirationDate');
-      localStorage.removeItem('token');
+      localStorage.clear();
       if (path === ('home' || 'logout')) {
         router.replace('/home');
       }
@@ -1230,8 +1239,7 @@ export default new Vuex.Store({
     acceptedTerms(state) {
       if (state.user) {
         return state.user.acceptedTerms;
-      }
-      ;
+      };
     },
   },
 },);
@@ -1285,3 +1293,13 @@ async function putData(url = '', data = {}) {
   });
   return response.json(); // parses JSON response into native JavaScript objects
 }
+
+axios.interceptors.response.use(
+  (response) => {
+    if (response.headers.newauthheader) {
+      const jwtToken = response.headers.newauthheader.split(' ')[1]
+      store.commit('updateJwtToken', jwtToken)
+    }
+    return response;
+  }
+)

@@ -28,6 +28,9 @@
     </v-card>
     <!-- Main router for mobile -->
     <main style="paddingTop: 44px"  class="hidden-md-and-up">
+      <div>
+        <breadcrumbs />
+      </div>
       <router-view  v-if="showRouterView" :key="$route.fullPath"></router-view>
     </main>
     <!-- Top app bar for mobile -->
@@ -38,7 +41,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="auth">
         <v-btn color="white" text dark type="button" style="position: absolute; right: 0"
-               @click="showAccountCard = !showAccountCard;">
+               @click="showAccountCard = !showAccountCard">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </v-toolbar-items>
@@ -81,7 +84,7 @@
              v-for="(item, index) in $store.state.sideNavItems"
              @click="$router.push({
                       path: `${'/dashboards/read/' + $store.state.sideNavItems[index].name}`
-                     }); showMobileOverflowCard = !showMobileOverflowCard"
+                     }); showMobileOverflowCard = false"
              :key="index" router>
         <span>{{ item.label }}</span>
         <v-icon>mdi-{{ item.icon }}</v-icon>
@@ -92,10 +95,12 @@
 
 <script>
 import AccountCard from './components/Users/account-card';
+import Breadcrumbs from './components/breadcrumbs';
 
 export default {
   components: {
     AccountCard,
+    Breadcrumbs,
   },
   props: [''],
   data() {

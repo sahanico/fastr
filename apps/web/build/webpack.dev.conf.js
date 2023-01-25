@@ -45,6 +45,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     public: config.dev.public,
+    allowedHosts: [`.${config.dev.public}`],
   },
   plugins: [
     new Dotenv(),

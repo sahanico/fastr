@@ -3,7 +3,8 @@
     <v-dialog v-model="createFormDialog" width="500" height="100%">
       <v-card>
         <v-container>
-          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog" :inDialog="true"
+          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
+                       :inDialog="true"
                        :name="`create-form-${selectedAction.createFormDialog}`"/>
         </v-container>
         <v-card-actions>
@@ -14,11 +15,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;"
+              persistent v-if="list && list.meta && list.meta.create && createButtonDialog">
+      <div style="display: flex; flex-direction: column; background-color: white">
+        <DashboardRead :input="input" :name="`dialog-${list.meta.create}`"
+                       style="overflow-y: scroll"
+                       @closeDialog="refreshList"
+                       :designName="list.meta.create" :inDialog="true" context="create" />
+        <v-btn color="black" text type="button" @click="createButtonDialog = false">
+          Close
+        </v-btn>
+      </div>
+    </v-dialog>
 
     <div v-if="list.meta">
-      <div class="headline red--text pt-2 mt-2">
-        {{ list.meta.showLabel ? list.label : '' }}
-      </div>
       <v-container>
         <v-row v-if="list.meta.inputBoilerPlate">
           <v-col>
@@ -49,7 +59,7 @@
             <div align="right" v-if="list.meta">
               <div v-if="list.meta.create">
                 <v-btn color="red darken-2" dark style="align: right;"
-                       @click="routeToCreateDashboard">
+                       @click="createButtonDialog = true">
                   Create
                 </v-btn>
               </div>
@@ -84,7 +94,7 @@
               <span v-for="(action, index) in item.actions" :key="index">
                 <template>
                   <div>
-                        <v-btn class="white red--text" elevation="0"
+                        <v-btn class="red--text" elevation="0" text
                                @click="clickAction(action, item)">
                           {{ action.label }}
                         </v-btn>
@@ -121,10 +131,13 @@
 <script>
 import _ from 'underscore';
 import CreateForm from '../forms/create';
+// import DashboardRead from '../dashboards/read';
 
 export default {
+  name: 'ListRead',
   components: {
     CreateForm,
+    DashboardRead: () => import('../dashboards/read'),
   },
   props: ['designName', 'input', 'inputId'],
   data() {
@@ -140,6 +153,8 @@ export default {
       bind: null,
       queries: '',
       loading: true,
+      createDashboardDesign: null,
+      createButtonDialog: false,
     };
   },
   computed: {
@@ -203,6 +218,23 @@ export default {
     },
   },
   methods: {
+    async refreshList() {
+      this.createButtonDialog = false;
+      this.loading = true;
+      await this.getRecords();
+      this.loading = false;
+    },
+    async getRecords() {
+      console.log('this.$store.state.system: ', this.$store.state.system);
+      this.records = await this.$store.dispatch(
+        'getRecordsForList',
+        {
+          list: this.designName,
+          system: this.$store.state.system,
+          input: { object: this.list.object, data: this.input },
+        },
+      );
+    },
     generateIcon(action) {
       if (action.icon === 'pay') {
         return ' mdi-credit-card ';
@@ -223,16 +255,16 @@ export default {
         name: attachment.name,
       });
     },
-    async routeToCreateDashboard() {
-      const design = await this.$store.dispatch('getDesignByName', {
-        name: this.list.meta.create,
-      });
-      await this.$router.push({
-        name: 'DashboardRead',
-        params: { design, name: this.list.meta.create, input: this.input, context: 'create' },
-      });
-      this.$forceUpdate();
-    },
+    // async routeToCreateDashboard() {
+    //   const design = await this.$store.dispatch('getDesignByName', {
+    //     name: this.list.meta.create,
+    //   });
+    //   await this.$router.push({
+    //     name: 'DashboardRead',
+    //     params: { design, name: this.list.meta.create, input: this.input, context: 'create' },
+    //   });
+    //   this.$forceUpdate();
+    // },
     async clickAction(action, item) {
       if (action.type === 'process') {
         await this.runProcess(action.process, item, action);
@@ -274,7 +306,7 @@ export default {
         path: `/dashboard/read/${this.bind}/${record.id}`,
         name: 'DashboardReadWithInput',
         // eslint-disable-next-line no-underscore-dangle
-        params: { design, name: this.bind, input: record, inputId: record.id },
+        params: { design, designName: this.bind, input: record, inputId: record.id, name: this.bind },
       });
       this.$forceUpdate();
     },
@@ -285,14 +317,7 @@ export default {
       this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
     }
     this.objects = await this.$store.dispatch('getAllObjects');
-    this.records = await this.$store.dispatch(
-      'getRecordsForList',
-      {
-        list: this.designName,
-        system: this.$store.state.system,
-        input: { object: this.list.object, data: this.input },
-      },
-    );
+    await this.getRecords();
     _.each(this.list.meta.layout, (item) => {
       this.listHeaders.push({
         value: item.value.name,
@@ -306,6 +331,11 @@ export default {
       this.listHeaders.push({ text: 'Actions', value: 'actions', sortable: false });
     }
     this.bind = this.list.meta.bindTo;
+    if (this.list.meta.create) {
+      this.createDashboardDesign = await this.$store.dispatch('getDesignByName', {
+        name: this.list.meta.create,
+      });
+    }
     this.loading = false;
   },
 };
