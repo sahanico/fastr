@@ -113,6 +113,7 @@ export default {
             object: this.design.object,
             data: {
               ...this.form,
+              account: this.form.account.value,
               ssl_card_number: 'removed',
               ssl_exp_date: 'removed',
               ssl_cvv2cvc2: 'removed',
@@ -123,7 +124,8 @@ export default {
           // todo : get response from backend, if unique field data already exists, show dialog
 
           await this.$store.dispatch('createRecord', record);
-          alert(error)
+          alert(error);
+          this.updateNavigation('payment');
         },
         onDeclined: async (response) => {
           // eslint-disable-next-line no-console
@@ -132,6 +134,7 @@ export default {
             object: this.design.object,
             data: {
               ...this.form,
+              account: this.form.account.value,
               ssl_card_number: 'removed',
               ssl_exp_date: 'removed',
               ssl_cvv2cvc2: 'removed',
@@ -143,7 +146,8 @@ export default {
 
           await this.$store.dispatch('createRecord', record);
 
-          alert(response.errorMessage)
+          alert(response.errorMessage);
+          this.updateNavigation('payment');
         },
         onApproval: async (response) => {
           this.processPaymentProgress = false
@@ -152,6 +156,7 @@ export default {
             object: this.design.object,
             data: {
               ...this.form,
+              account: this.form.account.value,
               ssl_card_number: 'removed',
               ssl_exp_date: 'removed',
               ssl_cvv2cvc2: 'removed',
@@ -164,6 +169,7 @@ export default {
           const createRecord = await this.$store.dispatch('createRecord', record);
           this.$emit('submitForm', createRecord.id);
           this.form = {};
+          this.updateNavigation();
         },
       },
     };
@@ -180,11 +186,15 @@ export default {
     },
   },
   methods: {
-    updateNavigation() {
+    updateNavigation(route = '') {
       this.createdDialog = false;
       if (this.inDialog) {
         this.$emit('closeDialog');
-        this.$router.go();
+        if (route === 'payment') {
+          this.$router.push({ path: '/dashboards/read/payments_screen' });
+        } else {
+          this.$router.go();
+        }
       } else {
         this.$router.back();
       }
