@@ -57,6 +57,13 @@ class Record {
         data[key] = 100;
       }
     }
+
+    const preCreate = await eventService.preCreateRecord({ object: req.body.object, data });
+
+    if (!preCreate) {
+      return res.json('failed-to-pre-create');
+    }
+
     const record = await recordService.createRecord({
       object: req.body.object,
       data,

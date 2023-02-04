@@ -114,7 +114,7 @@ export default {
       designExistsDialog: false,
       listType: '',
       setFieldOptionsDialog: false,
-      eventTypeList: ['Create Record', 'Update Record', 'Delete Record'],
+      eventTypeList: ['Create Record', 'Update Record', 'Delete Record', 'Pre-Create Record'],
     };
   },
   computed: {

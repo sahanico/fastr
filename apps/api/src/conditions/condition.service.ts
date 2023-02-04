@@ -5,7 +5,10 @@ async function evaluate(lhsValue: any, operator: string, rhsValue: any, rhs: any
   let evaluation: any = false;
   if (operator === '==') {
     if (_.isArray(rhsValue)) {
-      return _.filter(rhsValue, item => item.data[rhs.field] == lhsValue)[0]
+      const val = _.filter(rhsValue, item => item.data[rhs.field] == lhsValue);
+      console.log('eval val: ', val);
+      if (val.length < 1) return false;
+      return val[0];
     }
     if (_.isArray(lhsValue)) {
       // return the array items that matter
@@ -79,7 +82,9 @@ async function runCondition(
 
   let lhsValue = await evaluateLHS(lhs, pool);
   let rhsValue = await evaluateRHS(rhs, pool, system);
-  return evaluate(lhsValue, operator, rhsValue, rhs, lhs);
+  const evalu = await evaluate(lhsValue, operator, rhsValue, rhs, lhs);
+  console.log('eval: ', evalu);
+  return evalu;
 }
 
 export default {

@@ -62,9 +62,9 @@
           <br />
           <br />
           <v-btn :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
-                 color="red darken-2" dark type="submit" :disabled="processPaymentProgress">
-            <v-progress-circular indeterminate color="red" v-if="processPaymentProgress" />
-            <div v-if="!processPaymentProgress">
+                 color="red darken-2" dark type="submit" :disabled="sumbitProgress">
+            <v-progress-circular indeterminate color="red" v-if="sumbitProgress" />
+            <div v-if="!sumbitProgress">
               Create
             </div>
           </v-btn>
@@ -104,10 +104,10 @@ export default {
       createdDialog: false,
       inputsDialog: false,
       object: null,
-      processPaymentProgress: false,
+      sumbitProgress: false,
       callback: {
         onError: async (error) => {
-          this.processPaymentProgress = false
+          this.sumbitProgress = false
           // eslint-disable-next-line no-console
           const record = {
             object: this.design.object,
@@ -129,7 +129,7 @@ export default {
         },
         onDeclined: async (response) => {
           // eslint-disable-next-line no-console
-          this.processPaymentProgress = false
+          this.sumbitProgress = false
           const record = {
             object: this.design.object,
             data: {
@@ -150,7 +150,7 @@ export default {
           this.updateNavigation('payment');
         },
         onApproval: async (response) => {
-          this.processPaymentProgress = false
+          this.sumbitProgress = false
           // eslint-disable-next-line no-console
           const record = {
             object: this.design.object,
@@ -243,6 +243,7 @@ export default {
       }));
     },
     async onSubmit() {
+      this.sumbitProgress = true;
       const defaultValues = {};
       // populate defaultValues map
       _.each(this.object.fields, (field) => {
@@ -272,6 +273,12 @@ export default {
         };
 
         const createRecord = await this.$store.dispatch('createRecord', record);
+        console.log('createRecord: ', createRecord);
+        if (createRecord === 'failed-to-pre-create') {
+          alert('Email address already in use. Please try again with a different email address');
+          this.updateNavigation();
+        }
+
         if (record && record.data.attachments) {
           if (createRecord) {
             const fd = new FormData();
@@ -300,9 +307,9 @@ export default {
           this.form = {};
         }
       }
+      this.sumbitProgress = false;
     },
     async processPayment() {
-      this.processPaymentProgress = true;
       const paymentData = {
         ssl_transaction_type: 'ccsale',
         ssl_merchant_id: '2150532',

@@ -160,10 +160,22 @@ export default {
         };
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
+      } else if (def.input.name === 'selected_account_member') {
+        const id = this.form[this.name];
+        const record = _.findWhere(this.allRecords, { id });
+        this.selected = {
+          text: record.data.full_name,
+          // eslint-disable-next-line no-underscore-dangle
+          value: record._id,
+        };
+        // eslint-disable-next-line no-underscore-dangle
+        this.$emit('input', record._id);
       } else {
         console.log('this.name: ', this.name);
         console.log('this.form[this.name]: ', this.form[this.name]);
-        const record = _.findWhere(this.allRecords, { id: this.form[this.name].value });
+        const record = _.findWhere(this.allRecords, {
+          id: this.form[this.name].value ? this.form[this.name].value : this.form[this.name]
+        });
         if (record) {
           this.selected = {
             text: record.data.name || record.data.first_name || record.data.full_name,

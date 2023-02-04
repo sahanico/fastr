@@ -10,6 +10,7 @@ import sendEmail from '../send-email';
 import conditionService from "../conditions/condition.service";
 import userService from "../users/user.service";
 import ObjectDictionaryService from "../objectDictionary/objectDictionary.service";
+import mongoose from "mongoose";
 
 async function getProcessByName(name: any) {
   const process = await db.Design.findOne({ name });
@@ -46,7 +47,10 @@ async function createRecord(step: any, pool: any) {
     }
   })
 
-  record.data = data;
+  record.data = {
+    id: pool['create_user'],
+    ...data
+  };
   const create = await db.Record.create(record);
   if (create) {
     return record;
@@ -350,7 +354,12 @@ async function runProcess(
     const step = process.meta.steps[i];
     if (step.type === 'find_record') {
       console.log('------------------Find Record------------------');
-      poolMap[step.name] = await runFindRecordStep(step, poolMap);
+      const recordFound = await runFindRecordStep(step, poolMap);
+      if (recordFound) {
+        poolMap[step.name] = recordFound;
+      } else {
+       result = false;
+      }
     } else if (step.type === 'send_email') {
       console.log('------------------Send Email------------------');
       poolMap[step.name] = await runEmailStep(step, poolMap);
@@ -377,7 +386,8 @@ async function runProcess(
       poolMap[step.name] = await createUser(step, poolMap);
     }
   }
-  return result || true;
+  console.log('result: ', result)
+  return result === false ? false : result || true;
 }
 
 export default {
