@@ -3,8 +3,6 @@ import axios from 'axios';
 const CONVERGEPAY_BASE_URL = `${process.env.CONVERGEPAY_BASE_URL}`;
 
 async function getSessionToken(body: any) {
-  console.log('body: ', body);
-  console.log('CONVERGEPAY_BASE_URL: ', CONVERGEPAY_BASE_URL);
   const data = Object.keys(body)
     .map((key) => `${key}=${encodeURIComponent(body[key])}`)
     .join('&');

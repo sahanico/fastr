@@ -16,7 +16,6 @@ async function createRecord(record: PlatformRecord) {
     }
   });
   const id = new mongoose.Types.ObjectId()
-  console.log('record: ', record);
   const data = {
     _id: id,
     object: record.object,
@@ -45,7 +44,6 @@ async function getAllRecords() {
 }
 
 async function autoIncrementField(objectName: any, fieldName: string | number) {
-  console.log('`````````````````````````````````````````````````````````````````````')
   const record = await db.Record.find({ object: objectName }).sort({
     [fieldName]: -1,
   });
@@ -57,8 +55,6 @@ async function autoIncrementField(objectName: any, fieldName: string | number) {
       selectedRecord = record[i];
     }
   }
-  console.log('selectedVal: ', selectedVal);
-  console.log('selectedRecord: ', selectedRecord);
   return selectedVal;
 }
 
@@ -115,7 +111,6 @@ function evaluateRhs(
       return system.account_member.id;
     }
   } else if (operand.type === 'input') {
-    console.log('operand: ', operand);
     return input[operand.field];
   }
   return false;
@@ -328,8 +323,6 @@ async function transformRecordObjects(records: any, objectName: string) {
               value: record.data[field.name],
               text: objectRecord.data[fieldObject._doc.primaryField]
             }
-
-            console.log('record.data[field.name]: ', record.data[field.name]);
           }
         }
       }

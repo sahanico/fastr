@@ -19,14 +19,12 @@ async function getProcessByName(name: any) {
   return false;
 }
 async function createUser(step: any, pool: any) {
-  console.log('step: ', step);
   // get the step.meta.user - grab the variable from pool. use the value of the field
   const variable = pool[step.meta.user.email.variable.value.name];
   return userService.create(variable.data[step.meta.user.email.field.value]);
 }
 
 async function createRecord(step: any, pool: any) {
-  console.log('step: ', step);
   const object = await db.ObjectDictionary.findOne( { name: step.object });
   const record: any = {
     _id: pool['create_user'], // for inviting account members
@@ -36,7 +34,6 @@ async function createRecord(step: any, pool: any) {
   // compose data:
   const data: any = {};
   _.each(step.meta.fields, field => {
-    console.log('field: ', field);
     if (field.type === 'field') {
     const variable = pool[field.variable.value.name];
       if (field.variable.value.name === 'create_user') {
@@ -47,12 +44,9 @@ async function createRecord(step: any, pool: any) {
     } else if (field.type === 'literal') {
       data[field.text] = field.value;
     }
-
-    console.log('data: ', data)
   })
 
   record.data = data;
-  console.log('record: ', record);
   const create = await db.Record.create(record);
   if (create) {
     return record;

@@ -6,9 +6,7 @@ import processService from './process.service';
 
 class Process {
   static async runProcess(req: PlatformRequest | Request, res: Response) {
-    console.log('----------------------------------------')
     const process = await processService.getProcessByName(req.body.process);
-    console.log('process: ', process);
     if (!process) {
       res.sendStatus(500)
     }
@@ -23,7 +21,6 @@ class Process {
     } else {
       await res.sendStatus(404);
     }
-    console.log('----------------------------------------')
     // return res.sendStatus(200);
   }
 }

@@ -60,7 +60,6 @@ async function evaluateLHS (lhs: {
 }, pool: any) {
 
   const variable = _.find(pool, v => lhs.variable.name === v.name);
-  console.log('variable: ', variable);
   if (lhs.variable.object === variable.object) {
     if (_.isArray(variable.data)) {
       return variable.data;

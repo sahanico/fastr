@@ -6,7 +6,6 @@ import conditionService from './condition.service';
 
 class Condition {
   static async runCondition(req: PlatformRequest | Request, res: Response) {
-    console.log('----------------------------------------')
     const { conditions, pool } = req.body
     if (!conditions && !pool) res.sendStatus(500);
 
@@ -19,7 +18,6 @@ class Condition {
     } else {
       await res.sendStatus(404);
     }
-    console.log('----------------------------------------')
     res.sendStatus(200);
   }
 }

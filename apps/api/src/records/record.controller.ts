@@ -20,9 +20,7 @@ class Record {
    */
   static async createRecord(req: PlatformRequest | Request, res: Response) {
     // create base record without objectArray fields
-    console.log('-----------------------------------------');
     const { data } = req.body;
-    console.log('data: ', data);
     const object = await objectService.getObjectByName({
       name: req.body.object,
     });
@@ -39,7 +37,6 @@ class Record {
         }
       });
     }
-    console.log('autoIncrementFields: ', autoIncrementFields)
     const now = new Date().toISOString();
     // @ts-ignore
     data.createdBy = req.auth.id;
@@ -59,10 +56,7 @@ class Record {
       } else {
         data[key] = 100;
       }
-      console.log('key: ', key);
-      console.log('data[key]: ', data[key]);
     }
-    console.log('data: ', data);
     const record = await recordService.createRecord({
       object: req.body.object,
       data,
