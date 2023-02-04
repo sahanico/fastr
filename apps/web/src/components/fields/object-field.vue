@@ -131,7 +131,7 @@ export default {
     }
     if (def && def.type === 'input') {
       if (def.input.name === 'logged_in_account') {
-        const id = this.$store.state.system.account.id
+        const id = this.$store.state.system.account.id;
         const record = _.findWhere(this.allRecords, { id });
         this.selected = {
           text: record.data.name,
@@ -141,7 +141,17 @@ export default {
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
       } else if (def.input.name === 'logged_in_account_member') {
-        const id = this.$store.state.system.account_member.id
+        const id = this.$store.state.system.account_member.id;
+        const record = _.findWhere(this.allRecords, { id });
+        this.selected = {
+          text: record.data.full_name,
+          // eslint-disable-next-line no-underscore-dangle
+          value: record._id,
+        };
+        // eslint-disable-next-line no-underscore-dangle
+        this.$emit('input', record._id);
+      } else if (def.input.name === 'selected_account_member') {
+        const id = this.form[this.name];
         const record = _.findWhere(this.allRecords, { id });
         this.selected = {
           text: record.data.full_name,
@@ -151,13 +161,16 @@ export default {
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
       } else {
-        const record = _.findWhere(this.allRecords, { id: this.form[this.name] });
-
-        this.selected = {
-          text: record.data.name || record.data.first_name,
-          // eslint-disable-next-line no-underscore-dangle
-          value: record._id,
-        };
+        console.log('this.name: ', this.name);
+        console.log('this.form[this.name]: ', this.form[this.name]);
+        const record = _.findWhere(this.allRecords, { id: this.form[this.name].value });
+        if (record) {
+          this.selected = {
+            text: record.data.name || record.data.first_name || record.data.full_name,
+            // eslint-disable-next-line no-underscore-dangle
+            value: record._id,
+          };
+        }
       }
     }
   },

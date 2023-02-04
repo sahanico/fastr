@@ -328,6 +328,8 @@ async function transformRecordObjects(records: any, objectName: string) {
               value: record.data[field.name],
               text: objectRecord.data[fieldObject._doc.primaryField]
             }
+
+            console.log('record.data[field.name]: ', record.data[field.name]);
           }
         }
       }

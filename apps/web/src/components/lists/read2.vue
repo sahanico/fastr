@@ -108,7 +108,7 @@
                 }}</a>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <v-chip dense v-if="attachment.name"
+              <v-chip dense v-if="attachment && attachment.name"
                       truncate v-for="(attachment, index) in item['attachments']" :key="index">
                 <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
                   {{ attachment ?
@@ -268,10 +268,14 @@ export default {
     async clickAction(action, item) {
       if (action.type === 'process') {
         await this.runProcess(action.process, item, action);
-        if(action.process !== 'generate_invoice_pdf') location.reload();
+        if (action.process !== 'generate_invoice_pdf') location.reload();
       } else if (action.type === 'create-form-dialog') {
         this.selectedAction = action;
-        this.selectedItem = item;
+        // instead of formattedRecord get the real record and set as selected item;
+        const rec = _.findWhere(this.records, { _id: item.id });
+        console.log('item: ', item);
+        console.log('rec: ', rec);
+        this.selectedItem = rec.data;
         this.createFormDialog = true;
       }
     },
