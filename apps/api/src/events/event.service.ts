@@ -35,10 +35,7 @@ async function preCreateRecord(record: { object: any, data: any }) {
           return variable;
         });
 
-        console.log('pool: ', pool);
-
         const val = await processService.runProcess(process, pool);
-        console.log('val: ', val);
         return !val;
       }
     }

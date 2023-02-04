@@ -6,7 +6,6 @@ async function evaluate(lhsValue: any, operator: string, rhsValue: any, rhs: any
   if (operator === '==') {
     if (_.isArray(rhsValue)) {
       const val = _.filter(rhsValue, item => item.data[rhs.field] == lhsValue);
-      console.log('eval val: ', val);
       if (val.length < 1) return false;
       return val[0];
     }
@@ -83,7 +82,6 @@ async function runCondition(
   let lhsValue = await evaluateLHS(lhs, pool);
   let rhsValue = await evaluateRHS(rhs, pool, system);
   const evalu = await evaluate(lhsValue, operator, rhsValue, rhs, lhs);
-  console.log('eval: ', evalu);
   return evalu;
 }
 

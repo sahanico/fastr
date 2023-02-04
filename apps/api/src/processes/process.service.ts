@@ -386,7 +386,6 @@ async function runProcess(
       poolMap[step.name] = await createUser(step, poolMap);
     }
   }
-  console.log('result: ', result)
   return result === false ? false : result || true;
 }
 
