@@ -340,7 +340,12 @@ async function transformRecordObjects(records: any, objectName: string) {
           value: record.data[field.name],
           text: new Date(record.data[field.name]).toLocaleDateString(
             "en-US",
-            {year: "numeric", month: "long", day: "numeric"}
+            {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              timeZone: 'America/New_York'
+            }
           )
         };
       }
@@ -349,7 +354,7 @@ async function transformRecordObjects(records: any, objectName: string) {
   for (const field of userFields) {
     for (const record of records) {
       if (record.data[field.name]) {
-        const userRecord = await getRecordByObjectID({ id: record.data[field.name]})
+        const userRecord = await getRecordByObjectID({ id: record.data[field.name]});
         record.data[field.name] = {
           value: record.data[field.name],
           text: `${userRecord.data.firstName} ${userRecord.data.lastName}`
@@ -357,7 +362,6 @@ async function transformRecordObjects(records: any, objectName: string) {
       }
     }
   }
-  console.log('records.length', records.length);
   return records;
 }
 

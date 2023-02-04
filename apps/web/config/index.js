@@ -43,7 +43,7 @@ module.exports = {
 
     cssSourceMap: true,
     compress: true,
-    public: 'localhost'
+    public: process.env.WEBPACK_PUBLIC_URL ?? 'localhost'
   },
 
   build: {

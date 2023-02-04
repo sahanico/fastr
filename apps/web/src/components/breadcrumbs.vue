@@ -31,6 +31,7 @@ export default {
         admin_accounts_screen: 'Accounts',
         admin_users_screen: 'Users',
         metrics: 'Metrics',
+        admin_approval_requests: 'Approval Requests',
       },
     };
   },
@@ -64,10 +65,14 @@ export default {
             const record = await this.$store.dispatch('getRecordByObjectID', {
               id: val.params.inputId,
             });
+            let name = `${record.data.first_name} ${record.data.last_name}`;
+            if (val.params.designName === 'admin_account_members_screen') {
+              name = `${record.data.name}`;
+            } else if (val.params.designName === 'update_invoice_screen') {
+              name = `Update Invoice - ${record.data.bill_to_name}`;
+            }
             this.previousBreadcrumbs.push({
-              name: val.params.designName === 'admin_account_members_screen'
-                ? `${record.data.name}`
-                : `${record.data.first_name} ${record.data.last_name}`,
+              name,
               path: val.fullPath,
             });
           }

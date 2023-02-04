@@ -30,11 +30,11 @@
 
     <div v-if="list.meta">
       <v-container>
-        <v-row v-if="list.meta.inputBoilerPlate">
+        <v-row v-if="list.meta.showLabel">
           <v-col>
-            <div class="headline red--text pt-2 mt-2" v-if="input && input.data">
+            <div class="headline red--text pt-2 mt-2">
               <!-- fix hardcoding -->
-              {{ `${input.data.first_name} ${input.data.last_name}` }}
+              {{ `${list.label}` }}
             </div>
           </v-col>
         </v-row>
@@ -268,7 +268,7 @@ export default {
     async clickAction(action, item) {
       if (action.type === 'process') {
         await this.runProcess(action.process, item, action);
-        location.reload();
+        if(action.process !== 'generate_invoice_pdf') location.reload();
       } else if (action.type === 'create-form-dialog') {
         this.selectedAction = action;
         this.selectedItem = item;
