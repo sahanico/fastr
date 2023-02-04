@@ -2,7 +2,9 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
+
+require('dotenv').config();
 
 module.exports = {
   dev: {
@@ -43,7 +45,7 @@ module.exports = {
 
     cssSourceMap: true,
     compress: true,
-    public: process.env.WEBPACK_PUBLIC_URL ?? 'localhost'
+    public: process.env.WEBPACK_PUBLIC_URL ?? 'taxdollar.ca'
   },
 
   build: {
