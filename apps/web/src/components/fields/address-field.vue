@@ -1,7 +1,6 @@
 <template>
   <v-text-field :id="name" v-model="value" :disabled="context === 'read'" :label="label"
                  color="red" :required="required" @input="updateValue(value)"
-                :rules="[rules.address]"
                 :ref="name"  placeholder="" autofocus>
   </v-text-field>
 </template>
@@ -13,9 +12,6 @@ export default {
   data() {
     return {
       value: '',
-      rules: {
-        address: v => (this.required ? !!v || `${this.label} is required` : true),
-      },
     };
   },
   mounted() {
