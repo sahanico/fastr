@@ -37,7 +37,7 @@
       </div>
       <v-progress-linear  v-show="loading" color="red" indeterminate />
       <v-card :style="{ height: `${formHeight + 48}px` }">
-        <form ref="configExecution" lazy-validation @submit.prevent="onSubmit" style="padding: 16px">
+        <v-form v-model="valid" ref="createForm" @submit.prevent="onSubmit" style="padding: 16px">
           <div>
             <div>
               <div id="content">
@@ -68,7 +68,7 @@
               Create
             </div>
           </v-btn>
-        </form>
+        </v-form>
       </v-card>
     </div>
   </v-container>
@@ -90,6 +90,7 @@ export default {
   props: ['formName', 'input', ' pool', 'inDialog'],
   data() {
     return {
+      valid: true,
       pool: {},
       form: {},
       layout: [],
@@ -243,71 +244,74 @@ export default {
       }));
     },
     async onSubmit() {
-      this.sumbitProgress = true;
-      const defaultValues = {};
-      // populate defaultValues map
-      _.each(this.object.fields, (field) => {
-        if (field.meta && field.meta.default) {
-          defaultValues[field.name] = field.meta.default;
-        }
-      });
-
-      _.each(this.design.meta.hiddenFields, (field) => {
-        if (field.name) {
-          this.form[field.name] = '';
-        }
-        if (defaultValues[field.name]) {
-          if (field.type === 'number' && field.meta.autoIncrement) {
-            this.form[field.name] = parseInt(defaultValues[field.name], 10);
-          } else {
-            this.form[field.name] = defaultValues[field.name];
+      console.log('this.$refs.createForm.valid: ', this.$refs.createForm.validate());
+      if (this.$refs.createForm.validate()) {
+        this.sumbitProgress = true;
+        const defaultValues = {};
+        // populate defaultValues map
+        _.each(this.object.fields, (field) => {
+          if (field.meta && field.meta.default) {
+            defaultValues[field.name] = field.meta.default;
           }
-        }
-      });
-      if (this.design.object === 'payment') {
-        this.processPayment();
-      } else {
-        const record = {
-          object: this.design.object,
-          data: this.form,
-        };
+        });
 
-        const createRecord = await this.$store.dispatch('createRecord', record);
-        console.log('createRecord: ', createRecord);
-        if (createRecord === 'failed-to-pre-create') {
-          alert('Email address already in use. Please try again with a different email address');
-          this.updateNavigation();
-        }
-
-        if (record && record.data.attachments) {
-          if (createRecord) {
-            const fd = new FormData();
-            const paths = [];
-            Array.prototype.forEach.call(record.data.attachments, (file) => {
-              fd.append(file.name, file);
-              paths.push(`/${file.name}`);
-            });
-            const fileData = {
-              recordId: createRecord.id,
-              path: paths,
-            };
-            fd.append('record', fileData.recordId);
-            fd.append('path', fileData.path);
-            await this.$store.dispatch('uploadAttachment', fd);
+        _.each(this.design.meta.hiddenFields, (field) => {
+          if (field.name) {
+            this.form[field.name] = '';
           }
-        }
-        // todo : get response from backend, if unique field data already exists, show dialog
-
-        if (this.inDialog) {
-          this.$emit('closeDialog');
-          this.createdDialog = false;
+          if (defaultValues[field.name]) {
+            if (field.type === 'number' && field.meta.autoIncrement) {
+              this.form[field.name] = parseInt(defaultValues[field.name], 10);
+            } else {
+              this.form[field.name] = defaultValues[field.name];
+            }
+          }
+        });
+        if (this.design.object === 'payment') {
+          this.processPayment();
         } else {
-          this.createdDialog = true;
-          this.$emit('submitForm', createRecord.id);
-          this.form = {};
+          const record = {
+            object: this.design.object,
+            data: this.form,
+          };
+
+          const createRecord = await this.$store.dispatch('createRecord', record);
+          console.log('createRecord: ', createRecord);
+          if (createRecord === 'failed-to-pre-create') {
+            alert('Email address already in use. Please try again with a different email address');
+            this.updateNavigation();
+          }
+
+          if (record && record.data.attachments) {
+            if (createRecord) {
+              const fd = new FormData();
+              const paths = [];
+              Array.prototype.forEach.call(record.data.attachments, (file) => {
+                fd.append(file.name, file);
+                paths.push(`/${file.name}`);
+              });
+              const fileData = {
+                recordId: createRecord.id,
+                path: paths,
+              };
+              fd.append('record', fileData.recordId);
+              fd.append('path', fileData.path);
+              await this.$store.dispatch('uploadAttachment', fd);
+            }
+          }
+          // todo : get response from backend, if unique field data already exists, show dialog
+
+          if (this.inDialog) {
+            this.$emit('closeDialog');
+            this.createdDialog = false;
+          } else {
+            this.createdDialog = true;
+            this.$emit('submitForm', createRecord.id);
+            this.form = {};
+          }
         }
+        this.sumbitProgress = false;
       }
-      this.sumbitProgress = false;
     },
     async processPayment() {
       const paymentData = {

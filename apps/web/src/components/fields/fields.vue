@@ -4,7 +4,7 @@
     <template v-if="item.value.type==='text'">
       <text-field v-model="form[item.value.name]" :label=item.value.label
                   :disabled="item.value.meta.disabled || disabled" :design="design"
-                  :name=item.value.name :form="form" :required="item.value.required"
+                  :name=item.value.name :form="form" :required="item.value.meta.required"
                   :context="context" :default="item.value.meta"></text-field>
     </template>
     <template v-if="item.value.type==='address'">
@@ -13,13 +13,13 @@
                      :label="item.value.label"
                      :name="item.value.name"
                      :form="form"
-                     :required="item.value.required">
+                     :required="item.value.meta.required">
       </address-field>
     </template>
     <!-- Text Area Field -->
     <template v-if="item.value.type==='textarea'">
       <textarea-field v-model="form[item.value.name]" :label=item.value.label
-                      :name=item.value.name :form="form" :required="item.value.required"
+                      :name=item.value.name :form="form" :required="item.value.meta.required"
                       :textAreaRows="item.value.meta.textareaRows"
                       :disabled="item.value.meta.disabled"
                       :context="context"></textarea-field>
@@ -27,7 +27,7 @@
     <!-- Number Field -->
     <template v-if="item.value.type==='number'">
       <number-field v-model="form[item.value.name]" :label=item.value.label
-                    :name=item.value.name :form="form" :required="item.value.required"
+                    :name=item.value.name :form="form" :required="item.value.meta.required"
                     :disabled="item.value.meta.disabled || disabled"
                     :context="context"></number-field>
     </template>
@@ -59,13 +59,13 @@
       <dropdown-field v-model="form[item.value.name]" :context="context" :item="item"
                       :disabled="item.value.meta.disabled"
                       :default="item.value.meta ? item.value.meta.default : null"
-                      :name=item.value.name :form="form" :required="item.value.required">
+                      :name=item.value.name :form="form" :required="item.value.meta.required">
       </dropdown-field>
     </template>
     <!-- User Field -->
     <template v-if="item.value.type==='user'">
       <user-field v-model="form[item.value.name]" :item="item" :context="context" :form="form"
-                  :name=item.value.name :object="item.value" :required="item.value.required">
+                  :name=item.value.name :object="item.value" :required="item.value.meta.required">
       </user-field>
     </template>
     <!-- Multiple User Field -->
@@ -77,7 +77,7 @@
     <!-- Date Field -->
     <template v-if="item.value.type==='date'">
       <date-field v-model="form[item.value.name]" :name="item.value.name" :form="form"
-                  :required="item.value.required" :label="item.value.label"
+                  :required="item.value.meta.required" :label="item.value.label"
                   :default="item.value.meta ? item.value.meta.default : null"
                   :context="context"></date-field>
     </template>
@@ -98,7 +98,7 @@
     <template v-if="item.value.type==='radio'">
       <radio-field v-model="form[item.value.name]" :label="item.value.label"
                    :disabled="item.value.meta.disabled" :name=item.value.name
-                   :form="form" :required="item.value.required" :item="item"
+                   :form="form" :required="item.value.meta.required" :item="item"
                    :items="item.value.meta.radioItems" :context="context">
       </radio-field>
     </template>
@@ -125,18 +125,19 @@
                    :name=item.value.name
                    :label=item.value.label
                    :disabled="item.value.meta.disabled"
-                   :required="item.value.required"
+                   :required="item.value.meta.required"
                    :item="item">
 
       </email-field>
     </template>
     <!-- Phone Field -->
-    <template v-if="item.value.type==='phone'" :disabled="item.value.meta.disabled">
+    <template v-if="item.value.type==='phone'" >
       <phone-field v-model="form[item.value.name]" :context="context" :form="form"
-                   :required="item.value.required" :item="item" :name=item.value.name></phone-field>
+                   :label="item.value.label" :disabled="item.value.meta.disabled"
+                   :required="item.value.meta.required" :item="item" :name=item.value.name />
     </template>
     <!-- Display Text Field -->
-    <template v-if="item.value.type==='display_text'" :disabled="item.value.meta.disabled">
+    <template v-if="item.value.type==='display_text'" >
       <display-text-field v-model="form[item.value.name]" :context="context" :form="form"
                           :item="item" :default="item.value.meta.default"
                           :label=item.value.label :name=item.value.name />
@@ -164,18 +165,18 @@
     </template>
     <template v-if="item.value.type==='design'">
       <design-field v-model="form[item.value.name]" :label=item.value.label
-                      :name=item.value.name :form="form" :required="item.value.required"
+                      :name=item.value.name :form="form" :required="item.value.meta.required"
                       :context="context"></design-field>
     </template>
     <template v-if="item.value.type==='parametric'">
       <parametric-field v-model="form[item.value.name]" :label=item.value.label :field="item"
-                      :name=item.value.name :form="form" :required="item.value.required"
+                      :name=item.value.name :form="form" :required="item.value.meta.required"
                       :context="context"></parametric-field>
     </template>
     <!-- COMPUTED Field -->
     <template v-if="item.value.type==='computed'">
       <computed-field v-model="form[item.value.name]" :label=item.value.label
-                    :name=item.value.name :form="form" :required="item.value.required"
+                    :name=item.value.name :form="form" :required="item.value.meta.required"
                     :disabled="item.value.meta.disabled || disabled"
                     :context="context"></computed-field>
     </template>

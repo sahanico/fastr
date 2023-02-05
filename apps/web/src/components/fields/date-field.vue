@@ -21,6 +21,9 @@ export default {
     return {
       date: '',
       menu: null,
+      rules: {
+        date: v => (this.required ? !!v || `${this.label} is required` : true),
+      },
     };
   },
   methods: {

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-text-field v-model="email" :rules="[rules.email]"  color="red" :label="label"
+    <v-text-field v-model="email" :rules="[rules.email]" :required="required"
+                  color="red" :label="label"
                   :disabled="context === 'read' || disabled" @input="updateValue(email)" />
   </div>
 
