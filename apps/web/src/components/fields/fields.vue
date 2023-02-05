@@ -12,8 +12,7 @@
                      :context="context"
                      :label="item.value.label"
                      :name="item.value.name"
-                     :form="form"
-                     :required="item.value.meta.required">
+                     :form="form">
       </address-field>
     </template>
     <!-- Text Area Field -->
