@@ -76,9 +76,8 @@ class Record {
   }
 
   static async updateRecord(req: PlatformRequest | Request, res: Response) {
-    const payload = {...req.body};
     // @ts-ignore
-    const record = await recordService.updateRecord(payload, req.auth);
+    const record = await recordService.updateRecord(req.body, req.auth);
     if (record) {
       res.status(200).send(record);
     } else {

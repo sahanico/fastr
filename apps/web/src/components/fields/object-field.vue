@@ -3,7 +3,8 @@
     <v-autocomplete v-model="selected" :items="autocomplete" chips dense :value="value"
                     :disabled="context === 'read' || disabled" color="red"
                     @input="updateValue(selected)"
-                    :label="`${object.label}: ${selected.text || labelValue}`" outlined small-chips return-object>
+                    :label="`${object.label}: ${selected.text || labelValue}`" outlined small-chips
+                    return-object>
     </v-autocomplete>
   </div>
 </template>
@@ -23,7 +24,7 @@ export default {
       autocomplete: [],
       selected: {},
       value: '',
-      labelValue: ''
+      labelValue: '',
     };
   },
   computed: {
@@ -173,15 +174,17 @@ export default {
       } else {
         console.log('this.name: ', this.name);
         console.log('this.form[this.name]: ', this.form[this.name]);
-        const record = _.findWhere(this.allRecords, {
-          id: this.form[this.name].value ? this.form[this.name].value : this.form[this.name]
-        });
-        if (record) {
-          this.selected = {
-            text: record.data.name || record.data.first_name || record.data.full_name,
-            // eslint-disable-next-line no-underscore-dangle
-            value: record._id,
-          };
+        if (this.form && this.form[this.name]) {
+          const record = _.findWhere(this.allRecords, {
+            id: this.form[this.name].value ? this.form[this.name].value : this.form[this.name],
+          });
+          if (record) {
+            this.selected = {
+              text: record.data.name || record.data.first_name || record.data.full_name,
+              // eslint-disable-next-line no-underscore-dangle
+              value: record._id,
+            };
+          }
         }
       }
     }

@@ -124,6 +124,7 @@
                    :context="context" :form="form"
                    :name=item.value.name
                    :label=item.value.label
+                   :disabled="item.value.meta.disabled"
                    :required="item.value.required"
                    :item="item">
 

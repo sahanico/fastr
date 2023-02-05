@@ -12,7 +12,7 @@
           </v-btn>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="inputsDialog" width="400">
+      <v-dialog v-model="inputsDialog" width="400" persistent>
         <v-card>
           <v-card-title class="headline red white--text" dark
                         primary-title> Select a value

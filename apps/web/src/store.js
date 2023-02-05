@@ -6,8 +6,8 @@ import db from '@/db';
 import $ from 'jquery';
 import router from './router/router';
 import authHeader from './auth-header';
-import {saveAs} from 'file-saver';
-import createPersistedState from 'vuex-persistedstate'
+import { saveAs } from 'file-saver';
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 const BASE_API_URL = `${process.env.BASE_API_URL}/api`;
@@ -17,9 +17,10 @@ const axios = axiosBase.create();
 axios.defaults.withCredentials = true;
 
 export const store = new Vuex.Store({
-  plugins: [createPersistedState({
-    storage: window.localStorage,
-  })],
+  plugins: [
+    createPersistedState({
+      storage: window.localStorage,
+    })],
   state: {
     token: null,
     user: null,
@@ -30,7 +31,7 @@ export const store = new Vuex.Store({
       account: null,
       account_member: null,
       today: this.today, // 2022-01-30 ; use this format
-    }
+    },
   },
   mutations: {
     updateAcceptedTerms(state) {
@@ -40,16 +41,16 @@ export const store = new Vuex.Store({
           ...state.system,
           user: {
             ...state.system.user,
-            acceptedTerms: 'true'
-          }
-        }
-      }
+            acceptedTerms: 'true',
+          },
+        },
+      };
     },
     updateJwtToken(state, jwtToken) {
       state.user = {
         ...state.user,
         jwtToken,
-      }
+      };
     },
     authUser(state, userData) {
       state.user = userData;
@@ -71,7 +72,7 @@ export const store = new Vuex.Store({
       state.sideNavItems = [];
     },
     system(state, payload) {
-      const { account, account_member, user} = payload
+      const { account, account_member, user } = payload;
       if (account) {
         state.system.account = account;
       }
@@ -81,10 +82,10 @@ export const store = new Vuex.Store({
       if (user) {
         state.system.user = user;
       }
-    }
+    },
   },
   actions: {
-    today(){
+    today() {
       const date = new Date();
       return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
@@ -205,9 +206,7 @@ export const store = new Vuex.Store({
         return;
       }
 
-      db.collection('users')
-        .doc(userData.userId)
-        .set(userData)
+      db.collection('users').doc(userData.userId).set(userData);
     },
     storeDocument() {
 
@@ -234,7 +233,7 @@ export const store = new Vuex.Store({
         processData: false,
         data: fd,
         type: 'POST',
-        headers: authHeader()
+        headers: authHeader(),
       });
 
     },
@@ -256,14 +255,12 @@ export const store = new Vuex.Store({
 
     },
     async uploadAttachment({ state }, fd) {
-      let res = await $.ajax({
+      const res = await axios({
+        method: 'post',
         url: `${BASE_API_URL}/admin/${state.user.userId}/upload-attachment`,
-        cache: false,
-        contentType: false,
-        processData: false,
         data: fd,
-        type: 'POST',
-        headers: authHeader(),
+        headers: authHeader('form-data'),
+        withCredentials: true,
       });
       if (res.status === 200) {
         return res.data;
@@ -359,8 +356,8 @@ export const store = new Vuex.Store({
         headers: authHeader(),
       };
 
-      return fetch(`${BASE_API_URL}/user/${state.user.id}/sent-documents`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/user/${state.user.id}/sent-documents`, requestOptions).
+        then(handleResponse);
 
     },
     async getReceivedDocuments({ state }) {
@@ -369,8 +366,8 @@ export const store = new Vuex.Store({
         headers: authHeader(),
       };
 
-      return fetch(`${BASE_API_URL}/user/${state.user.id}/received-documents`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/user/${state.user.id}/received-documents`, requestOptions).
+        then(handleResponse);
 
     },
     async getInboundDocuments({ state }) {
@@ -378,16 +375,16 @@ export const store = new Vuex.Store({
         method: 'GET',
         headers: authHeader(),
       };
-      return fetch(`${BASE_API_URL}/user/${state.user.userId}/inbound-document`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/user/${state.user.userId}/inbound-document`, requestOptions).
+        then(handleResponse);
     },
     async getOutboundDocuments({ state }) {
       const requestOptions = {
         method: 'GET',
         headers: authHeader(),
       };
-      return fetch(`${BASE_API_URL}/user/${state.user.userId}/outbound-document`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/user/${state.user.userId}/outbound-document`, requestOptions).
+        then(handleResponse);
     },
     async downloadDocuments({ state }, { path, userId }) {
       return axios({
@@ -396,11 +393,10 @@ export const store = new Vuex.Store({
         headers: authHeader(),
         data: { path, userId, stateUser: state.user.userId },
         responseType: 'blob',
-      })
-        .then((response) => {
-          let blob = new Blob([response.data]);
-          saveAs(blob, path.slice(1));
-        });
+      }).then((response) => {
+        let blob = new Blob([response.data]);
+        saveAs(blob, path.slice(1));
+      });
     },
     async downloadAttachment({ state }, payload) {
       return axios({
@@ -409,11 +405,10 @@ export const store = new Vuex.Store({
         headers: authHeader(),
         data: payload,
         responseType: 'blob',
-      })
-        .then((response) => {
-          let blob = new Blob([response.data]);
-          saveAs(blob, payload.name);
-        });
+      }).then((response) => {
+        let blob = new Blob([response.data]);
+        saveAs(blob, payload.name);
+      });
     },
 
     async getAllInboundDocuments({ state }) {
@@ -422,8 +417,7 @@ export const store = new Vuex.Store({
         headers: authHeader(),
       };
       return fetch(`${BASE_API_URL}/admin/${state.user.userId}/all-inbound-documents`,
-        requestOptions)
-        .then(handleResponse);
+        requestOptions).then(handleResponse);
     },
     async getAllOutboundDocuments({ state }) {
       const requestOptions = {
@@ -431,8 +425,7 @@ export const store = new Vuex.Store({
         headers: authHeader(),
       };
       return fetch(`${BASE_API_URL}/admin/${state.user.userId}/all-outbound-documents`,
-        requestOptions)
-        .then(handleResponse);
+        requestOptions).then(handleResponse);
     },
     async getUserApprovals({ state }) {
       const res = await axios({
@@ -498,8 +491,8 @@ export const store = new Vuex.Store({
         method: 'GET',
         headers: authHeader(),
       };
-      return fetch(`${BASE_API_URL}/user/${state.user.userId}/invoices`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/user/${state.user.userId}/invoices`, requestOptions).
+        then(handleResponse);
     },
 
     async getPaidInvoices({ state }) {
@@ -572,11 +565,10 @@ export const store = new Vuex.Store({
         headers: authHeader(),
         data: { path, userId, stateUser: state.user.userId },
         responseType: 'blob',
-      })
-        .then((response) => {
-          let blob = new Blob([response.data]);
-          saveAs(blob, path.slice(1));
-        });
+      }).then((response) => {
+        let blob = new Blob([response.data]);
+        saveAs(blob, path.slice(1));
+      });
     },
     async approveInvoicePayment({ state }, invoicePayload) {
       const res = await axios({
@@ -649,8 +641,8 @@ export const store = new Vuex.Store({
         method: 'GET',
         headers: authHeader(),
       };
-      return fetch(`${BASE_API_URL}/admin/${state.user.userId}/all-appointments`, requestOptions)
-        .then(handleResponse);
+      return fetch(`${BASE_API_URL}/admin/${state.user.userId}/all-appointments`, requestOptions).
+        then(handleResponse);
     },
     async getAppointments({ state }) {
       const appointment = await axios({
@@ -1022,7 +1014,7 @@ export const store = new Vuex.Store({
       });
       if (res.status === 200) {
         return res.data;
-      } else { return  false}
+      } else { return false;}
     },
     async updateRecord({ state, commit }, payload) {
       const res = await axios({
@@ -1034,7 +1026,7 @@ export const store = new Vuex.Store({
       });
       if (res.status === 200) {
         return res.data;
-      } else { return  false}
+      } else { return false;}
     },
     async getAllRecords({ state }) {
       const records = await axios({
@@ -1239,28 +1231,28 @@ export const store = new Vuex.Store({
     acceptedTerms(state) {
       if (state.user) {
         return state.user.acceptedTerms;
-      };
+      }
+      ;
     },
   },
-},);
+});
 
 function handleResponse(response) {
-  return response.text()
-    .then(text => {
-      const data = text && JSON.parse(text);
-      if (!response.ok) {
-        if (response.status === 401) {
-          // auto logout if 401 response returned from api
-          // logout();
-          // location.reload(true);
-        }
-
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
+  return response.text().then(text => {
+    const data = text && JSON.parse(text);
+    if (!response.ok) {
+      if (response.status === 401) {
+        // auto logout if 401 response returned from api
+        // logout();
+        // location.reload(true);
       }
 
-      return data;
-    });
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
+
+    return data;
+  });
 }
 
 async function postData(url = '', data = {}) {
@@ -1294,12 +1286,25 @@ async function putData(url = '', data = {}) {
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-axios.interceptors.response.use(
-  (response) => {
+let alertShown = false;
+
+axios.interceptors.response.use((response) => {
     if (response.headers.newauthheader) {
-      const jwtToken = response.headers.newauthheader.split(' ')[1]
-      store.commit('updateJwtToken', jwtToken)
+      const jwtToken = response.headers.newauthheader.split(' ')[1];
+      store.commit('updateJwtToken', jwtToken);
     }
     return response;
-  }
-)
+  }, async error => {
+    if (error && error.response && error.response.status === 440) {
+      if (!alertShown) {
+        alertShown = true;
+        // Your custom logic for handling a token expiration error
+        await store.dispatch('logout', 'logout');
+        alert('your session has expired. please log back in.');
+        setTimeout(() => {
+          alertShown = false;
+        }, 10 * 60 * 1000);
+      }
+    }
+  },
+);

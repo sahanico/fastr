@@ -33,10 +33,11 @@ async function createRecord(record: PlatformRecord) {
 
 async function updateRecord(payload: any, user: { id: any }) {
   const now = new Date().toISOString();
-  const pay = { ...payload };
-  pay.data.updatedBy = user.id;
-  pay.data.updatedAt = now;
-  return db.Record.findOneAndUpdate({ _id: pay.id }, { data: pay.data });
+  payload.data.updatedBy = user.id;
+  payload.data.updatedAt = now;
+
+  console.log('payload: ', JSON.stringify(payload, null, 2));
+  return db.Record.findOneAndUpdate({ _id: payload.id }, { data: payload.data });
 }
 
 async function getAllRecords() {

@@ -219,6 +219,7 @@ export default {
   },
   methods: {
     async refreshList() {
+      console.log('ping');
       this.createButtonDialog = false;
       this.loading = true;
       await this.getRecords();

@@ -69,7 +69,7 @@ export default function authorize(roles: string[] = []) {
             next(err);
 
           } catch (error: any) {
-            res.status(401).send({message: error});
+            res.status(440).send({message: error});
           }
         };
         const middleware = expressjwt({
@@ -78,7 +78,7 @@ export default function authorize(roles: string[] = []) {
         });
         await middleware(req, res, await handleErrorNext);
       } catch (error: any) {
-        res.status(401).send({message: error})
+        res.status(440).send({message: error})
       }
     },
     expressjwt({

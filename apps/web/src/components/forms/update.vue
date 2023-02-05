@@ -38,16 +38,16 @@
         </v-card>
       </div>
       <div>
-        <v-dialog v-model="updatedDialog" width="400">
+        <v-dialog v-model="updatedDialog" width="400" persistent>
           <v-card>
             <v-card-title class="headline red white--text" dark
-                          primary-title> Form Updated
+                          primary-title> Update Successful
             </v-card-title>
             <v-spacer></v-spacer>
-            <v-card-text> Form has been updated.</v-card-text>
+            <v-card-text> {{ `${design.object}` }} has been updated.</v-card-text>
             <v-spacer></v-spacer>
             <v-btn color="black" text type="button"
-                   @click="updatedDialog = false">Ok
+                   @click="finish">Ok
             </v-btn>
           </v-card>
         </v-dialog>
@@ -56,6 +56,7 @@
   </div>
 </template>
 <script>
+import _ from 'underscore';
 import { GridLayout, GridItem } from 'vue-grid-layout';
 import Fields from '../fields/fields';
 
@@ -76,14 +77,18 @@ export default {
     };
   },
   methods: {
+    finish() {
+      this.updatedDialog = false;
+      this.$router.back();
+    },
     onSubmit() {
-      const record = {
-        object: this.design.object,
-        id: this.inputId,
-        data: this.form,
-      };
-
-      this.$store.dispatch('updateRecord', record);
+      _.each(_.keys(this.form.data), (item) => {
+        if (typeof this.form.data[item] === 'object') {
+          this.form.data[item] = this.form.data[item].value;
+        }
+      });
+      console.log('this.form: ', this.form);
+      this.$store.dispatch('updateRecord', this.form);
       this.updatedDialog = true;
       this.form = {};
     },
@@ -94,9 +99,11 @@ export default {
       { name: this.designName },
     );
 
+    console.log('this.input, ', this.input);
     if (!this.input && this.inputId) {
       this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
     }
+    console.log('this.input, ', this.input);
     this.form = this.input;
     this.loading = false;
   },

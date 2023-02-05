@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-text-field v-model="email" :rules="[rules.email]"  color="red" :label="label"
-                  :disabled="context === 'read'" @input="updateValue(email)"></v-text-field>
+                  :disabled="context === 'read' || disabled" @input="updateValue(email)" />
   </div>
 
 </template>
@@ -9,7 +9,7 @@
 <script>
 
 export default {
-  props: ['item', 'context', 'form', 'required', 'name', 'label'],
+  props: ['item', 'context', 'form', 'required', 'name', 'label', 'disabled'],
   data() {
     return {
       email: '',

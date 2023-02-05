@@ -11,6 +11,8 @@ async function preCreateRecord(record: { object: any, data: any }) {
       event.meta.object === record.object &&
       event.meta.type === 'Pre-Create Record'
     ) {
+      console.log('record.object: ', record.object);
+      console.log('event.meta.object: ', event.meta.object);
       filteredEvents.push(event);
     }
   });
@@ -40,7 +42,7 @@ async function preCreateRecord(record: { object: any, data: any }) {
       }
     }
   }
-  return false;
+  return true;
 }
 
 async function postCreateRecord(record: { object: any, data: any }) {
