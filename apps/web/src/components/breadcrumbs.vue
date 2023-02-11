@@ -24,7 +24,7 @@ export default {
     return {
       previousBreadcrumbs: [],
       crumbListMap: {
-        user_account_members_screen: 'Members',
+        user_account_members_screen: 'Manage Members',
         user_invoices_screen: 'Invoices',
         admin_invoices_screen: 'Invoices',
         payments_screen: 'Payments',
@@ -32,6 +32,7 @@ export default {
         admin_users_screen: 'Users',
         metrics: 'Metrics',
         admin_approval_requests: 'Approval Requests',
+        all_documents_dashboard: 'All Documents',
       },
     };
   },

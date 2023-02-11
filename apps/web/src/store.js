@@ -1232,7 +1232,6 @@ export const store = new Vuex.Store({
       if (state.user) {
         return state.user.acceptedTerms;
       }
-      ;
     },
   },
 });

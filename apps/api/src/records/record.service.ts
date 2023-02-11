@@ -332,17 +332,19 @@ async function transformRecordObjects(records: any, objectName: string) {
   for (const field of dateFields) {
     for (const record of records) {
       if (record.data[field.name]) {
+        const formattedDate = new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          timeZone: "America/New_York",
+          hour12: false
+        }).format(new Date(record.data[field.name]))
         record.data[field.name] = {
           value: record.data[field.name],
-          text: new Date(record.data[field.name]).toLocaleDateString(
-            "en-US",
-            {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              timeZone: 'America/New_York'
-            }
-          )
+          text:`${formattedDate.substring(6, 10)}-${formattedDate.substring(0, 2)}-${formattedDate.substring(3, 5)} ${formattedDate.substring(11)}`
         };
       }
     }
@@ -351,10 +353,12 @@ async function transformRecordObjects(records: any, objectName: string) {
     for (const record of records) {
       if (record.data[field.name]) {
         const userRecord = await getRecordByObjectID({ id: record.data[field.name]});
-        record.data[field.name] = {
-          value: record.data[field.name],
-          text: `${userRecord.data.firstName} ${userRecord.data.lastName}`
-        };
+        if (userRecord && userRecord.data) {
+          record.data[field.name] = {
+            value: record.data[field.name],
+            text: `${userRecord.data.firstName} ${userRecord.data.lastName}`
+          };
+        }
       }
     }
   }

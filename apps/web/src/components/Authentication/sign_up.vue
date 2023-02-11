@@ -60,7 +60,7 @@
                                       color="red" required></v-checkbox>
                           <a style="padding-top: 20px;" href="javascript:void(0)" v-bind="attrs"
                              v-on="on">
-                            Terms and Conditions
+                            Accept Terms and Conditions
                           </a>
                         </v-row>
                       </template>

@@ -1,6 +1,6 @@
 <template>
   <div v-click-outside="config">
-    <v-card width="375" min-height="440" rounded>
+    <v-card width="375" min-height="440" rounded style="z-index: 2">
       <div>
         <v-flex offset-xs4 xs8 style="margin-top: 12px;padding-top: 12px;">
           <v-list-item color="red">

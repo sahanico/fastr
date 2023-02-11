@@ -60,7 +60,7 @@
               <div v-if="list.meta.create">
                 <v-btn color="red darken-2" dark style="align: right;"
                        @click="createButtonDialog = true">
-                  Create
+                  Upload
                 </v-btn>
               </div>
             </div>
