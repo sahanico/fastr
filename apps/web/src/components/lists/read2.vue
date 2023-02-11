@@ -2,17 +2,17 @@
   <v-container v-if="list">
     <v-dialog v-model="createFormDialog" width="500" height="100%">
       <v-card>
-        <v-container>
-          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
-                       :inDialog="true"
-                       :name="`create-form-${selectedAction.createFormDialog}`"/>
-        </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="black" text type="button">
             Close
           </v-btn>
         </v-card-actions>
+        <v-container>
+          <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
+                       :inDialog="true"
+                       :name="`create-form-${selectedAction.createFormDialog}`"/>
+        </v-container>
       </v-card>
     </v-dialog>
     <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;"
