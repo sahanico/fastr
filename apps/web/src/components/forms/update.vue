@@ -87,7 +87,6 @@ export default {
           this.form.data[item] = this.form.data[item].value;
         }
       });
-      console.log('this.form: ', this.form);
       this.$store.dispatch('updateRecord', this.form);
       this.updatedDialog = true;
       this.form = {};
@@ -98,12 +97,9 @@ export default {
       'getDesignByName',
       { name: this.designName },
     );
-
-    console.log('this.input, ', this.input);
     if (!this.input && this.inputId) {
       this.input = await this.$store.dispatch('getRecordByObjectID', { id: this.inputId });
     }
-    console.log('this.input, ', this.input);
     this.form = this.input;
     this.loading = false;
   },

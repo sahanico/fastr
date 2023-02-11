@@ -131,7 +131,6 @@ export default {
     }
   },
   async created() {
-    console.log('this.designName: ', this.designName);
     this.design = await this.$store.dispatch('getDesignByName', {
       name: this.designName,
     });

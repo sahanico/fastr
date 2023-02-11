@@ -219,14 +219,12 @@ export default {
   },
   methods: {
     async refreshList() {
-      console.log('ping');
       this.createButtonDialog = false;
       this.loading = true;
       await this.getRecords();
       this.loading = false;
     },
     async getRecords() {
-      console.log('this.$store.state.system: ', this.$store.state.system);
       this.records = await this.$store.dispatch(
         'getRecordsForList',
         {
@@ -274,8 +272,6 @@ export default {
         this.selectedAction = action;
         // instead of formattedRecord get the real record and set as selected item;
         const rec = _.findWhere(this.records, { _id: item.id });
-        console.log('item: ', item);
-        console.log('rec: ', rec);
         this.selectedItem = rec.data;
         this.createFormDialog = true;
       }

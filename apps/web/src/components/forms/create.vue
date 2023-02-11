@@ -244,7 +244,6 @@ export default {
       }));
     },
     async onSubmit() {
-      console.log('this.$refs.createForm.valid: ', this.$refs.createForm.validate());
       if (this.$refs.createForm.validate()) {
         this.sumbitProgress = true;
         const defaultValues = {};
@@ -276,7 +275,6 @@ export default {
           };
 
           const createRecord = await this.$store.dispatch('createRecord', record);
-          console.log('createRecord: ', createRecord);
           if (createRecord === 'failed-to-pre-create') {
             alert('Email address already in use. Please try again with a different email address');
             this.updateNavigation();

@@ -172,8 +172,6 @@ export default {
         // eslint-disable-next-line no-underscore-dangle
         this.$emit('input', record._id);
       } else {
-        console.log('this.name: ', this.name);
-        console.log('this.form[this.name]: ', this.form[this.name]);
         if (this.form && this.form[this.name]) {
           const record = _.findWhere(this.allRecords, {
             id: this.form[this.name].value ? this.form[this.name].value : this.form[this.name],
