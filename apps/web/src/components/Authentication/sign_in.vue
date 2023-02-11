@@ -284,7 +284,7 @@ export default {
       const signedInAccountMember = await this.$store.dispatch('getRecordByObjectAndField', {
         object: 'account_member',
         field: 'user',
-        value: signedInUser.userId,
+        value: signedInUser.userId || signedInUser.id,
       });
 
       this.$store.commit('system', { account_member: signedInAccountMember });
