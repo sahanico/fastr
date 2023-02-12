@@ -332,20 +332,35 @@ async function transformRecordObjects(records: any, objectName: string) {
   for (const field of dateFields) {
     for (const record of records) {
       if (record.data[field.name]) {
-        const formattedDate = new Intl.DateTimeFormat("en-US", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          timeZone: "America/New_York",
-          hour12: false
-        }).format(new Date(record.data[field.name]))
-        record.data[field.name] = {
-          value: record.data[field.name],
-          text:`${formattedDate.substring(6, 10)}-${formattedDate.substring(0, 2)}-${formattedDate.substring(3, 5)} ${formattedDate.substring(11)}`
-        };
+        if (field.type === 'date_time') {
+          try {
+            const formattedDate = new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZone: "America/New_York",
+              hour12: false
+            }).format(new Date(record.data[field.name]))
+            record.data[field.name] = {
+              value: record.data[field.name],
+              text:`${formattedDate.substring(6, 10)}-${formattedDate.substring(0, 2)}-${formattedDate.substring(3, 5)} ${formattedDate.substring(11)}`
+            };
+          } catch (e) {
+            record.data[field.name] = {
+              value: record.data[field.name],
+              text: record.data[field.name],
+            };
+          }
+
+        } else if (field.type === 'date') {
+          record.data[field.name] = {
+            value: record.data[field.name],
+            text: record.data[field.name]
+          };
+        }
       }
     }
   }
