@@ -9,7 +9,7 @@
         </v-container>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="black" text type="button">
+          <v-btn color="black" text type="button" @click="createFormDialog = false;">
             Close
           </v-btn>
         </v-card-actions>
