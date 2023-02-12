@@ -149,6 +149,11 @@
                     <v-select v-model="design.meta.create" :items="autocompleteDashboards" clearable
                               label="Create Dashboard"></v-select>
                   </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="design.meta.createLabel" label="Create Label">
+                    </v-text-field>
+                  </v-col>
 
                 </v-row>
                 <v-row>
@@ -360,6 +365,7 @@ export default {
           filter: '', // for user
           adminFilter: '',
           create: '',
+          createLabel: '',
           searchable: false,
           inputBoilerPlate: false,
           import: false,

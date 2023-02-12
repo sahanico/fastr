@@ -16,7 +16,7 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;"
-              persistent v-if="list && list.meta && list.meta.create && createButtonDialog">
+              v-if="list && list.meta && list.meta.create && createButtonDialog">
       <div style="display: flex; flex-direction: column; background-color: white"><v-btn color="black" text type="button" @click="createButtonDialog = false">
         Close
       </v-btn>
@@ -60,7 +60,7 @@
               <div v-if="list.meta.create">
                 <v-btn color="red darken-2" dark style="align: right;"
                        @click="createButtonDialog = true">
-                  Upload
+                  {{ `${list.meta.createLabel  || 'Create'}`}}
                 </v-btn>
               </div>
             </div>

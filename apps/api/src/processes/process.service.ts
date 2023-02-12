@@ -155,7 +155,7 @@ async function runFindRecordStep(
     },
     pool: any,
 ) {
-  const record = conditionService.runCondition(step.meta.conditions, pool)
+  const record = await conditionService.runCondition(step.meta.conditions, pool)
 
   if (record) {
     return record;
@@ -260,7 +260,11 @@ async function runEmailStep(
   const { value } = step.meta.email.to;
   if (step.meta.email.to.type === 'variable') {
     // @ts-ignore
-    to = pool[value.variable.name.value.name].data[value.field];
+    if (value.field.value) {
+      to = pool[value.variable.name.value.name].data[value.field.value];
+    } else {
+      to = pool[value.variable.name.value.name].data[value.field];
+    }
   } else {
     // if it is a literal
     to = value.literal;

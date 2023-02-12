@@ -1300,6 +1300,7 @@ axios.interceptors.response.use((response) => {
         // Your custom logic for handling a token expiration error
         await store.dispatch('logout', 'logout');
         alert('your session has expired. please log back in.');
+        window.location.replace(`${process.env.WEBPACK_PUBLIC_URL || 'taxdollar.ca'}/sign_in`);
         setTimeout(() => {
           alertShown = false;
         }, 10 * 60 * 1000);

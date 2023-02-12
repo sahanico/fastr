@@ -125,8 +125,7 @@ export default {
           // todo : get response from backend, if unique field data already exists, show dialog
 
           await this.$store.dispatch('createRecord', record);
-          alert(error);
-          this.updateNavigation('payment');
+          alert(error || 'Something went wrong and the payment errored out. Please try again. ');
         },
         onDeclined: async (response) => {
           // eslint-disable-next-line no-console
@@ -147,8 +146,10 @@ export default {
 
           await this.$store.dispatch('createRecord', record);
 
-          alert(response.errorMessage);
-          this.updateNavigation('payment');
+          alert(
+            response.errorMessage
+            || 'Something went wrong and the payment was declined. Please try again.'
+          );
         },
         onApproval: async (response) => {
           this.sumbitProgress = false
@@ -234,6 +235,7 @@ export default {
         });
       });
       this.inputsDialog = false;
+      this.$forceUpdate();
     },
     getObjectRecords(name) {
       const object = _.findWhere(this.objects, { name });
