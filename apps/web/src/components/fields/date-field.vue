@@ -4,10 +4,10 @@
     transition="scale-transition" offset-y min-width="290px">
     <template v-slot:activator="{ on, attrs }">
       <v-text-field color="red" :label="label" prepend-icon="event"
-                    v-bind="attrs" v-on="on" v-model="date.value" @input="updateValue(date)">
+                    v-bind="attrs" v-on="on" v-model="date" @input="updateValue(date)">
       </v-text-field>
     </template>
-    <v-date-picker v-model="date.val" color="red" @input="updateDatepickerValue(date)"
+    <v-date-picker v-model="date" color="red" @input="updateDatepickerValue(date)"
                   :disabled="disabled || context === 'read'">
     </v-date-picker>
   </v-menu>
@@ -49,7 +49,7 @@ export default {
   created() {
     if (this.context === 'update') {
       if (this.form[this.name]) {
-        this.date = this.form[this.name];
+        this.date = this.form[this.name].value;
       }
     }
     if (this.context === 'create') {

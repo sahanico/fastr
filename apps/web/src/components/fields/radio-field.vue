@@ -11,7 +11,6 @@
       ></v-radio>
     </v-radio-group>
   </v-container>
-
 </template>
 
 <script>
@@ -29,7 +28,7 @@ export default {
     },
   },
   created() {
-    if (this.form[this.name]) {
+    if (this.form[this.name] || this.form[this.name] === 0) {
       this.radio = this.form[this.name];
     }
   },
