@@ -12,7 +12,7 @@ export default {
   props: ['item', 'context', 'name', 'form', 'required', 'disabled', 'default'],
   data() {
     return {
-      selected: {},
+      selected: '',
       value: '',
     };
   },
@@ -24,7 +24,8 @@ export default {
   created() {
     if (this.form[this.name]) {
       this.selected = this.item.value.meta.dropdownItems[this.form[this.name]];
-    } else if (this.default) {
+    }
+    if (this.default) {
       if (this.default.type === 'literal') {
         this.selected = this.default.literal;
       }

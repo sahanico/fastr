@@ -3,28 +3,28 @@
     <v-dialog v-model="createFormDialog" width="500" height="100%">
       <v-card>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="black" text type="button">
-            Close
-          </v-btn>
-        </v-card-actions>
         <v-container>
           <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
                        :inDialog="true"
                        :name="`create-form-${selectedAction.createFormDialog}`"/>
         </v-container>
+          <v-spacer></v-spacer>
+          <v-btn color="black" text type="button">
+            Close
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;"
               persistent v-if="list && list.meta && list.meta.create && createButtonDialog">
-      <div style="display: flex; flex-direction: column; background-color: white">
+      <div style="display: flex; flex-direction: column; background-color: white"><v-btn color="black" text type="button" @click="createButtonDialog = false">
+        Close
+      </v-btn>
         <DashboardRead :input="input" :name="`dialog-${list.meta.create}`"
                        style="overflow-y: scroll"
                        @closeDialog="refreshList"
                        :designName="list.meta.create" :inDialog="true" context="create" />
-        <v-btn color="black" text type="button" @click="createButtonDialog = false">
-          Close
-        </v-btn>
+
       </div>
     </v-dialog>
 
