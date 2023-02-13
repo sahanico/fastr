@@ -49,7 +49,7 @@ export default {
         acceptedTerms: 'true',
       });
       if (acceptedTermsUser) {
-        await this.$router.push('/signed_in');
+        await this.$router.push('/dashboards/read/home_dashboard');
       }
     },
     async authenticate() {
@@ -87,7 +87,7 @@ export default {
         }
       });
       if (this.$router.currentRoute.path === '/sign_in') {
-        await this.$router.push('/');
+        await this.$router.push('/dashboards/read/home_dashboard');
       }
     },
     authenticateDesigner() {
@@ -158,7 +158,7 @@ export default {
         }
       });
       if (this.$router.currentRoute.path === '/sign_in') {
-        await this.$router.push('/');
+        await this.$router.push('/dashboards/read/home_dashboard');
       }
     },
   },

@@ -27,7 +27,7 @@
       app fixed style="z-index: 5">
       <v-spacer></v-spacer>
       <div class="white--text">
-        &copy; Copyright {{ new Date().getFullYear() }} Sahani Corp. All rights reserved.
+        &copy; Copyright {{ new Date().getFullYear() }} Tax Dollar Inc. All rights reserved.
       </div>
     </v-footer>
     <!-- Nav drawer for desktop-->
