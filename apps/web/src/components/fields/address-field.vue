@@ -1,7 +1,7 @@
 <template>
   <v-text-field :id="name" v-model="value" :disabled="context === 'read'" :label="label"
                  color="red" :required="required" @input="updateValue(value)"
-                :ref="name"  placeholder="" autofocus>
+                :ref="name"  placeholder="">
   </v-text-field>
 </template>
 

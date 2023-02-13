@@ -54,33 +54,36 @@
       background-color="white"
       color="red"
       grow>
-      <v-btn router to="/">
-        <span>Home</span>
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
       <v-btn v-if="!auth" router to="/sign_in">
         <span>Sign In</span>
         <v-icon>mdi-lock</v-icon>
       </v-btn>
-      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 5"
              @click="$router.push({
                       path: `${'/dashboards/read/' + $store.state.sideNavItems[0].name}`
                      }); showMobileOverflowCard = false">
         <span>{{ $store.state.sideNavItems[0].label }}</span>
         <v-icon>mdi-{{ $store.state.sideNavItems[0].icon }}</v-icon>
       </v-btn>
-      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 5"
              @click="$router.push({
                       path: `${'/dashboards/read/' + $store.state.sideNavItems[1].name}`
                      }); showMobileOverflowCard = false">
         <span>{{ $store.state.sideNavItems[1].label }}</span>
         <v-icon>mdi-{{ $store.state.sideNavItems[1].icon }}</v-icon>
       </v-btn>
-      <v-btn v-if="auth && $store.state.sideNavItems.length >= 4"
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 5"
+             @click="$router.push({
+                      path: `${'/dashboards/read/' + $store.state.sideNavItems[2].name}`
+                     }); showMobileOverflowCard = false">
+        <span>{{ $store.state.sideNavItems[2].label }}</span>
+        <v-icon>mdi-{{ $store.state.sideNavItems[2].icon }}</v-icon>
+      </v-btn>
+      <v-btn v-if="auth && $store.state.sideNavItems.length >= 5"
              @click="showMobileOverflowCard = !showMobileOverflowCard">
         <v-icon>mdi-dots-horizontal</v-icon>
       </v-btn>
-      <v-btn v-if="auth && $store.state.sideNavItems.length < 4"
+      <v-btn v-if="auth && $store.state.sideNavItems.length < 5"
              v-for="(item, index) in $store.state.sideNavItems"
              @click="$router.push({
                       path: `${'/dashboards/read/' + $store.state.sideNavItems[index].name}`

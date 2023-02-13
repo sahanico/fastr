@@ -1,15 +1,15 @@
 <template>
   <div>
-    <v-tabs v-if="tab && tab.meta" color="red" v-model="tabContent" background-color="#f5f5f5">
+    <v-tabs v-if="tab && tab.meta" color="red" v-model="tabContent" background-color="#fff" style=" padding-left:40px;">
       <v-tab v-for="(item, index) in tabs" :key="index"
-             style="background-color: #f5f5f5;">
+             style="background-color: #fff;">
         {{ item.label }}
       </v-tab>
     </v-tabs>
     <v-tabs-items v-model="tabContent">
       <v-tab-item v-for="(item, index) in tabs" :key="index">
         <div>
-          <dashboard-read-tab :name="`read-tab-${item.name}`" style="background-color: #f5f5f5"
+          <dashboard-read-tab :name="`read-tab-${item.name}`" style="background-color: #fff"
                           :inputId="inputId"
                           :design="item.design"
                           :input="input">

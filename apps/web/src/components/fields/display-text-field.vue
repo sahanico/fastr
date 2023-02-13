@@ -1,7 +1,9 @@
 <template>
   <div>
-    <v-card-title class="body-1" dark primary-title >
-      {{ display }}
+    <v-card-title class="body-1" dark primary-title>
+      <div style="word-break: break-word" v-html="display">
+        {{ display }}
+      </div>
     </v-card-title>
   </div>
 

@@ -86,7 +86,9 @@
           <v-data-table :headers="listHeaders"
                         :items="formattedRecords"
                         :search="queries"
-                        :items-per-page="8"
+                        :items-per-page="12"
+                        dense
+                        :item-class="rowClass"
                         :sort-by="list.meta.sort.field"
                         :sort-desc="list.meta.sort.mode === 'descending'"
                         item-key="items.key">
@@ -125,6 +127,9 @@
         </v-col>
       </v-row>
     </v-container>
+    <br/>
+    <br/>
+    <br/>
   </v-container>
 </template>
 
@@ -311,6 +316,9 @@ export default {
       });
       this.$forceUpdate();
     },
+    rowClass() {
+      return 'v-data-table-items';
+    },
   },
   async created() {
     this.list = await this.$store.dispatch('getDesignByName', { name: this.designName });
@@ -341,3 +349,11 @@ export default {
   },
 };
 </script>
+<style>
+.v-data-table-items {
+  border-bottom: #c0bebe solid 2px;
+}
+.v-data-table-items td {
+  margin: 2px;
+}
+</style>

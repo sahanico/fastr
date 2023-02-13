@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.matched[0].meta.breadcrumb" style="padding-left: 16px;">
+  <div v-if="$route.matched[0].meta.breadcrumb" style="padding-left:50px;">
     <router-link v-for="(crumb, i) in previousBreadcrumbs" :key="i" :to="crumb.path"
                  @click.native.prevent="goBack(i + 1)">
         {{
@@ -24,7 +24,7 @@ export default {
     return {
       previousBreadcrumbs: [],
       crumbListMap: {
-        user_account_members_screen: 'Manage Members',
+        user_account_members_screen: 'Manage',
         user_invoices_screen: 'Invoices',
         admin_invoices_screen: 'Invoices',
         payments_screen: 'Payments',
@@ -33,6 +33,7 @@ export default {
         metrics: 'Metrics',
         admin_approval_requests: 'Approval Requests',
         all_documents_dashboard: 'All Documents',
+        home_dashboard: 'Home',
       },
     };
   },

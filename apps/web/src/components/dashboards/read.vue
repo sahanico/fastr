@@ -13,8 +13,7 @@
             :vertical-compact="false"
             :prevent-collision="true"
             :use-css-transforms="false"
-            ref="gridlayout"
-            style="min-height: 700px">
+            ref="gridlayout">
             <grid-item v-for="(item,index) in design.meta.layout" :key="index"
                        :static="item.static"
                        :x="item.x"
@@ -23,11 +22,11 @@
                        :h="item.h"
                        :i="item.i">
               <div v-if="item.value.type==='form'">
-                <div :style="{height: item.h}" v-if="context === 'create' || !input">
+                <div v-if="context === 'create' || !input">
                   <create-form :input="input" :form-name="item.value.name" :inDialog="inDialog"
                                :name="`create-form-${item.value.name}`" @closeDialog="closeDialog"/>
                 </div>
-                <div :style="{height: item.h}" v-if="context !== 'create' && input">
+                <div v-if="context !== 'create' && input">
                   <form-update :input="input" :inDialog="inDialog"
                                context="update" :design-name="item.value.name"
                                :name="`update-form-${item.value.name}`" :inputId="inputId"/>

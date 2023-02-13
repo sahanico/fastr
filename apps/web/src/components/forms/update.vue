@@ -1,12 +1,13 @@
 <template>
   <div v-if="design && design.meta">
-    <div class="headline red--text pt-2 mt-2 pb-2 mb-2">
+    <div class="headline red--text pt-2 mt-2 pb-2 mb-2"
+         v-if="design && design.meta && design.meta.showLabel">
       {{ design.meta.showLabel ? design.label : '' }}
     </div>
     <form @submit.prevent="onSubmit">
-      <div style="position: relative; padding: 10px">
+      <div style="position: relative; padding: 4px">
         <v-progress-linear  v-show="loading" color="red" indeterminate />
-        <v-card :elevation="1">
+        <v-card :elevation="0">
           <div>
             <div id="content">
               <grid-layout

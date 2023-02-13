@@ -169,7 +169,7 @@ export default {
   font-weight: 300;
 
   &:hover {
-    background: #f5f5f5;
+    background: #fff;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <div :style="{ height: `100%` }">
+    <div>
       <v-dialog v-model="createdDialog" width="400">
-        <v-card>
+        <v-card >
           <v-card-title class="headline red white--text" dark
                         primary-title> {{ design.object }} has been saved!
           </v-card-title>
@@ -32,12 +32,12 @@
           </v-btn>
         </v-card>
       </v-dialog>
-      <div class="headline red--text pt-2 mt-2 pb-2 mb-2">
+      <div class="headline red--text pt-2 mt-2 pb-2 mb-2" v-if="design && design.meta && design.meta.showLabel">
         {{ design && design.meta && design.meta.showLabel ? design.label : '' }}
       </div>
       <v-progress-linear  v-show="loading" color="red" indeterminate />
-      <v-card :style="{ height: `${formHeight + 48}px` }">
-        <v-form v-model="valid" ref="createForm" @submit.prevent="onSubmit" style="padding: 16px">
+      <v-container >
+        <v-form v-model="valid" ref="createForm" @submit.prevent="onSubmit" style="padding: 4px">
           <div>
             <div>
               <div id="content">
@@ -61,7 +61,8 @@
           </div>
           <br />
           <br />
-          <v-btn :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
+          <v-btn v-if="design.object !== '-'"
+                 :style="{ position: 'absolute', bottom: '16px', left: '16px' }"
                  color="red darken-2" dark type="submit" :disabled="sumbitProgress">
             <v-progress-circular indeterminate color="red" v-if="sumbitProgress" />
             <div v-if="!sumbitProgress">
@@ -69,7 +70,7 @@
             </div>
           </v-btn>
         </v-form>
-      </v-card>
+      </v-container>
     </div>
   </v-container>
 

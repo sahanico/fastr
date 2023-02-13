@@ -1,15 +1,15 @@
 <template>
-  <div style="margin: 20px; background-color: #f5f5f5">
+  <div style="margin: 20px; background-color: #fff">
     <template>
-      <v-tabs color="red" v-model="tab" background-color="#f5f5f5">
-        <v-tab v-for="(item, index) in tabs" :key="index" style="background-color: #f5f5f5">{{
+      <v-tabs color="red" v-model="tab" background-color="#fff">
+        <v-tab v-for="(item, index) in tabs" :key="index" style="background-color: #fff">{{
             item.tab
           }}
         </v-tab>
       </v-tabs>
       <v-tabs-items v-model="tab">
         <v-tab-item v-for="item in tabs" :key="item.tab">
-          <dashboard-read :name="item.content" style="background-color: #f5f5f5"
+          <dashboard-read :name="item.content" style="background-color: #fff"
                           :inputId.sync="inputId"
                           :dashboard="design.value.meta.layout[item.index].value"
                           :input.sync="input">

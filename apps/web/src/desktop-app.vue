@@ -72,7 +72,7 @@
             </v-navigation-drawer>
           </v-col>
           <v-col :cols="auth ? 10 : 12" :offset="showSideNav ? 2 : 0" >
-            <main style="padding-top: 50px; background-color: #f5f5f5">
+            <main style="padding-top: 50px; background-color: #fff">
               <div>
                 <breadcrumbs />
               </div>
