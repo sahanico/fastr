@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$route.matched[0].meta.breadcrumb" style="padding-left:50px;">
+  <div v-if="$route.matched[0].meta.breadcrumb" style="padding-left:50px;" class="red--text">
     <router-link v-for="(crumb, i) in previousBreadcrumbs" :key="i" :to="crumb.path"
                  @click.native.prevent="goBack(i + 1)">
         {{

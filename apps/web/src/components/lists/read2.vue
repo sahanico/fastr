@@ -105,13 +105,13 @@
               </span>
             </template>
             <template v-slot:[`item.${list.meta.routeBy}`]="{ item, index }">
-              <span>  <a @click="routeTo(index, item)" href="javascript:void(0)">View</a>
-              {{ item[list.meta.routeBy] }}</span>
+              <v-chip small color="white" class="red--text" @click="routeTo(index, item)" >View
+              </v-chip>{{ item[list.meta.routeBy] }}
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
-              <v-chip dense v-if="attachment && attachment.name"
+              <v-chip color="white" small v-if="attachment && attachment.name"
                       truncate v-for="(attachment, index) in item['attachments']" :key="index">
-                <a @click="downloadAttachment(attachment)" href="javascript:void(0)">
+                <a @click="downloadAttachment(attachment)" href="javascript:void(0)" class="red--text">
                   {{ attachment ?
                   attachment.name ?
                     attachment.name.length > 20 ?
