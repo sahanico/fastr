@@ -105,9 +105,8 @@
               </span>
             </template>
             <template v-slot:[`item.${list.meta.routeBy}`]="{ item, index }">
-              <a @click="routeTo(index, item)" href="javascript:void(0)">{{
-                  item[list.meta.routeBy]
-                }}</a>
+              <span>  <a @click="routeTo(index, item)" href="javascript:void(0)">View</a>
+              {{ item[list.meta.routeBy] }}</span>
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
               <v-chip dense v-if="attachment && attachment.name"

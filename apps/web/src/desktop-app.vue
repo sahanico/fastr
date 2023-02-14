@@ -6,6 +6,7 @@
       <v-app-bar-title>
         <router-link style="cursor: pointer" tag="span" to="/"/>
       </v-app-bar-title>
+      <v-toolbar-title>Tax Dollar</v-toolbar-title>
       <v-toolbar-items v-if="!auth" class="hidden-sm-and-down">
         <v-btn to="/sign_in" data-test="sign-in-btn-app-bar"
                style="position: absolute; right: 0"
