@@ -3,7 +3,7 @@
     <!--    <div>{{form[name]}}</div>-->
     <v-file-input v-model="selectedFiles" :label="label" :disabled="context === 'read'"
                   chips multiple show-size counter outlined dense color="red"
-                  @change="onFileSelected">
+                  @change="onFileSelected" :rules="rules">
       <template v-slot:selection="{ text }">
         <v-chip small label color="red darken-2" text-color="white">{{ text }}</v-chip>
       </template>
@@ -37,6 +37,10 @@ export default {
     return {
       selectedFiles: null,
       availableFiles: [],
+      rules: [
+        v => !!v || 'File is required',
+        v => (v && v.size > 0) || 'File is required',
+      ],
     };
   },
   methods: {
