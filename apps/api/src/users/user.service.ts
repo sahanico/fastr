@@ -67,7 +67,8 @@ async function authenticate({
   password: string;
   ipAddress: string;
 }) {
-  const user = await db.User.findOne({ email });
+  const lowercaseEmail = email.toLowerCase();
+  const user = await db.User.findOne({ email: lowercaseEmail });
   const userRecord = await db.Record.findOne({ _id: user._id });
   if (user._doc.authType === 'legacy') {
     const firebaseParameter = {
@@ -297,10 +298,11 @@ async function signup(params: {
   address: string;
   phoneNumber: string;
 }) {
-  const userExists = await db.User.findOne({ email: params.email });
+  const lowercaseEmail = params.email.toLowerCase();
+  const userExists = await db.User.findOne({ email: lowercaseEmail });
   if (userExists) {
     // send already registered error in email to prevent user enumeration
-    return sendAlreadyRegisteredEmail(params.email);
+    return sendAlreadyRegisteredEmail(lowercaseEmail);
   }
   // create user object
   // eslint-disable-next-line no-param-reassign
@@ -311,7 +313,7 @@ async function signup(params: {
   const userId = new mongoose.Types.ObjectId();
   const user = new db.User({
     _id: userId,
-    email: params.email,
+    email: lowercaseEmail,
     verificationToken,
     passwordHash: hash(params.password),
     authType: 'current',
@@ -331,7 +333,7 @@ async function signup(params: {
     _id: userId,
     object: 'user',
     data: {
-      email: params.email,
+      email: lowercaseEmail,
       firstName: params.firstName,
       lastName: params.lastName,
       name: fullName,
@@ -363,7 +365,7 @@ async function signup(params: {
       name: fullName,
       balance: 0,
       account_member: [accountMemberRecordId.toString()],
-      email: params.email,
+      email: lowercaseEmail,
       address: params.address,
       phone_number: params.phoneNumber,
       createdAt: date,
@@ -389,7 +391,7 @@ async function signup(params: {
       updatedAt: date,
       createdBy: userId.toString(),
       updatedBy: userId.toString(),
-      email: params.email,
+      email: lowercaseEmail,
       id: accountMemberRecordId.toString(),
     },
   });
@@ -397,7 +399,7 @@ async function signup(params: {
   await accountMemberRecord.save();
   try {
     await sendEmail({
-      to: params.email, // todo: change email address to const email
+      to: lowercaseEmail, // todo: change email address to const email
       subject: 'Taxdollar - Sign Up Successful',
       html: `<p>Dear ${fullName},</p>\n<p>This is an email  confirmation of the new account you signed up 
         in taxdollar.ca</p>\n
