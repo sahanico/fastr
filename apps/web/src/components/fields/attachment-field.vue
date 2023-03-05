@@ -38,14 +38,14 @@ export default {
       selectedFiles: null,
       availableFiles: [],
       rules: [
-        v => !!v || 'File is required',
-        v => (v && v.size > 0) || 'File is required',
+        v => (v && v.length > 0) || 'File is required',
       ],
     };
   },
   methods: {
     onFileSelected(files) {
       this.$emit('input', files);
+      this.$parent.$parent.$parent.$parent.$parent.$refs.createForm.resetValidation();
     },
     async downloadDocuments(idx, attachment) {
       this.pathName = await this.$store.dispatch('downloadAttachment', {
