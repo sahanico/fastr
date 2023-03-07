@@ -28,6 +28,7 @@ export default {
     if (this.default) {
       if (this.default.type === 'literal') {
         this.selected = this.default.literal;
+        this.$emit('input', this.selected);
       }
     }
   },

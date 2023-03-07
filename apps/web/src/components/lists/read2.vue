@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="list">
-    <v-dialog v-model="createFormDialog" width="500" height="100%">
+    <v-dialog v-model="createFormDialog" width="500" height="100%" persistent>
       <v-card>
         <v-container>
           <create-form :input="selectedItem" :form-name="selectedAction.createFormDialog"
@@ -15,7 +15,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;"
+    <v-dialog v-model="createButtonDialog" width="90%" style="background-color: white;" persistent
               v-if="list && list.meta && list.meta.create && createButtonDialog">
       <div style="display: flex; flex-direction: column; background-color: white"><v-btn color="black" text type="button" @click="createButtonDialog = false">
         Close
@@ -105,7 +105,7 @@
               </span>
             </template>
             <template v-slot:[`item.${list.meta.routeBy}`]="{ item, index }">
-              <v-chip small color="white" class="red--text" @click="routeTo(index, item)" >View
+              <v-chip small color="red" class="white--text" @click="routeTo(index, item)" >View
               </v-chip>{{ item[list.meta.routeBy] }}
             </template>
             <template v-slot:[`item.attachments`]="{ item, index }">
