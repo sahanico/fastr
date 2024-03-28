@@ -18,7 +18,7 @@ function generateJwtToken(user: { id: string }) {
     { sub: user.id, id: user.id },
     process.env.JWT_SECRET || 'abcd',
     {
-      expiresIn: '15m',
+      expiresIn: '60m',
     }
   );
 }
@@ -32,7 +32,7 @@ function generateRefreshToken(user: { id: string }, ipAddress: string) {
   return new db.RefreshToken({
     user: user.id,
     token: randomTokenString(),
-    expires: new Date(Date.now() + 60 * 60 * 1000),
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     createdByIp: ipAddress,
   });
 }
@@ -103,7 +103,7 @@ async function authenticate({
     ...userRecord._doc.data,
     jwtToken,
     refreshToken: token.token,
-    expiresIn: '15m',
+    expiresIn: '60m',
   };
 
   delete returnedUserData.passwordHash;

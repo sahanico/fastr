@@ -1303,7 +1303,7 @@ axios.interceptors.response.use((response) => {
         window.location.replace(`${process.env.WEBPACK_PUBLIC_URL || 'taxdollar.ca'}/sign_in`);
         setTimeout(() => {
           alertShown = false;
-        }, 10 * 60 * 1000);
+        }, 60 * 60 * 1000);
       }
     }
   },
