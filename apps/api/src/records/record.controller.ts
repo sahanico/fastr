@@ -193,8 +193,9 @@ class Record {
       try {
         updatedRecords = records.slice(-100);
         console.log("records: ", records.length);
+        console.log("updatedRecords: ", updatedRecords.length);
         updatedRecords = await recordService.transformRecordObjects(
-          records,
+          updatedRecords,
           list.object
         );
       } catch (error: any) {
