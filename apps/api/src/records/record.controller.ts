@@ -188,9 +188,10 @@ class Record {
       }
     }
     console.log("---------------------");
+    let updatedRecords = [];
     if (records) {
       try {
-        let updatedRecords = records.slice(-100);
+        updatedRecords = records.slice(-100);
         console.log("records: ", records.length);
         updatedRecords = await recordService.transformRecordObjects(
           records,
