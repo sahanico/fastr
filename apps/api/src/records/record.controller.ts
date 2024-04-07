@@ -187,12 +187,20 @@ class Record {
         }
       }
     }
+    console.log("---------------------");
     if (records) {
-      let updatedRecords = records.slice(-600);
-      updatedRecords = await recordService.transformRecordObjects(
-        records,
-        list.object
-      );
+      try {
+        let updatedRecords = records.slice(-100);
+        console.log("records: ", records.length);
+        updatedRecords = await recordService.transformRecordObjects(
+          records,
+          list.object
+        );
+      } catch (error: any) {
+        console.log("error transforming: ", error.message);
+      }
+
+      console.log("---------------------");
       await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
