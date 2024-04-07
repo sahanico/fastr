@@ -1,12 +1,12 @@
-import {Request, Response} from 'express';
-import _ from 'underscore';
+import { Request, Response } from "express";
+import _ from "underscore";
 
-import designService from '../designs/design.service';
-import eventService from '../events/event.service';
-import objectService from '../objectDictionary/objectDictionary.service';
-import {PlatformRequest} from '../types';
+import designService from "../designs/design.service";
+import eventService from "../events/event.service";
+import objectService from "../objectDictionary/objectDictionary.service";
+import { PlatformRequest } from "../types";
 
-import recordService from './record.service';
+import recordService from "./record.service";
 import filterService from "../filters/filter.service";
 import conditionService from "../conditions/condition.service";
 
@@ -31,7 +31,7 @@ class Record {
         //   objectArrayFields[field.name] = data[field.name];
         //   data = _.omit(data, field.name);
         // }
-        if (field.type === 'number' && field.meta.autoIncrement) {
+        if (field.type === "number" && field.meta.autoIncrement) {
           // @ts-ignore
           autoIncrementFields[field.name] = data[field.name];
         }
@@ -46,10 +46,7 @@ class Record {
     data.updatedAt = now;
 
     for (const key of _.keys(autoIncrementFields)) {
-      const val = await recordService.autoIncrementField(
-        req.body.object,
-        key
-      );
+      const val = await recordService.autoIncrementField(req.body.object, key);
       if (val) {
         // @ts-ignore
         data[key] = parseInt(val, 10) + 1;
@@ -58,21 +55,23 @@ class Record {
       }
     }
 
-    const preCreate = await eventService.preCreateRecord({ object: req.body.object, data });
+    const preCreate = await eventService.preCreateRecord({
+      object: req.body.object,
+      data,
+    });
 
     if (!preCreate) {
-      return res.json('failed-to-pre-create');
+      return res.json("failed-to-pre-create");
     }
 
     const record = await recordService.createRecord({
       object: req.body.object,
       data,
-      actions: []
+      actions: [],
     });
     if (!record) await res.sendStatus(400);
     await eventService.postCreateRecord(record);
     return res.json(record);
-
   }
 
   static async updateRecord(req: PlatformRequest | Request, res: Response) {
@@ -113,16 +112,21 @@ class Record {
 
     // get the list
     const list = await designService.getDesignByName({ name: listName });
-    let records = await recordService.getRecordsByObject({ object: list.object });
+    let records = await recordService.getRecordsByObject({
+      object: list.object,
+    });
 
     // filter records
     let filter: any;
-    if (system.user.role === 'Admin' && list.meta.adminFilter) {
-      filter = await designService.getDesignByName({ name: list.meta.adminFilter });
+    if (system.user.role === "Admin" && list.meta.adminFilter) {
+      filter = await designService.getDesignByName({
+        name: list.meta.adminFilter,
+      });
     }
-    if (system.user.role === 'User' && list.meta.filter) {
+    if (system.user.role === "User" && list.meta.filter) {
       filter = await designService.getDesignByName({ name: list.meta.filter });
     }
+    console.log("filter: ", JSON.stringify(filter, null, 2));
     if (filter) {
       // compose state for filter:
       let state: any = {
@@ -133,7 +137,7 @@ class Record {
             text: filter.label,
             value: {
               name: filter.name,
-              object: filter.object
+              object: filter.object,
             },
             data: records,
           },
@@ -145,16 +149,21 @@ class Record {
           ...state.pool,
           [input.object]: {
             object: input.object,
-            type: 'input',
-            data: input.data
-          }
-        }
+            type: "input",
+            data: input.data,
+          },
+        };
       }
       records = await filterService.runFilter(filter.meta.conditions, state);
     }
+    console.log(
+      "list.meta.actions: ",
+      JSON.stringify(list.meta.actions, null, 2)
+    );
+    console.log("records length: ", records.length);
     // select actions to display
-    for(const action of list.meta.actions) {
-      for(const record of records) {
+    for (const action of list.meta.actions) {
+      for (const record of records) {
         if (action.conditions.statements.length > 0) {
           // run condition
           const evaluation = await conditionService.runCondition(
@@ -166,25 +175,32 @@ class Record {
                 text: list.label,
                 value: {
                   name: list.name,
-                  object: list.object
+                  object: list.object,
                 },
-                data: record.data
+                data: record.data,
               },
             }
-          )
+          );
           if (evaluation) {
-            record.actions ? record.actions.push(action) : record.actions = [action];
+            record.actions
+              ? record.actions.push(action)
+              : (record.actions = [action]);
           }
         } else {
-          record.actions ? record.actions.push(action) : record.actions = [action];
+          record.actions
+            ? record.actions.push(action)
+            : (record.actions = [action]);
         }
       }
     }
     if (records) {
-      const updatedRecords = await recordService.transformRecordObjects(records, list.object);
+      const updatedRecords = await recordService.transformRecordObjects(
+        records,
+        list.object
+      );
       // only return last 500 records
       await res.json(updatedRecords.slice(-500));
-      await res.json(updatedRecords);
+      // await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
     }
@@ -229,7 +245,7 @@ class Record {
     });
     let filteredRecords = records;
     // @ts-ignore
-    if (req.auth.role === 'Admin' && adminFilter) {
+    if (req.auth.role === "Admin" && adminFilter) {
       filteredRecords = await recordService.filterRecords(
         req.body.object,
         records,
@@ -238,7 +254,7 @@ class Record {
         req.body.input
       );
       // @ts-ignore
-    } else if (req.auth.role === 'User' && filter) {
+    } else if (req.auth.role === "User" && filter) {
       filteredRecords = await recordService.filterRecords(
         req.body.object,
         records,
@@ -277,7 +293,7 @@ class Record {
      */
     let records: any = {};
     if (req.body.conditions !== undefined) {
-      if (req.body.input !== undefined || req.body.conditions.lhs !== '') {
+      if (req.body.input !== undefined || req.body.conditions.lhs !== "") {
         // @ts-ignore
         records = await recordService.getRecordsByObjectFieldsWithConditions(
           req.body
@@ -290,17 +306,17 @@ class Record {
     let data = {};
     await _.each(req.body.fields, async (field) => {
       let value;
-      if (field.operation === 'avg') {
+      if (field.operation === "avg") {
         value = await recordService.getAvg(records, field.name);
-      } else if (field.operation === 'count') {
+      } else if (field.operation === "count") {
         value = await recordService.getCount(records, field.name);
-      } else if (field.operation === 'min') {
+      } else if (field.operation === "min") {
         value = await recordService.getMin(records, field.name);
-      } else if (field.operation === 'max') {
+      } else if (field.operation === "max") {
         value = await recordService.getMax(records, field.name);
-      } else if (field.operation === 'sum') {
+      } else if (field.operation === "sum") {
         value = await recordService.getSum(records, field.name);
-      } else if (field.operation === 'group_by_date') {
+      } else if (field.operation === "group_by_date") {
         value = await recordService.getGroupByDate(records, field.name);
       }
       data = {
