@@ -126,7 +126,6 @@ class Record {
     if (system.user.role === "User" && list.meta.filter) {
       filter = await designService.getDesignByName({ name: list.meta.filter });
     }
-    console.log("filter: ", JSON.stringify(filter, null, 2));
     if (filter) {
       // compose state for filter:
       let state: any = {
@@ -156,11 +155,6 @@ class Record {
       }
       records = await filterService.runFilter(filter.meta.conditions, state);
     }
-    console.log(
-      "list.meta.actions: ",
-      JSON.stringify(list.meta.actions, null, 2)
-    );
-    console.log("records length: ", records.length);
     // select actions to display
     for (const action of list.meta.actions) {
       for (const record of records) {
@@ -194,13 +188,12 @@ class Record {
       }
     }
     if (records) {
-      const updatedRecords = await recordService.transformRecordObjects(
+      let updatedRecords = records.slice(-600);
+      updatedRecords = await recordService.transformRecordObjects(
         records,
         list.object
       );
-      // only return last 500 records
-      await res.json(updatedRecords.slice(-500));
-      // await res.json(updatedRecords);
+      await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
     }
