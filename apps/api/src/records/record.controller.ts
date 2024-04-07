@@ -191,7 +191,7 @@ class Record {
     let updatedRecords = [];
     if (records) {
       try {
-        updatedRecords = records.slice(-100);
+        updatedRecords = records.slice(-600);
         console.log("records: ", records.length);
         console.log("updatedRecords: ", updatedRecords.length);
         updatedRecords = await recordService.transformRecordObjects(
