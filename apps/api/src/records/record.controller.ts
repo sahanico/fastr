@@ -112,9 +112,8 @@ class Record {
     const { list: listName, system, input } = req.body;
 
     // get the list
-    const list = await designService.getDesignByName({ name: listName});
+    const list = await designService.getDesignByName({ name: listName });
     let records = await recordService.getRecordsByObject({ object: list.object });
-
 
     // filter records
     let filter: any;
@@ -183,6 +182,8 @@ class Record {
     }
     if (records) {
       const updatedRecords = await recordService.transformRecordObjects(records, list.object);
+      // only return top 500 records for now
+      await res.json(updatedRecords.slice(0, 500));
       await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
