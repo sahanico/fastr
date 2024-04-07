@@ -182,8 +182,8 @@ class Record {
     }
     if (records) {
       const updatedRecords = await recordService.transformRecordObjects(records, list.object);
-      // only return top 500 records for now
-      await res.json(updatedRecords.slice(0, 500));
+      // only return last 500 records
+      await res.json(updatedRecords.slice(-500));
       await res.json(updatedRecords);
     } else {
       await res.sendStatus(404);
